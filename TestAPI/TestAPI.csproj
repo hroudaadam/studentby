@@ -7,6 +7,24 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200623212907_InitialCreate.cs" />
     <Compile Remove="Migrations\20200623212907_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200624123454_ChangeUserTableName.cs" />
+    <Compile Remove="Migrations\20200624123454_ChangeUserTableName.Designer.cs" />
+    <Compile Remove="Migrations\20200624145617_TestModel.cs" />
+    <Compile Remove="Migrations\20200624145617_TestModel.Designer.cs" />
+    <Compile Remove="Migrations\20200624145857_DataFix.cs" />
+    <Compile Remove="Migrations\20200624145857_DataFix.Designer.cs" />
+    <Compile Remove="Migrations\20200624150912_AddedRoles.cs" />
+    <Compile Remove="Migrations\20200624150912_AddedRoles.Designer.cs" />
+    <Compile Remove="Migrations\20200624151127_EditTableNames.cs" />
+    <Compile Remove="Migrations\20200624151127_EditTableNames.Designer.cs" />
+    <Compile Remove="Migrations\20200624153437_AddedRegAndOffer.cs" />
+    <Compile Remove="Migrations\20200624153437_AddedRegAndOffer.Designer.cs" />
+    <Compile Remove="Migrations\20200624201146_Relations.cs" />
+    <Compile Remove="Migrations\20200624201146_Relations.Designer.cs" />
+    <Compile Remove="Migrations\20200624201444_DataModel.cs" />
+    <Compile Remove="Migrations\20200624201444_DataModel.Designer.cs" />
+    <Compile Remove="Migrations\20200624201906_DataModel.cs" />
+    <Compile Remove="Migrations\20200624201906_DataModel.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

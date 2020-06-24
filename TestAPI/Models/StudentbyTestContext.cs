@@ -18,5 +18,6 @@ namespace TestAPI.Models
         public DbSet<Company> Companies { get; set; }
         public DbSet<Operator> Operators { get; set; }
         public DbSet<Registration> Registrations { get; set; }
+        public DbSet<JobOffer> JobOffers { get; set; }
     }
 }

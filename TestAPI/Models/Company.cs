@@ -12,5 +12,6 @@ namespace TestAPI.Models
         public int CompanyId { get; set; }
 
         public User User { get; set; }
+        public ICollection<JobOffer> JobOffers { get; set; }
     }
 }

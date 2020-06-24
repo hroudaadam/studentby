@@ -10,5 +10,10 @@ namespace TestAPI.Models
     public class JobOffer
     {
         public int JobOfferId { get; set; }
+
+        public Company Company { get; set; }
+        public int CompanyId { get; set; }
+
+        public ICollection<Registration> Registrations { get; set; }
     }
 }

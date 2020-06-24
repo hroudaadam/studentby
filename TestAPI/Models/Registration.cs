@@ -13,5 +13,8 @@ namespace TestAPI.Models
 
         public Student Student { get; set; }
         public int StudentId { get; set; }
+
+        public JobOffer JobOffer { get; set; }
+        public int JobOfferId { get; set; }
     }
 }

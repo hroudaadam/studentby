@@ -9,8 +9,8 @@ using TestAPI.Models;
 namespace TestAPI.Migrations
 {
     [DbContext(typeof(StudentbyTestContext))]
-    [Migration("20200624153437_AddedRegAndOffer")]
-    partial class AddedRegAndOffer
+    [Migration("20200624202550_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,15 +27,26 @@ namespace TestAPI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("CompanyId");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
                     b.ToTable("Company");
+                });
+
+            modelBuilder.Entity("TestAPI.Models.JobOffer", b =>
+                {
+                    b.Property<int>("JobOfferId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.HasKey("JobOfferId");
+
+                    b.HasIndex("CompanyId");
+
+                    b.ToTable("JobOffer");
                 });
 
             modelBuilder.Entity("TestAPI.Models.Operator", b =>
@@ -45,13 +56,7 @@ namespace TestAPI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("OperatorId");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("Operator");
                 });
@@ -63,7 +68,12 @@ namespace TestAPI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
                     b.HasKey("RegistrationId");
+
+                    b.HasIndex("StudentId");
 
                     b.ToTable("Registration");
                 });
@@ -75,13 +85,7 @@ namespace TestAPI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("StudentId");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("Student");
                 });
@@ -93,40 +97,70 @@ namespace TestAPI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OperatorId")
+                        .HasColumnType("int");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
                     b.HasKey("UserId");
+
+                    b.HasIndex("CompanyId")
+                        .IsUnique();
+
+                    b.HasIndex("OperatorId")
+                        .IsUnique();
+
+                    b.HasIndex("StudentId")
+                        .IsUnique();
 
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("TestAPI.Models.Company", b =>
+            modelBuilder.Entity("TestAPI.Models.JobOffer", b =>
                 {
-                    b.HasOne("TestAPI.Models.User", "User")
-                        .WithOne("Company")
-                        .HasForeignKey("TestAPI.Models.Company", "UserId")
+                    b.HasOne("TestAPI.Models.Company", "Company")
+                        .WithMany("JobOffers")
+                        .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TestAPI.Models.Operator", b =>
+            modelBuilder.Entity("TestAPI.Models.Registration", b =>
                 {
-                    b.HasOne("TestAPI.Models.User", "User")
-                        .WithOne("Operator")
-                        .HasForeignKey("TestAPI.Models.Operator", "UserId")
+                    b.HasOne("TestAPI.Models.Student", "Student")
+                        .WithMany("Registrations")
+                        .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TestAPI.Models.Student", b =>
+            modelBuilder.Entity("TestAPI.Models.User", b =>
                 {
-                    b.HasOne("TestAPI.Models.User", "User")
-                        .WithOne("Student")
-                        .HasForeignKey("TestAPI.Models.Student", "UserId")
+                    b.HasOne("TestAPI.Models.Company", "Company")
+                        .WithOne("User")
+                        .HasForeignKey("TestAPI.Models.User", "CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TestAPI.Models.Operator", "Operator")
+                        .WithOne("User")
+                        .HasForeignKey("TestAPI.Models.User", "OperatorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TestAPI.Models.Student", "Student")
+                        .WithOne("User")
+                        .HasForeignKey("TestAPI.Models.User", "StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
