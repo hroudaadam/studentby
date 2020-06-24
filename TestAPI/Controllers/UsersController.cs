@@ -22,16 +22,15 @@ namespace TestAPI.Controllers
             _context = context;
         }
 
-        // POST: api/Users
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        // POST: api/users/register
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<ActionResult<User>> Register(User user)
         {
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = user.UserId }, user);
+            return CreatedAtAction(nameof(GetUser), new { id = user.UserId }, user);
         }
 
         // GET: api/Users
