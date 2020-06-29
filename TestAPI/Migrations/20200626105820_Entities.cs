@@ -2,7 +2,7 @@
 
 namespace TestAPI.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Entities : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,7 +11,8 @@ namespace TestAPI.Migrations
                 columns: table => new
                 {
                     CompanyId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -62,25 +63,6 @@ namespace TestAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Registration",
-                columns: table => new
-                {
-                    RegistrationId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StudentId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Registration", x => x.RegistrationId);
-                    table.ForeignKey(
-                        name: "FK_Registration_Student_StudentId",
-                        column: x => x.StudentId,
-                        principalTable: "Student",
-                        principalColumn: "StudentId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
@@ -88,9 +70,9 @@ namespace TestAPI.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Email = table.Column<string>(nullable: true),
                     PasswordHash = table.Column<string>(nullable: true),
-                    StudentId = table.Column<int>(nullable: false),
-                    OperatorId = table.Column<int>(nullable: false),
-                    CompanyId = table.Column<int>(nullable: false)
+                    StudentId = table.Column<int>(nullable: true),
+                    OperatorId = table.Column<int>(nullable: true),
+                    CompanyId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -100,15 +82,41 @@ namespace TestAPI.Migrations
                         column: x => x.CompanyId,
                         principalTable: "Company",
                         principalColumn: "CompanyId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_User_Operator_OperatorId",
                         column: x => x.OperatorId,
                         principalTable: "Operator",
                         principalColumn: "OperatorId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_User_Student_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Student",
+                        principalColumn: "StudentId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Registration",
+                columns: table => new
+                {
+                    RegistrationId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StudentId = table.Column<int>(nullable: false),
+                    JobOfferId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Registration", x => x.RegistrationId);
+                    table.ForeignKey(
+                        name: "FK_Registration_JobOffer_JobOfferId",
+                        column: x => x.JobOfferId,
+                        principalTable: "JobOffer",
+                        principalColumn: "JobOfferId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Registration_Student_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Student",
                         principalColumn: "StudentId",
@@ -121,6 +129,11 @@ namespace TestAPI.Migrations
                 column: "CompanyId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Registration_JobOfferId",
+                table: "Registration",
+                column: "JobOfferId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Registration_StudentId",
                 table: "Registration",
                 column: "StudentId");
@@ -129,26 +142,26 @@ namespace TestAPI.Migrations
                 name: "IX_User_CompanyId",
                 table: "User",
                 column: "CompanyId",
-                unique: true);
+                unique: true,
+                filter: "[CompanyId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_OperatorId",
                 table: "User",
                 column: "OperatorId",
-                unique: true);
+                unique: true,
+                filter: "[OperatorId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_StudentId",
                 table: "User",
                 column: "StudentId",
-                unique: true);
+                unique: true,
+                filter: "[StudentId] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "JobOffer");
-
             migrationBuilder.DropTable(
                 name: "Registration");
 
@@ -156,13 +169,16 @@ namespace TestAPI.Migrations
                 name: "User");
 
             migrationBuilder.DropTable(
-                name: "Company");
+                name: "JobOffer");
 
             migrationBuilder.DropTable(
                 name: "Operator");
 
             migrationBuilder.DropTable(
                 name: "Student");
+
+            migrationBuilder.DropTable(
+                name: "Company");
         }
     }
 }

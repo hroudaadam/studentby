@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TestAPI.Models
+namespace TestAPI.Entities
 {
     [Table("JobOffer")]
     public class JobOffer

@@ -11,7 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using TestAPI.Models;
+using TestAPI.Entities;
+using TestAPI.Services;
 
 namespace TestAPI
 {
@@ -34,6 +35,9 @@ namespace TestAPI
             });
 
             services.AddControllers();
+
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IStudentService, StudentService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

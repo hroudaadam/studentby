@@ -4,14 +4,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TestAPI.Models
+namespace TestAPI.Entities
 {
     [Table("Company")]
     public class Company
     {
         public int CompanyId { get; set; }
+        public string Title { get; set; }
 
-        public User User { get; set; }
+        public Employee Employee { get; set; }
         public ICollection<JobOffer> JobOffers { get; set; }
     }
 }
