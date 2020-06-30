@@ -42,9 +42,6 @@ namespace TestAPI.Controllers
             }
         }
 
-
-
-
         //// GET: api/Student
         //[HttpGet]
         //public async Task<ActionResult<IEnumerable<Student>>> GetStudents()
