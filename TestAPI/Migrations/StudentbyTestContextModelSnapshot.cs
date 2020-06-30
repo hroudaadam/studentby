@@ -68,18 +68,6 @@ namespace TestAPI.Migrations
                     b.ToTable("JobOffer");
                 });
 
-            modelBuilder.Entity("TestAPI.Entities.Operator", b =>
-                {
-                    b.Property<int>("OperatorId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.HasKey("OperatorId");
-
-                    b.ToTable("Operator");
-                });
-
             modelBuilder.Entity("TestAPI.Entities.Registration", b =>
                 {
                     b.Property<int>("RegistrationId")
@@ -136,14 +124,11 @@ namespace TestAPI.Migrations
                     b.Property<int?>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("OperatorId")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("PasswordHash")
+                        .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PasswordSalt")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<byte[]>("PasswordSalt")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Role")
                         .HasColumnType("nvarchar(max)");
@@ -159,10 +144,6 @@ namespace TestAPI.Migrations
                     b.HasIndex("EmployeeId")
                         .IsUnique()
                         .HasFilter("[EmployeeId] IS NOT NULL");
-
-                    b.HasIndex("OperatorId")
-                        .IsUnique()
-                        .HasFilter("[OperatorId] IS NOT NULL");
 
                     b.HasIndex("StudentId")
                         .IsUnique()
@@ -207,10 +188,6 @@ namespace TestAPI.Migrations
                     b.HasOne("TestAPI.Entities.Employee", "Employee")
                         .WithOne("User")
                         .HasForeignKey("TestAPI.Entities.User", "EmployeeId");
-
-                    b.HasOne("TestAPI.Entities.Operator", "Operator")
-                        .WithOne("User")
-                        .HasForeignKey("TestAPI.Entities.User", "OperatorId");
 
                     b.HasOne("TestAPI.Entities.Student", "Student")
                         .WithOne("User")

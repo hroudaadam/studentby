@@ -16,7 +16,6 @@ namespace TestAPI.Entities
         public DbSet<User> Users { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Company> Companies { get; set; }
-        public DbSet<Operator> Operators { get; set; }
         public DbSet<Registration> Registrations { get; set; }
         public DbSet<JobOffer> JobOffers { get; set; }
     }

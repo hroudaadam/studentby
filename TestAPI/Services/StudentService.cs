@@ -23,6 +23,12 @@ namespace TestAPI.Services
             _context = context;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public async Task<StudentRegisterResponse> CreateAsync(StudentRegisterRequest model, User user)
         {
             user.Role = Role.Student;

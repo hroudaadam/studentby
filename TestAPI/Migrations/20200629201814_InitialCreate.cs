@@ -1,34 +1,22 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TestAPI.Migrations
 {
-    public partial class Entities : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Company",
+                name: "Employee",
                 columns: table => new
                 {
-                    CompanyId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Company", x => x.CompanyId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Operator",
-                columns: table => new
-                {
-                    OperatorId = table.Column<int>(nullable: false)
+                    EmployeeId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Operator", x => x.OperatorId);
+                    table.PrimaryKey("PK_Employee", x => x.EmployeeId);
                 });
 
             migrationBuilder.CreateTable(
@@ -36,11 +24,65 @@ namespace TestAPI.Migrations
                 columns: table => new
                 {
                     StudentId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    DateOfBirth = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Student", x => x.StudentId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Company",
+                columns: table => new
+                {
+                    CompanyId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(nullable: true),
+                    EmployeeId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Company", x => x.CompanyId);
+                    table.ForeignKey(
+                        name: "FK_Company_Employee_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employee",
+                        principalColumn: "EmployeeId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "User",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(nullable: true),
+                    PasswordHash = table.Column<byte[]>(nullable: true),
+                    PasswordSalt = table.Column<byte[]>(nullable: true),
+                    Verified = table.Column<bool>(nullable: false),
+                    Role = table.Column<string>(nullable: true),
+                    StudentId = table.Column<int>(nullable: true),
+                    EmployeeId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.UserId);
+                    table.ForeignKey(
+                        name: "FK_User_Employee_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employee",
+                        principalColumn: "EmployeeId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_User_Student_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Student",
+                        principalColumn: "StudentId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -60,41 +102,6 @@ namespace TestAPI.Migrations
                         principalTable: "Company",
                         principalColumn: "CompanyId",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "User",
-                columns: table => new
-                {
-                    UserId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(nullable: true),
-                    PasswordHash = table.Column<string>(nullable: true),
-                    StudentId = table.Column<int>(nullable: true),
-                    OperatorId = table.Column<int>(nullable: true),
-                    CompanyId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_User", x => x.UserId);
-                    table.ForeignKey(
-                        name: "FK_User_Company_CompanyId",
-                        column: x => x.CompanyId,
-                        principalTable: "Company",
-                        principalColumn: "CompanyId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_User_Operator_OperatorId",
-                        column: x => x.OperatorId,
-                        principalTable: "Operator",
-                        principalColumn: "OperatorId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_User_Student_StudentId",
-                        column: x => x.StudentId,
-                        principalTable: "Student",
-                        principalColumn: "StudentId",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -124,6 +131,11 @@ namespace TestAPI.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Company_EmployeeId",
+                table: "Company",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_JobOffer_CompanyId",
                 table: "JobOffer",
                 column: "CompanyId");
@@ -139,18 +151,11 @@ namespace TestAPI.Migrations
                 column: "StudentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_User_CompanyId",
+                name: "IX_User_EmployeeId",
                 table: "User",
-                column: "CompanyId",
+                column: "EmployeeId",
                 unique: true,
-                filter: "[CompanyId] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_User_OperatorId",
-                table: "User",
-                column: "OperatorId",
-                unique: true,
-                filter: "[OperatorId] IS NOT NULL");
+                filter: "[EmployeeId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_StudentId",
@@ -172,13 +177,13 @@ namespace TestAPI.Migrations
                 name: "JobOffer");
 
             migrationBuilder.DropTable(
-                name: "Operator");
-
-            migrationBuilder.DropTable(
                 name: "Student");
 
             migrationBuilder.DropTable(
                 name: "Company");
+
+            migrationBuilder.DropTable(
+                name: "Employee");
         }
     }
 }

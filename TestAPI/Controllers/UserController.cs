@@ -15,69 +15,65 @@ namespace TestAPI.Controllers
     [Route("api/[controller]")]
     [Authorize]
     [ApiController]
-    public class StudentController : ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly IStudentService _studentService;
 
-        public StudentController(IUserService userService, IStudentService studentService)
+        public UserController(IUserService userService)
         {
             _userService = userService;
-            _studentService = studentService;
         }
 
-        // POST: api/student/register
+        // GET: api/user/login
+        [HttpGet("login")]
         [AllowAnonymous]
-        [HttpPost("register")]
-        public async Task<ActionResult<StudentRegisterResponse>> Register([FromBody] StudentRegisterRequest request)
+        public async Task<ActionResult<UserAuthenticateResponse>> Login(UserAuthenticateRequest request)
         {
             try
             {
-                var response = await _userService.CreateStudentAsync(request);
+                var response = await _userService.Authenticate(request);
                 return Ok(response);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
-            }
+            }            
         }
 
 
-
-
-        //// GET: api/Student
+        //// GET: api/User
         //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<Student>>> GetStudents()
+        //public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         //{
-        //    return await _context.Students.ToListAsync();
+        //    return await _context.Users.ToListAsync();
         //}
 
-        //// GET: api/Student/5
+        //// GET: api/User/5
         //[HttpGet("{id}")]
-        //public async Task<ActionResult<Student>> GetStudent(int id)
+        //public async Task<ActionResult<User>> GetUser(int id)
         //{
-        //    var student = await _context.Students.FindAsync(id);
+        //    var user = await _context.Users.FindAsync(id);
 
-        //    if (student == null)
+        //    if (user == null)
         //    {
         //        return NotFound();
         //    }
 
-        //    return student;
+        //    return user;
         //}
 
-        //// PUT: api/Student/5
+        //// PUT: api/User/5
         //// To protect from overposting attacks, enable the specific properties you want to bind to, for
         //// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutStudent(int id, Student student)
+        //public async Task<IActionResult> PutUser(int id, User user)
         //{
-        //    if (id != student.StudentId)
+        //    if (id != user.UserId)
         //    {
         //        return BadRequest();
         //    }
 
-        //    _context.Entry(student).State = EntityState.Modified;
+        //    _context.Entry(user).State = EntityState.Modified;
 
         //    try
         //    {
@@ -85,7 +81,7 @@ namespace TestAPI.Controllers
         //    }
         //    catch (DbUpdateConcurrencyException)
         //    {
-        //        if (!StudentExists(id))
+        //        if (!UserExists(id))
         //        {
         //            return NotFound();
         //        }
@@ -98,37 +94,37 @@ namespace TestAPI.Controllers
         //    return NoContent();
         //}
 
-        //// POST: api/Student
+        //// POST: api/User
         //// To protect from overposting attacks, enable the specific properties you want to bind to, for
         //// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         //[HttpPost]
-        //public async Task<ActionResult<Student>> PostStudent(Student student)
+        //public async Task<ActionResult<User>> PostUser(User user)
         //{
-        //    _context.Students.Add(student);
+        //    _context.Users.Add(user);
         //    await _context.SaveChangesAsync();
 
-        //    return CreatedAtAction("GetStudent", new { id = student.StudentId }, student);
+        //    return CreatedAtAction("GetUser", new { id = user.UserId }, user);
         //}
 
-        //// DELETE: api/Student/5
+        //// DELETE: api/User/5
         //[HttpDelete("{id}")]
-        //public async Task<ActionResult<Student>> DeleteStudent(int id)
+        //public async Task<ActionResult<User>> DeleteUser(int id)
         //{
-        //    var student = await _context.Students.FindAsync(id);
-        //    if (student == null)
+        //    var user = await _context.Users.FindAsync(id);
+        //    if (user == null)
         //    {
         //        return NotFound();
         //    }
 
-        //    _context.Students.Remove(student);
+        //    _context.Users.Remove(user);
         //    await _context.SaveChangesAsync();
 
-        //    return student;
+        //    return user;
         //}
 
-        //private bool StudentExists(int id)
+        //private bool UserExists(int id)
         //{
-        //    return _context.Students.Any(e => e.StudentId == id);
+        //    return _context.Users.Any(e => e.UserId == id);
         //}
     }
 }
