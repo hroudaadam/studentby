@@ -1,29 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TestAPI.Entities
+namespace TestAPI.Models
 {
-    [Table("JobOffer")]
-    public class JobOffer
+    public class JobCreateRequest
     {
-        public int JobOfferId { get; set; }
-
+        [Required]
         public string Title { get; set; }
+        [Required]
         public string Description { get; set; }
-
+        [Required]
         public double Wage { get; set; }
-
+        [Required]
         public int Spaces { get; set; }
-
+        [Required]
         public DateTime Start { get; set; }
+        [Required]
         public DateTime End { get; set; }
-
-        public Company Company { get; set; }
-        public int CompanyId { get; set; }
-
-        public ICollection<JobApplication> JobApplications { get; set; }
     }
 }

@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace TestAPI.Entities
 {
-    [Table("Registration")]
-    public class Registration
+    [Table("JobApplication")]
+    public class JobApplication
     {
-        public int RegistrationId { get; set; }
+        public int JobApplicationId { get; set; }
+        public string State { get; set; }
 
         public Student Student { get; set; }
         public int StudentId { get; set; }

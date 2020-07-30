@@ -15,6 +15,6 @@ namespace TestAPI.Entities
         public DateTime DateOfBirth { get; set; }
 
         public User User { get; set; }
-        public ICollection<Registration> Registrations { get; set; }
+        public ICollection<JobApplication> JobApplications { get; set; }
     }
 }

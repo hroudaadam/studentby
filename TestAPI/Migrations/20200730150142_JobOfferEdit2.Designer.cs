@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestAPI.Entities;
 
 namespace TestAPI.Migrations
 {
     [DbContext(typeof(StudentbyTestContext))]
-    partial class StudentbyTestContextModelSnapshot : ModelSnapshot
+    [Migration("20200730150142_JobOfferEdit2")]
+    partial class JobOfferEdit2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,31 +59,6 @@ namespace TestAPI.Migrations
                     b.ToTable("Employees");
                 });
 
-            modelBuilder.Entity("TestAPI.Entities.JobApplication", b =>
-                {
-                    b.Property<int>("JobApplicationId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("JobOfferId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("State")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("JobApplicationId");
-
-                    b.HasIndex("JobOfferId");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("JobApplication");
-                });
-
             modelBuilder.Entity("TestAPI.Entities.JobOffer", b =>
                 {
                     b.Property<int>("JobOfferId")
@@ -115,6 +92,28 @@ namespace TestAPI.Migrations
                     b.HasIndex("CompanyId");
 
                     b.ToTable("JobOffer");
+                });
+
+            modelBuilder.Entity("TestAPI.Entities.Registration", b =>
+                {
+                    b.Property<int>("RegistrationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("JobOfferId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RegistrationId");
+
+                    b.HasIndex("JobOfferId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("Registration");
                 });
 
             modelBuilder.Entity("TestAPI.Entities.Student", b =>
@@ -188,26 +187,26 @@ namespace TestAPI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TestAPI.Entities.JobApplication", b =>
-                {
-                    b.HasOne("TestAPI.Entities.JobOffer", "JobOffer")
-                        .WithMany("JobApplications")
-                        .HasForeignKey("JobOfferId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TestAPI.Entities.Student", "Student")
-                        .WithMany("JobApplications")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("TestAPI.Entities.JobOffer", b =>
                 {
                     b.HasOne("TestAPI.Entities.Company", "Company")
                         .WithMany("JobOffers")
                         .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TestAPI.Entities.Registration", b =>
+                {
+                    b.HasOne("TestAPI.Entities.JobOffer", "JobOffer")
+                        .WithMany("Registrations")
+                        .HasForeignKey("JobOfferId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TestAPI.Entities.Student", "Student")
+                        .WithMany("Registrations")
+                        .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

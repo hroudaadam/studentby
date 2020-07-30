@@ -123,8 +123,6 @@ D:\Programování\Studentby\TestAPI\bin\Debug\netcoreapp3.1\runtimes\unix\lib\ne
 D:\Programování\Studentby\TestAPI\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 D:\Programování\Studentby\TestAPI\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 D:\Programování\Studentby\TestAPI\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll
-D:\Programování\Studentby\TestAPI\obj\Debug\netcoreapp3.1\TestAPI.csproj.CoreCompileInputs.cache
-D:\Programování\Studentby\TestAPI\obj\Debug\netcoreapp3.1\TestAPI.MvcApplicationPartsAssemblyInfo.cache
 D:\Programování\Studentby\TestAPI\bin\Debug\netcoreapp3.1\Microsoft.Data.Sqlite.dll
 D:\Programování\Studentby\TestAPI\bin\Debug\netcoreapp3.1\Microsoft.DotNet.PlatformAbstractions.dll
 D:\Programování\Studentby\TestAPI\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Sqlite.dll
@@ -146,3 +144,12 @@ D:\Programování\Studentby\TestAPI\bin\Debug\netcoreapp3.1\runtimes\win-arm\nat
 D:\Programování\Studentby\TestAPI\bin\Debug\netcoreapp3.1\runtimes\win-arm64\native\e_sqlite3.dll
 D:\Programování\Studentby\TestAPI\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\e_sqlite3.dll
 D:\Programování\Studentby\TestAPI\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\e_sqlite3.dll
+D:\Programování\Studentby\TestAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\Programování\Studentby\TestAPI\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\Programování\Studentby\TestAPI\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Logging.dll
+D:\Programování\Studentby\TestAPI\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.dll
+D:\Programování\Studentby\TestAPI\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\Programování\Studentby\TestAPI\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Tokens.dll
+D:\Programování\Studentby\TestAPI\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll
+D:\Programování\Studentby\TestAPI\obj\Debug\netcoreapp3.1\TestAPI.csproj.CoreCompileInputs.cache
+D:\Programování\Studentby\TestAPI\obj\Debug\netcoreapp3.1\TestAPI.MvcApplicationPartsAssemblyInfo.cache

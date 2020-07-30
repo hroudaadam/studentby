@@ -12,7 +12,7 @@ namespace TestAPI.Entities
         public int CompanyId { get; set; }
         public string Title { get; set; }
 
-        public Employee Employee { get; set; }
+        public ICollection<Employee> Employees { get; set; }
         public ICollection<JobOffer> JobOffers { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TestAPI.Entities;
+using TestAPI.Helpers;
 using TestAPI.Models;
 using TestAPI.Services;
 
@@ -15,23 +16,23 @@ namespace TestAPI.Controllers
     [Route("api/[controller]")]
     [Authorize]
     [ApiController]
-    public class StudentController : ControllerBase
+    public class EmployeeController : ControllerBase
     {
         private readonly IUserService _userService;
 
-        public StudentController(IUserService userService)
+        public EmployeeController(IUserService userService)
         {
             _userService = userService;
         }
 
-        // POST: api/student/register
-        [AllowAnonymous]
+        // POST: api/employee/register
+        [Authorize(Roles = Role.Admin)]
         [HttpPost("register")]
-        public async Task<ActionResult<StudentRegisterResponse>> Register([FromBody] StudentRegisterRequest request)
+        public async Task<ActionResult<EmployeeRegisterResponse>> Register([FromBody] EmployeeRegisterRequest request)
         {
             try
             {
-                var response = await _userService.CreateStudentAsync(request);
+                var response = await _userService.CreateEmployeeAsync(request);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -39,5 +40,7 @@ namespace TestAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
     }
 }

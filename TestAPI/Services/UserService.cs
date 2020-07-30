@@ -1,7 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using TestAPI.Entities;
 using TestAPI.Helpers;
@@ -12,23 +19,27 @@ namespace TestAPI.Services
     public interface IUserService
     {
         Task<StudentRegisterResponse> CreateStudentAsync(StudentRegisterRequest model);
-        Task<UserAuthenticateResponse> Authenticate(UserAuthenticateRequest model);
+        Task<EmployeeRegisterResponse> CreateEmployeeAsync(EmployeeRegisterRequest model);
+        Task<AdminRegisterResponse> CreateAdminAsync(AdminRegisterRequest model);
+        Task<UserAuthenticateResponse> AuthenticateAsync(UserAuthenticateRequest model);
+        Task<User> GetUserAsync(int userId);
     }
 
     public class UserService : IUserService
     {
         private readonly StudentbyTestContext _context;
+        private readonly AppSettings _appSettings;
 
-        public UserService(StudentbyTestContext context)
+        public UserService(StudentbyTestContext context, IOptions<AppSettings> appSettings)
         {
             _context = context;
+            _appSettings = appSettings.Value;
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="model"></param>
-        /// <param name="user"></param>
         /// <returns></returns>
         public async Task<StudentRegisterResponse> CreateStudentAsync(StudentRegisterRequest model)
         {
@@ -49,6 +60,49 @@ namespace TestAPI.Services
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<EmployeeRegisterResponse> CreateEmployeeAsync(EmployeeRegisterRequest model)
+        {
+            User user = await CreateUserAsync(model.Email, model.Password, Role.Employee);
+            Company company = await _context.Companies.SingleOrDefaultAsync(x => x.CompanyId == model.CompanyId);
+
+            Employee employee = new Employee
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                User = user,
+                Company = company
+            };
+
+            _context.Employees.Add(employee);
+            await _context.SaveChangesAsync();
+
+            return new EmployeeRegisterResponse(employee);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<AdminRegisterResponse> CreateAdminAsync(AdminRegisterRequest model)
+        {
+            if (await _context.Users.AnyAsync(x => x.Role == Role.Admin))
+            {
+                throw new AppException("Admin already exists");
+            }
+            
+            User user = await CreateUserAsync(model.Email, model.Password, Role.Admin);
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            return new AdminRegisterResponse(user);
+        }
+
+        /// <summary>
         /// Creates new user object and validates values
         /// </summary>
         /// <param name="email"></param>
@@ -56,11 +110,6 @@ namespace TestAPI.Services
         /// <returns></returns>
         private async Task<User> CreateUserAsync(string email, string password, string role)
         {
-            if (!IsValidEmail(email))
-            {
-                throw new AppException("Email is not valid");
-            }
-
             bool userExists = await _context.Users.AnyAsync(x => x.Email == email);
             if (userExists)
             {
@@ -85,7 +134,7 @@ namespace TestAPI.Services
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<UserAuthenticateResponse> Authenticate(UserAuthenticateRequest model)
+        public async Task<UserAuthenticateResponse> AuthenticateAsync(UserAuthenticateRequest model)
         {
             var user = await _context.Users.SingleOrDefaultAsync(x => x.Email == model.Email);
 
@@ -99,27 +148,9 @@ namespace TestAPI.Services
                 throw new AppException("Password is not valid");
             }
 
-            string token = GenerateJwtToken();
+            string token = GenerateJwtToken(user);
 
             return new UserAuthenticateResponse(user, token);
-        }
-
-        /// <summary>
-        /// Validates email adress
-        /// </summary>
-        /// <param name="email"></param>
-        /// <returns></returns>
-        private bool IsValidEmail(string email)
-        {
-            try
-            {
-                var addr = new System.Net.Mail.MailAddress(email);
-                return addr.Address == email;
-            }
-            catch
-            {
-                return false;
-            }
         }
 
         /// <summary>
@@ -133,7 +164,7 @@ namespace TestAPI.Services
             using (var hmac = new System.Security.Cryptography.HMACSHA256())
             {
                 salt = hmac.Key;
-                hash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
             }
         }
 
@@ -148,7 +179,7 @@ namespace TestAPI.Services
         {
             using (var hmac = new System.Security.Cryptography.HMACSHA256(dbSalt))
             {
-                byte[] computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                byte[] computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
                 for (int i = 0; i < computedHash.Length; i++)
                 {
                     if (computedHash[i] != dbHash[i])
@@ -164,9 +195,29 @@ namespace TestAPI.Services
         /// 
         /// </summary>
         /// <returns></returns>
-        private string GenerateJwtToken()
+        private string GenerateJwtToken(User user)
         {
-            return "testtoken123";
+            // generate token that is valid for 7 days
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, user.UserId.ToString()),
+                    new Claim(ClaimTypes.Role, user.Role)
+                }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
+
+        public async Task<User> GetUserAsync(int userId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
+            return user;
         }
     }
 }

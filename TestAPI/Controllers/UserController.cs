@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TestAPI.Entities;
+using TestAPI.Helpers;
 using TestAPI.Models;
 using TestAPI.Services;
 
@@ -24,107 +25,37 @@ namespace TestAPI.Controllers
             _userService = userService;
         }
 
-        // GET: api/user/login
-        [HttpGet("login")]
+        // POST: api/user/login
+        [HttpPost("login")]
         [AllowAnonymous]
         public async Task<ActionResult<UserAuthenticateResponse>> Login(UserAuthenticateRequest request)
         {
             try
             {
-                var response = await _userService.Authenticate(request);
+                var response = await _userService.AuthenticateAsync(request);
                 return Ok(response);
             }
-            catch (Exception ex)
+            catch (AppException ex)
             {
                 return BadRequest(ex.Message);
             }            
         }
 
+        // GET: api/User/
+        [HttpGet("data")]
+        public async Task<ActionResult<User>> GetUser()
+        {
+            int userId = int.Parse(HttpContext.User.Identity.Name);
 
-        //// GET: api/User
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<User>>> GetUsers()
-        //{
-        //    return await _context.Users.ToListAsync();
-        //}
-
-        //// GET: api/User/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<User>> GetUser(int id)
-        //{
-        //    var user = await _context.Users.FindAsync(id);
-
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return user;
-        //}
-
-        //// PUT: api/User/5
-        //// To protect from overposting attacks, enable the specific properties you want to bind to, for
-        //// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutUser(int id, User user)
-        //{
-        //    if (id != user.UserId)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    _context.Entry(user).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!UserExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
-
-        //// POST: api/User
-        //// To protect from overposting attacks, enable the specific properties you want to bind to, for
-        //// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        //[HttpPost]
-        //public async Task<ActionResult<User>> PostUser(User user)
-        //{
-        //    _context.Users.Add(user);
-        //    await _context.SaveChangesAsync();
-
-        //    return CreatedAtAction("GetUser", new { id = user.UserId }, user);
-        //}
-
-        //// DELETE: api/User/5
-        //[HttpDelete("{id}")]
-        //public async Task<ActionResult<User>> DeleteUser(int id)
-        //{
-        //    var user = await _context.Users.FindAsync(id);
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.Users.Remove(user);
-        //    await _context.SaveChangesAsync();
-
-        //    return user;
-        //}
-
-        //private bool UserExists(int id)
-        //{
-        //    return _context.Users.Any(e => e.UserId == id);
-        //}
+            try
+            {
+                var user = await _userService.GetUserAsync(userId);
+                return Ok(user);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

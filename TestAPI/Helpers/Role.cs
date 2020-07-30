@@ -7,9 +7,8 @@ namespace TestAPI.Helpers
 {
     public static class Role
     {
-        public const string Company = "Company";
+        public const string Employee = "Employee";
         public const string Student = "Student";
-        public const string Operator = "Operator";
         public const string Admin = "Admin";
     }
 }
