@@ -22,7 +22,6 @@ namespace TestAPI.Services
         Task<EmployeeRegisterResponse> CreateEmployeeAsync(EmployeeRegisterRequest model);
         Task<AdminRegisterResponse> CreateAdminAsync(AdminRegisterRequest model);
         Task<UserAuthenticateResponse> AuthenticateAsync(UserAuthenticateRequest model);
-        Task<User> GetUserAsync(int userId);
     }
 
     public class UserService : IUserService
@@ -197,7 +196,6 @@ namespace TestAPI.Services
         /// <returns></returns>
         private string GenerateJwtToken(User user)
         {
-            // generate token that is valid for 7 days
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -207,17 +205,11 @@ namespace TestAPI.Services
                     new Claim(ClaimTypes.Name, user.UserId.ToString()),
                     new Claim(ClaimTypes.Role, user.Role)
                 }),
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.UtcNow.AddMinutes(15),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
-        }
-
-        public async Task<User> GetUserAsync(int userId)
-        {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
-            return user;
         }
     }
 }

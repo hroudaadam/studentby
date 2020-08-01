@@ -40,22 +40,5 @@ namespace TestAPI.Controllers
                 return BadRequest(ex.Message);
             }            
         }
-
-        // GET: api/User/
-        [HttpGet("data")]
-        public async Task<ActionResult<User>> GetUser()
-        {
-            int userId = int.Parse(HttpContext.User.Identity.Name);
-
-            try
-            {
-                var user = await _userService.GetUserAsync(userId);
-                return Ok(user);
-            }
-            catch (AppException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
     }
 }
