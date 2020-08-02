@@ -1,4 +1,5 @@
 import router from '../router'
+import apiSevice from '../helpers/apiService';
 
 export default {
     namespaced: true,
@@ -6,22 +7,17 @@ export default {
         loginEmail: null,
         loginPassword: null,
         accessToken: null,
-        loginError: null
+        loginError: null,
+        userRole: null
     },
     actions: {
         login({ commit, state }) {
             commit('setLoginError', null);
-            fetch("https://localhost:5001/api/user/login", {
-                method: "POST",
-                mode: "cors",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ email: state.loginEmail, password: state.loginPassword }),
-            })
+            apiSevice.post('/user/login', { email: state.loginEmail, password: state.loginPassword })
                 .then((response) => response.json())
                 .then((data) => {
                     commit("setAccessToken", data.token);
+                    commit("setUserRole", data.role)
                     console.log(data);
                     router.push('/');
                 })
@@ -32,12 +28,22 @@ export default {
         },
         logout({commit}) {
             commit('setAccessToken', null);
+            commit("setUserRole", null)
             router.push('/');
         }
     },
     getters: {
-        isLoggedIn(state){
+        isUserLoggedIn(state){
             return !!state.accessToken;
+        },
+        isStudentLogged(state){
+            return (!!state.accessToken && state.userRole === "Student");
+        },
+        isEmployeeLogged(state){
+            return (!!state.accessToken && state.userRole === "Employee");
+        },
+        isOperatorLogged(state){
+            return (!!state.accessToken && state.userRole === "Admin");
         }
     },
     mutations: {
@@ -52,6 +58,9 @@ export default {
         },
         setLoginError(state, error) {
             state.loginError = error;
+        },
+        setUserRole(state, role) {
+            state.userRole = role;
         }
     }
 }

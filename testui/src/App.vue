@@ -1,18 +1,21 @@
 <template>
   <div class="app">
-    <Appbar></Appbar>
-    <router-view></router-view>
+    <AppBar></AppBar>
+    <b-container class="mt-2">
+      <router-view></router-view>
+    </b-container>
+    
   </div>
 </template>
 
 <script>
-import Appbar from "./components/layout/Appbar";
+import AppBar from "./components/layout/AppBar";
 
 export default {
   name: "App",
 
   components: {
-    Appbar,
+    AppBar,
   },
 
   data: () => ({}),

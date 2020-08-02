@@ -13,6 +13,8 @@ namespace TestAPI.Services
     {
         Task<JobCreateResponse> CreateJobOfferAsync(JobCreateRequest model, int userId);
         Task<JobApplicationCreateResponse> ApplicationCreateAsync(JobApplicationCreateRequest model, int userId);
+        Task<IEnumerable<JobOfferResponse>> GetJobOffersAsync();
+        Task<JobOfferDetailResponse> GetJobOfferDetailAsync(int id);
     }
 
     public class JobService : IJobService
@@ -71,5 +73,33 @@ namespace TestAPI.Services
             return new JobApplicationCreateResponse(jobApplication);
         }
 
+        public async Task<IEnumerable<JobOfferResponse>> GetJobOffersAsync()
+        {
+            var jobOffers = await _context.JobOffers
+                .ToListAsync();
+
+            List<JobOfferResponse> result = new List<JobOfferResponse>();
+
+            foreach (var jobOffer in jobOffers)
+            {
+                result.Add(new JobOfferResponse(jobOffer));
+            }
+
+            return result;
+        }
+
+        public async Task<JobOfferDetailResponse> GetJobOfferDetailAsync(int id)
+        {
+            var jobOffer = await _context.JobOffers
+                .Include(jobOffer => jobOffer.Company)
+                .FirstOrDefaultAsync(jobOffer => jobOffer.JobOfferId == id);
+
+            if (jobOffer == null)
+            {
+                throw new AppException("Not found!");
+            }
+
+            return new JobOfferDetailResponse(jobOffer);
+        }
     }
 }

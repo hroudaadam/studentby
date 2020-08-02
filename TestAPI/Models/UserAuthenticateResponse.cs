@@ -11,6 +11,7 @@ namespace TestAPI.Models
     {
         public int UserId { get; set; }
         public string Email { get; set; }
+        public string Role { get; set; }
         public string Token { get; set; }
 
         public UserAuthenticateResponse(User user, string token)
@@ -18,6 +19,7 @@ namespace TestAPI.Models
             UserId = user.UserId;
             Email = user.Email;
             Token = token;
+            Role = user.Role;
         }
     }
 }

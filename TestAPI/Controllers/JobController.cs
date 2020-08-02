@@ -26,10 +26,43 @@ namespace TestAPI.Controllers
             _jobService = jobService;
         }
 
+        // GET: api/job/
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<JobCreateResponse>> GetAll()
+        {
+            try
+            {
+                var response = await _jobService.GetJobOffersAsync();
+                return Ok(response);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // GET: api/job/:id
+        [HttpGet("{id}")]
+        public async Task<ActionResult<JobOffer>> GetDetail(int id)
+        {
+            try
+            {
+                var response = await _jobService.GetJobOfferDetailAsync(id);
+                return Ok(response);
+            }
+            catch (AppException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            //var jobOffer = await _context.JobOffers.FindAsync(id);
+        }
+
         // POST: api/job/create
         [HttpPost("create")]
         [Authorize(Roles = Role.Employee)]
-        public async Task<ActionResult<JobCreateResponse>> Create(JobCreateRequest request)
+        public async Task<ActionResult<JobCreateResponse>> Create([FromBody] JobCreateRequest request)
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
 
@@ -47,7 +80,7 @@ namespace TestAPI.Controllers
         // POST: api/job/apply
         [HttpPost("apply")]
         [Authorize(Roles = Role.Student)]
-        public async Task<ActionResult<JobApplicationCreateResponse>> Apply(JobApplicationCreateRequest request)
+        public async Task<ActionResult<JobApplicationCreateResponse>> Apply([FromBody] JobApplicationCreateRequest request)
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
 
