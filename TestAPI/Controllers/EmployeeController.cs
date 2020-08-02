@@ -18,29 +18,30 @@ namespace TestAPI.Controllers
     [ApiController]
     public class EmployeeController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly IJobOfferService _jobOfferService;
 
-        public EmployeeController(IUserService userService)
+        public EmployeeController(IJobOfferService jobOfferService)
         {
-            _userService = userService;
+            _jobOfferService = jobOfferService;
         }
 
-        // POST: api/employee/register
-        [Authorize(Roles = Role.Admin)]
-        [HttpPost("register")]
-        public async Task<ActionResult<EmployeeRegisterResponse>> Register([FromBody] EmployeeRegisterRequest request)
+        // POST: api/employee/job-offers
+        [HttpPost("job-offers")]
+        [Authorize(Roles = Role.Employee)]
+        public async Task<ActionResult<JobCreateResponse>> CreateJobOffer([FromBody] JobCreateRequest request)
         {
+            int userId = int.Parse(HttpContext.User.Identity.Name);
+
             try
             {
-                var response = await _userService.CreateEmployeeAsync(request);
-                return Ok(response);
+                var response = await _jobOfferService.CreateJobOfferAsync(request, userId);
+                return StatusCode(201, response);
             }
-            catch (Exception ex)
+            catch (AppException ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(400, ex.Message);
             }
         }
-
 
     }
 }

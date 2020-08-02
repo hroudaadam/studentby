@@ -13,7 +13,7 @@ export default {
     actions: {
         login({ commit, state }) {
             commit('setLoginError', null);
-            apiSevice.post('/user/login', { email: state.loginEmail, password: state.loginPassword })
+            apiSevice.post('/login', { email: state.loginEmail, password: state.loginPassword })
                 .then((response) => response.json())
                 .then((data) => {
                     commit("setAccessToken", data.token);

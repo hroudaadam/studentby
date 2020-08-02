@@ -9,6 +9,6 @@ namespace TestAPI.Helpers
     {
         public const string Employee = "Employee";
         public const string Student = "Student";
-        public const string Admin = "Admin";
+        public const string Operator = "Operator";
     }
 }

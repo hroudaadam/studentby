@@ -18,6 +18,7 @@ function post(specUrl, body) {
         mode: "cors",
         headers: {
             "Content-Type": "application/json",
+            "Authorization": "Bearer " + store.state.authentication.accessToken
         },
         body: JSON.stringify(body),
     });

@@ -36,7 +36,10 @@ namespace TestAPI
                 options.AddDefaultPolicy(
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:8080")
+                        builder.WithOrigins(
+                            "http://localhost:8080",
+                            "http://192.168.0.103:8080",
+                            "http://192.168.0.106:8080")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                     });
@@ -79,7 +82,10 @@ namespace TestAPI
                 });
 
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IJobService, JobService>();
+            services.AddScoped<IJobOfferService, JobOfferService>();
+            services.AddScoped<IJobApplicationService, JobApplicationService>();
+            services.AddScoped<IStudentService, StudentService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

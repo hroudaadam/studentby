@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Login from '../components/auth/Login'
+import Login from '../views/Login'
 //import Employee from '../views/Employee.vue'
 import StudentOffers from '../views/StudentOffers.vue'
 import StudentOfferDetail from '../views/StudentOfferDetail.vue'
-//import StudentApplications from '../components/student/StudentApplications.vue'
+import StudentApplications from '../views/StudentApplications.vue'
 //import EmployeeOffers from '../components/employee/EmployeeOffers.vue'
 //import EmployeeApplications from '../components/employee/EmployeeApplications.vue'
 
@@ -32,6 +32,11 @@ Vue.use(VueRouter)
     name: 'StudentOfferDetail',
     component: StudentOfferDetail,
     props: true
+  },
+  {
+    path: '/student/applications',
+    name: 'StudentApplications',
+    component: StudentApplications,
   }
 ]
 

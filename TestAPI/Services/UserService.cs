@@ -18,10 +18,9 @@ namespace TestAPI.Services
 {
     public interface IUserService
     {
-        Task<StudentRegisterResponse> CreateStudentAsync(StudentRegisterRequest model);
-        Task<EmployeeRegisterResponse> CreateEmployeeAsync(EmployeeRegisterRequest model);
         Task<AdminRegisterResponse> CreateAdminAsync(AdminRegisterRequest model);
         Task<UserAuthenticateResponse> AuthenticateAsync(UserAuthenticateRequest model);
+        Task<User> CreateUserAsync(string email, string password, string role);
     }
 
     public class UserService : IUserService
@@ -35,79 +34,7 @@ namespace TestAPI.Services
             _appSettings = appSettings.Value;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public async Task<StudentRegisterResponse> CreateStudentAsync(StudentRegisterRequest model)
-        {
-            User user = await CreateUserAsync(model.Email, model.Password, Role.Student);
-
-            Student student = new Student
-            {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                DateOfBirth = model.DateOfBirth.Value,
-                User = user
-            };
-
-            _context.Students.Add(student);
-            await _context.SaveChangesAsync();
-
-            return new StudentRegisterResponse(student);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public async Task<EmployeeRegisterResponse> CreateEmployeeAsync(EmployeeRegisterRequest model)
-        {
-            User user = await CreateUserAsync(model.Email, model.Password, Role.Employee);
-            Company company = await _context.Companies.SingleOrDefaultAsync(x => x.CompanyId == model.CompanyId);
-
-            Employee employee = new Employee
-            {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                User = user,
-                Company = company
-            };
-
-            _context.Employees.Add(employee);
-            await _context.SaveChangesAsync();
-
-            return new EmployeeRegisterResponse(employee);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public async Task<AdminRegisterResponse> CreateAdminAsync(AdminRegisterRequest model)
-        {
-            if (await _context.Users.AnyAsync(x => x.Role == Role.Admin))
-            {
-                throw new AppException("Admin already exists");
-            }
-            
-            User user = await CreateUserAsync(model.Email, model.Password, Role.Admin);
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            return new AdminRegisterResponse(user);
-        }
-
-        /// <summary>
-        /// Creates new user object and validates values
-        /// </summary>
-        /// <param name="email"></param>
-        /// <param name="password"></param>
-        /// <returns></returns>
-        private async Task<User> CreateUserAsync(string email, string password, string role)
+        public async Task<User> CreateUserAsync(string email, string password, string role)
         {
             bool userExists = await _context.Users.AnyAsync(x => x.Email == email);
             if (userExists)
@@ -118,21 +45,44 @@ namespace TestAPI.Services
             byte[] hash, salt;
             HashPassword(password, out hash, out salt);
 
-            var newUser = new User 
-            { 
-                Email = email, 
-                PasswordHash = hash, 
-                PasswordSalt = salt, 
-                Role = role 
+            var newUser = new User
+            {
+                Email = email,
+                PasswordHash = hash,
+                PasswordSalt = salt,
+                Role = role
             };
             return newUser;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
+        private void HashPassword(string password, out byte[] hash, out byte[] salt)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA256())
+            {
+                salt = hmac.Key;
+                hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+            }
+        }
+
+
+
+
+        /* ------------------------------------------------------------ */
+
+        public async Task<AdminRegisterResponse> CreateAdminAsync(AdminRegisterRequest model)
+        {
+            if (await _context.Users.AnyAsync(x => x.Role == Role.Operator))
+            {
+                throw new AppException("Admin already exists");
+            }
+            
+            User user = await CreateUserAsync(model.Email, model.Password, Role.Operator);
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            return new AdminRegisterResponse(user);
+        }
+
         public async Task<UserAuthenticateResponse> AuthenticateAsync(UserAuthenticateRequest model)
         {
             var user = await _context.Users.SingleOrDefaultAsync(x => x.Email == model.Email);
@@ -152,28 +102,6 @@ namespace TestAPI.Services
             return new UserAuthenticateResponse(user, token);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="password"></param>
-        /// <param name="hash"></param>
-        /// <param name="salt"></param>
-        private void HashPassword(string password, out byte[] hash, out byte[] salt)
-        {
-            using (var hmac = new System.Security.Cryptography.HMACSHA256())
-            {
-                salt = hmac.Key;
-                hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="password"></param>
-        /// <param name="dbHash"></param>
-        /// <param name="dbSalt"></param>
-        /// <returns></returns>
         private bool VerifyPassword(string password, byte[] dbHash, byte[] dbSalt)
         {
             using (var hmac = new System.Security.Cryptography.HMACSHA256(dbSalt))
@@ -190,10 +118,6 @@ namespace TestAPI.Services
             return true;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         private string GenerateJwtToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
