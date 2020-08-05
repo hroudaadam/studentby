@@ -14,7 +14,7 @@ using TestAPI.Services;
 namespace TestAPI.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+    [Authorize(Roles = Role.Employee)]
     [ApiController]
     public class EmployeeController : ControllerBase
     {
@@ -25,22 +25,30 @@ namespace TestAPI.Controllers
             _jobOfferService = jobOfferService;
         }
 
+        // GET: api/student/job-offers
+        [HttpGet("job-offers")]
+        public async Task<ActionResult<IEnumerable<JobCreateResponse>>> GetJobOffers()
+        {
+            int userId = int.Parse(HttpContext.User.Identity.Name);
+
+                var response = await _jobOfferService.GetEmployeeJobOffersAsync(userId);
+
+            if (response == null)
+            {
+                return StatusCode(404, "Nenalezeno"); 
+            }            
+            return StatusCode(200, response);
+      
+        }
+
         // POST: api/employee/job-offers
-        [HttpPost("job-offers")]
-        [Authorize(Roles = Role.Employee)]
+        [HttpPost("job-offers")]        
         public async Task<ActionResult<JobCreateResponse>> CreateJobOffer([FromBody] JobCreateRequest request)
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
 
-            try
-            {
-                var response = await _jobOfferService.CreateJobOfferAsync(request, userId);
-                return StatusCode(201, response);
-            }
-            catch (AppException ex)
-            {
-                return StatusCode(400, ex.Message);
-            }
+            var response = await _jobOfferService.CreateJobOfferAsync(request, userId);
+            return StatusCode(201, response);
         }
 
     }

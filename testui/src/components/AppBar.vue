@@ -10,7 +10,7 @@
           <b-nav-item v-if="isStudentLogged" :to="{name: 'StudentOffers'}">Brigády</b-nav-item>
           <b-nav-item v-if="isStudentLogged" :to="{name: 'StudentApplications'}">Přihlášky</b-nav-item>
 
-          <b-nav-item v-if="isEmployeeLogged" >Brigády</b-nav-item>
+          <b-nav-item v-if="isEmployeeLogged" :to="{name: 'EmplyoeeOffers'}" >Nabídky</b-nav-item>
           <b-nav-item v-if="isEmployeeLogged">Přihlášky</b-nav-item>
 
           <b-nav-item v-if="isOperatorLogged">Portál operátora</b-nav-item>  

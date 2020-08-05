@@ -13,49 +13,57 @@ export default {
     actions: {
         getAllOffers({ commit }) {
             apiSevice.get('/student/job-offers')
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log(data);
-                    commit("setOffers", data)
+                .then((jsonResponse) => {
+                    console.log(jsonResponse);
+                    commit('setOffers', jsonResponse);
                 })
                 .catch((error) => {
-                    console.log(error);
+                    console.log(error.message);
                 });
         },
         getOfferDetails({ commit }, offerId) {
             apiSevice.get('/student/job-offers/' + offerId.toString())
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log(data);
-                    commit('setOfferDetail', data);
-                })
-                .catch((error) => {                    
-                    console.log(error);
-                });
-        },
-        applyForJobOffer({ commit },offerId) {
-            var body = {jobofferid: offerId};
-            apiSevice.post('/student/job-applications', body)
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log(data);
+                .then((jsonResponse) => {
+                    console.log(jsonResponse);
+                    commit('setOfferDetail', jsonResponse);
                 })
                 .catch((error) => {
-                    commit('setApplicationError', error);                   
-                    console.log(error);
+                    console.log(error.message);
                 });
+        },
+        applyForJobOffer({ commit }, offerId) {
+            var body = { jobofferid: offerId };
+
+            apiSevice.post('/student/job-applications', body)
+                .then((jsonResponse) => {
+                    console.log(jsonResponse);
+                })
+                .catch((error) => {
+                    commit('setApplicationError', error);
+                    console.log(error.message);
+                });
+
         },
         getStudentApplications({ commit }) {
             apiSevice.get('/student/job-applications')
-            .then((response) => response.json())
-                .then((data) => {
-                    console.log(data);
-                    commit('setStudentApplications', data);  
+                .then((jsonResponse) => {
+                    console.log(jsonResponse);
+                    commit('setStudentApplications', jsonResponse);
                 })
-                .catch((error) => {                                    
-                    console.log(error);
+                .catch((error) => {
+                    console.log(error.message);
                 });
-        }   
+        },
+        cancelJobApplication({ commit }, applicationId) {
+            apiSevice.deleteMehod('/student/job-applications/' + applicationId.toString())
+                .then((jsonResponse) => {
+                    console.log(jsonResponse);
+                })
+                .catch((error) => {
+                    commit('setApplicationError', error);
+                    console.log(error.message);
+                });
+        }
     },
     getters: {
         offerDetailTimeString(state) {

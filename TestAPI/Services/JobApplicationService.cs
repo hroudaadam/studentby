@@ -13,6 +13,7 @@ namespace TestAPI.Services
     {
         Task<JobApplicationCreateResponse> CreateJobApplicationAsync(JobApplicationCreateRequest model, int userId);
         Task<IEnumerable<JobApplicationResponse>> GetStudentApplicationsAsync(int userId);
+        Task<bool> CancelApplicationsAsync(int applicationId);
     }
 
     public class JobApplicationService: IJobApplicationService
@@ -28,10 +29,29 @@ namespace TestAPI.Services
         {
             JobOffer jobOffer = await _context.JobOffers.FirstOrDefaultAsync(x => x.JobOfferId == model.JobOfferId);
 
+            if (jobOffer == null)
+            {
+                throw new StudentbyException("Nabídka neexistuje");
+            }
+
             Student student = await _context.Students
                 .Include(student => student.User)
                 .Where(student => student.User.UserId == userId)
                 .FirstOrDefaultAsync();
+
+            if (student == null)
+            {
+                throw new StudentbyException("Uživatel nenalezen");
+            }
+
+            bool applicationExists = await _context.JobApplications.AnyAsync((ja) =>  
+                ja.JobOfferId == jobOffer.JobOfferId &&
+                ja.StudentId == student.StudentId);
+
+            if (applicationExists)
+            {
+                throw new StudentbyException("Přihláška již existuje");
+            }
 
             JobApplication jobApplication = new JobApplication
             {
@@ -64,6 +84,29 @@ namespace TestAPI.Services
             }
 
             return result;
+        }
+
+        public async Task CancelApplicationsAsync(int applicationId)
+        {
+            var jobApplication = await _context.JobApplications
+                .Include(ja => ja.JobOffer)
+                .FirstOrDefaultAsync(ja => ja.JobApplicationId == applicationId);
+
+            if (jobApplication == null || jobApplication.State != State.Pending)
+            {
+                throw new StudentbyException("doplnit...");
+            }
+
+            bool hasJobStarted = jobApplication.JobOffer.Start.Date <=
+                DateTime.Today.ToUniversalTime();
+
+            if (hasJobStarted)
+            {
+                throw new StudentbyException("doplnit...");
+            }
+
+            _context.JobApplications.Remove(jobApplication);
+            await _context.SaveChangesAsync();
         }
 
     }

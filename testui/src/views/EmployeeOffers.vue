@@ -1,34 +1,36 @@
 <template>
-  <div class="StudentOffers">
-    <ItemList v-bind:title="'Brigády'" v-bind:items="this.offers">
+  <div name="EmployeeOffers">
+    <ItemList v-bind:title="'Nabídky'" v-bind:items="this.offers">
         <template v-slot:itemSlot="item">
             <StudentOfferItem v-bind:offer="item"></StudentOfferItem>
         </template>
     </ItemList>
+
+    <b-button variant="primary" :to="{name: 'EmployeeCreateOffer'}">Vytvořit nabídku</b-button>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions, mapGetters } from "vuex";
+import ItemList from "../components/ItemList";
 import StudentOfferItem from "../components/StudentOfferItem";
-import ItemList from '../components/ItemList';
 import router from "../router";
 
 export default {
-  name: "StudentOffers",
+  name: "EmployeeOffers",
   components: {
+    ItemList,
     StudentOfferItem,
-    ItemList
   },
   methods: {
-    ...mapActions("student", ["getAllOffers"]),
+    ...mapActions("employee", ["getAllOffers"]),
   },
   computed: {
-    ...mapState("student", ["offers"]),
-    ...mapGetters("authentication", ["isStudentLogged"]),
+    ...mapState("employee", ["offers"]),
+    ...mapGetters("authentication", ["isEmployeeLogged"])
   },
   mounted() {
-    if (!this.isStudentLogged) {
+    if (!this.isEmployeeLogged) {
       router.push("/login");
     } else {
       this.getAllOffers();
@@ -39,4 +41,3 @@ export default {
 
 <style>
 </style>
-

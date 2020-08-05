@@ -30,39 +30,24 @@ namespace TestAPI.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserAuthenticateResponse>> Login(UserAuthenticateRequest request)
         {
-            try
-            {
-                var response = await _userService.AuthenticateAsync(request);
-                return StatusCode(201, response);
-            }
-            catch (AppException ex)
-            {
-                return StatusCode(400, ex.Message);
-            }
+            var response = await _userService.AuthenticateAsync(request);
+            return StatusCode(200, response);
+
         }
 
         // POST: api/admin
         [HttpPost("admin")]
         public async Task<ActionResult<AdminRegisterResponse>> CreateAdmin([FromBody] AdminRegisterRequest request)
         {
-            try
-            {
-                var response = await _userService.CreateAdminAsync(request);
-                return StatusCode(201, response);
-            }
-            catch (AppException ex)
-            {
-                return StatusCode(400, ex.Message);
-            }
+            var response = await _userService.CreateAdminAsync(request);
+            return StatusCode(201, response);
         }
 
         // GET: api/test
         [HttpGet("test")]
         public ActionResult<int> Test()
         {
-            Console.WriteLine("Ok");
-            Debug.WriteLine("Ok");
-            return StatusCode(200, 3135);
+            throw new StudentbyException("Bussines logic chyba");
         }
     }
 }

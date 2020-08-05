@@ -21,6 +21,10 @@ namespace TestAPI
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });
+                })
+            .ConfigureLogging(config =>
+            {
+                config.ClearProviders();
+            });
     }
 }

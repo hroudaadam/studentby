@@ -24,7 +24,7 @@ namespace TestAPI.Models
 
         public JobApplicationResponse(JobApplication jobApplication)
         {
-            Id = jobApplication.JobOffer.JobOfferId;
+            Id = jobApplication.JobApplicationId;
             Title = jobApplication.JobOffer.Title;
             Description = jobApplication.JobOffer.Description;
             Wage = jobApplication.JobOffer.Wage;

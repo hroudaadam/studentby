@@ -14,17 +14,17 @@ export default {
         login({ commit, state }) {
             commit('setLoginError', null);
             apiSevice.post('/login', { email: state.loginEmail, password: state.loginPassword })
-                .then((response) => response.json())
-                .then((data) => {
-                    commit("setAccessToken", data.token);
-                    commit("setUserRole", data.role)
-                    console.log(data);
+                  .then((jsonResponse) => {
+                    commit("setAccessToken", jsonResponse.token);
+                    commit("setUserRole", jsonResponse.role)
+                    console.log(jsonResponse);
                     router.push('/');
                 })
                 .catch((error) => {
-                    commit('setLoginError', error);
-                    console.log(error);
-                  });
+                    commit('setLoginError', error.message);
+                    console.log(error.message);
+                });
+
         },
         logout({commit}) {
             commit('setAccessToken', null);

@@ -39,7 +39,7 @@ namespace TestAPI.Services
             bool userExists = await _context.Users.AnyAsync(x => x.Email == email);
             if (userExists)
             {
-                throw new AppException("User already exists");
+                throw new StudentbyException("Uživatel již existuje");
             }
 
             byte[] hash, salt;
@@ -64,37 +64,18 @@ namespace TestAPI.Services
             }
         }
 
-
-
-
-        /* ------------------------------------------------------------ */
-
-        public async Task<AdminRegisterResponse> CreateAdminAsync(AdminRegisterRequest model)
-        {
-            if (await _context.Users.AnyAsync(x => x.Role == Role.Operator))
-            {
-                throw new AppException("Admin already exists");
-            }
-            
-            User user = await CreateUserAsync(model.Email, model.Password, Role.Operator);
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            return new AdminRegisterResponse(user);
-        }
-
         public async Task<UserAuthenticateResponse> AuthenticateAsync(UserAuthenticateRequest model)
         {
             var user = await _context.Users.SingleOrDefaultAsync(x => x.Email == model.Email);
 
             if (user == null)
             {
-                throw new AppException("User does not exist");
+                return null;
             }
 
             if (!VerifyPassword(model.Password, user.PasswordHash, user.PasswordSalt))
             {
-                throw new AppException("Password is not valid");
+                return null;
             }
 
             string token = GenerateJwtToken(user);
@@ -135,5 +116,23 @@ namespace TestAPI.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
+
+        /* ------------------------------------------------------------ */
+
+        public async Task<AdminRegisterResponse> CreateAdminAsync(AdminRegisterRequest model)
+        {
+            if (await _context.Users.AnyAsync(x => x.Role == Role.Operator))
+            {
+                throw new StudentbyException("Admin already exists");
+            }
+            
+            User user = await CreateUserAsync(model.Email, model.Password, Role.Operator);
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            return new AdminRegisterResponse(user);
+        }      
+
+        
     }
 }

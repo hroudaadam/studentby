@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using TestAPI.Entities;
 using TestAPI.Helpers;
+using TestAPI.Models;
 using TestAPI.Services;
 
 namespace TestAPI
@@ -51,8 +53,23 @@ namespace TestAPI
                 options.UseSqlServer(connectionString);
             });
 
+            services.AddControllers()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
+                })
+                .ConfigureApiBehaviorOptions(options =>
+                {
+                    options.InvalidModelStateResponseFactory = cont =>
+                    {
+                        var errors = string.Join(", ", cont.ModelState.Values.Where(v => v.Errors.Count > 0)
+                          .SelectMany(v => v.Errors)
+                          .Select(v => v.ErrorMessage));
 
-            services.AddControllers();
+                        throw new StudentbyException(errors);
+                    };
+                });
+
 
             // AppSettings configured
             var appSettingsSection = Configuration.GetSection("AppSettings");
@@ -94,7 +111,11 @@ namespace TestAPI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            }            
+            }
+            else
+            {
+                app.UseExceptionHandler("/error");
+            }
 
             app.UseHttpsRedirection();
 

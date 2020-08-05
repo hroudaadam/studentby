@@ -34,50 +34,38 @@ namespace TestAPI.Controllers
 
         // POST: api/student
         [AllowAnonymous]
-        [HttpPost()]
+        [HttpPost]
         public async Task<ActionResult<StudentRegisterResponse>> CreateStudent([FromBody] StudentRegisterRequest request)
         {
-            try
-            {
-                var response = await _studentService.CreateStudentAsync(request);
-                return StatusCode(201, response);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(400, ex.Message);
-            }
+            var response = await _studentService.CreateStudentAsync(request);
+            return StatusCode(201, response);
+
         }
 
         // GET: api/student/job-offers
         [HttpGet("job-offers")]
         public async Task<ActionResult<IEnumerable<JobCreateResponse>>> GetJobOffers()
         {
-            try
+            int userId = int.Parse(HttpContext.User.Identity.Name);
+
+            var response = await _jobOfferService.GetStudentJobOffersAsync(userId);
+            if (response == null)
             {
-                var response = await _jobOfferService.GetJobOffersAsync();
-                return StatusCode(200, response);
+                return StatusCode(404);
             }
-            catch (AppException ex)
-            {
-                // 404 response???
-                return StatusCode(400, ex.Message);
-            }
+            return StatusCode(200, response);
         }
 
         // GET: api/student/job-offers/:id
         [HttpGet("job-offers/{id}")]
         public async Task<ActionResult<JobOffer>> GetJobOfferDetail([FromRoute] int id)
         {
-            try
+            var response = await _jobOfferService.GetJobOfferDetailAsync(id);
+            if (response == null)
             {
-                var response = await _jobOfferService.GetJobOfferDetailAsync(id);
-                return StatusCode(200, response);
+                return StatusCode(404);
             }
-            catch (AppException ex)
-            {
-                // 404 ??
-                return StatusCode(400, ex.Message);
-            }
+            return StatusCode(200, response); 
         }
 
         // POST: api/student/job-applications
@@ -86,33 +74,30 @@ namespace TestAPI.Controllers
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
 
-            try
-            {
-                var response = await _jobApplicationService.CreateJobApplicationAsync(request, userId);
-                return StatusCode(201, response);
-            }
-            catch (AppException ex)
-            {
-                return StatusCode(400, ex.Message);
-            }
+            var response = await _jobApplicationService.CreateJobApplicationAsync(request, userId);
+            return StatusCode(201, response);
         }
 
         // GET: api/student/job-applications
         [HttpGet("job-applications")]
-        [Authorize(Roles = Role.Student)]
         public async Task<ActionResult<IEnumerable<JobCreateResponse>>> GetJobApplications()
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
 
-            try
+            var response = await _jobApplicationService.GetStudentApplicationsAsync(userId);
+            if (response == null)
             {
-                var response = await _jobApplicationService.GetStudentApplicationsAsync(userId);
-                return StatusCode(200, response);
+                return StatusCode(404);
             }
-            catch (AppException ex)
-            {
-                return StatusCode(400, ex.Message);
-            }
+            return StatusCode(200, response);
+        }
+
+        // DELETE: api/student/job-applications/:id
+        [HttpDelete("job-applications/{id}")]
+        public async Task<ActionResult<User>> CancelApplication([FromRoute] int id)
+        {
+            bool response = await _jobApplicationService.CancelApplicationsAsync(id);
+            return StatusCode(204);
         }
     }
 }

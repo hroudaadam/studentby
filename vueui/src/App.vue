@@ -10,6 +10,7 @@
 import Todos from "./components/Todos";
 import Header from "./components/layout/Header";
 import AddTodo from "./components/AddTodo";
+import helper from './helper';
 
 export default {
   name: "App",
@@ -48,7 +49,7 @@ export default {
     },
   },
   created() {
-    fetch("https://jsonplaceholder.typicode.com/todos/1")
+      helper.httpGet()
       .then((response) => response.json())
       .then((json) => console.log(json));
   },

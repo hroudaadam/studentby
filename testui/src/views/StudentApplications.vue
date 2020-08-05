@@ -1,12 +1,11 @@
 <template>
-  <div class="StudentApplications">
-    <div class="mb-4">
-      <h2 class="text-center">Přihlášky</h2>
-    </div>    
+  <div class="StudentApplications">   
     <div v-if="anyApplications">
-      <b-list-group v-bind:key="application.id" v-for="application in applications">
-        <StudentApplicationItem v-bind:application="application"></StudentApplicationItem>
-      </b-list-group>
+      <ItemList v-bind:title="'Přihlášky'" v-bind:items="this.applications">
+        <template v-slot:itemSlot="item">
+            <StudentApplicationItem v-bind:application="item"></StudentApplicationItem>
+        </template>
+    </ItemList>
     </div>
     <div v-else>
       Nemáte žádné přihlášky
@@ -17,12 +16,14 @@
 <script>
 import { mapState, mapGetters, mapActions } from "vuex";
 import StudentApplicationItem from "../components/StudentApplicationItem";
+import ItemList from '../components/ItemList';
 import router from "../router";
 
 export default {
   name: "StudentApplications",
   components: {
     StudentApplicationItem,
+    ItemList
   },
   methods: {
     ...mapActions("student", ["getStudentApplications"]),

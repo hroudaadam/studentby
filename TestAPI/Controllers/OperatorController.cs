@@ -29,15 +29,8 @@ namespace TestAPI.Controllers
         [HttpPost("employee")]
         public async Task<ActionResult<EmployeeRegisterResponse>> CreateEmployee([FromBody] EmployeeRegisterRequest request)
         {
-            try
-            {
-                var response = await _employeeService.CreateEmployeeAsync(request);
-                return StatusCode(201, response);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(400, ex.Message);
-            }
+            var response = await _employeeService.CreateEmployeeAsync(request);
+            return StatusCode(201, response);
         }
 
     }

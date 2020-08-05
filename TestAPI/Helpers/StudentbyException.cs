@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace TestAPI.Helpers
 {
-    public class AppException : Exception
+    public class StudentbyException : Exception
     {
-        public AppException(string message) : base(message)
+        public StudentbyException(string message) : base(message)
         {
         }
     }

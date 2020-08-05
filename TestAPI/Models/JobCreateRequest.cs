@@ -9,6 +9,7 @@ namespace TestAPI.Models
     public class JobCreateRequest
     {
         [Required]
+        [MinLength(6, ErrorMessage ="Min delka je 6")]
         public string Title { get; set; }
         [Required]
         public string Description { get; set; }
