@@ -47,7 +47,13 @@ namespace TestAPI.Controllers
         [HttpGet("test")]
         public ActionResult<int> Test()
         {
-            throw new StudentbyException("Bussines logic chyba");
+            int i = new Random().Next(2);
+            if (i == 0)
+            {
+                throw new StudentbyException("Logic chyba");
+                
+            }
+            return StatusCode(200, new { name="Adam", surname="Hrouda" });
         }
     }
 }

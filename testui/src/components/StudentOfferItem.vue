@@ -19,8 +19,10 @@
 <script>
 export default {
   name: "StudentOfferItem",
-  components: {},
-  props: ["offer"]
+  components: {
+    
+  },
+  props: ['offer']
 };
 </script>
 

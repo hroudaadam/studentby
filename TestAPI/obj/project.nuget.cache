@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "8Zw4VNvtFDMowYt1GN4jKw8n1tL8gSugS/M3wsXhkVrHrhJ/xTZeE/U6GvAD2yQ1ejSb1wdVfH0ajFo2JenX5g==",
+  "dgSpecHash": "bFzTB0v9ZRgGRpnDslAjf+Jm0cljtU2sS3QQgBDFt7J9jRUgk4n62ES2ZCMXKDC63kKbnFTvBzbUlDT1pvF6cw==",
   "success": true,
   "projectFilePath": "D:\\Programování\\Studentby\\TestAPI\\TestAPI.csproj",
   "expectedPackageFiles": [
@@ -176,8 +176,7 @@
     "C:\\Users\\hroud\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\hroud\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Users\\hroud\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
-    "C:\\Users\\hroud\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512",
-    "C:\\Users\\hroud\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.2\\microsoft.aspnetcore.app.ref.3.1.2.nupkg.sha512"
+    "C:\\Users\\hroud\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512"
   ],
   "logs": []
 }

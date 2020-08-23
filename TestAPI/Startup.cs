@@ -102,6 +102,7 @@ namespace TestAPI
             services.AddScoped<IJobOfferService, JobOfferService>();
             services.AddScoped<IJobApplicationService, JobApplicationService>();
             services.AddScoped<IStudentService, StudentService>();
+            services.AddScoped<IEmployeeService, EmployeeService>();
 
         }
 

@@ -1,10 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "5+2HBdjjqfR/oAda2ul/OT4FuFmWbW6ZC3ozxEwwUacOQM48paDHsOPxpGzd3/zudpm2SCTGrqdIjvdUQQxmlQ==",
+  "dgSpecHash": "Yu4atpkPjZARJPLVzEEa0ZkM98xVktHwdnH+OTVF1BHhoGEJS8QaHnrdtdwHY3j+fZgsZsYNvYsoaNqx96qnuw==",
   "success": true,
   "projectFilePath": "D:\\Programování\\Studentby\\StudentbyApi\\StudentbyApi.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\hroud\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.2\\microsoft.aspnetcore.app.ref.3.1.2.nupkg.sha512"
-  ],
+  "expectedPackageFiles": [],
   "logs": []
 }

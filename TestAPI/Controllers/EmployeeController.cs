@@ -27,18 +27,26 @@ namespace TestAPI.Controllers
 
         // GET: api/student/job-offers
         [HttpGet("job-offers")]
-        public async Task<ActionResult<IEnumerable<JobCreateResponse>>> GetJobOffers()
+        public async Task<ActionResult<IEnumerable<JobOfferResponse>>> GetJobOffers()
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
 
-                var response = await _jobOfferService.GetEmployeeJobOffersAsync(userId);
+            var response = await _jobOfferService.GetCompanyJobOffersAsync(userId);         
+            return StatusCode(200, response);      
+        }
 
+        // GET: api/student/job-offers/:id
+        [HttpGet("job-offers/{id}")]
+        public async Task<ActionResult<JobOfferDetailEmployeeResponse>> GetJobOfferDetail([FromRoute] int id)
+        {
+            int userId = int.Parse(HttpContext.User.Identity.Name);
+
+            var response = await _jobOfferService.GetJobOfferDetailEmployeeAsync(id, userId);  
             if (response == null)
             {
-                return StatusCode(404, "Nenalezeno"); 
-            }            
+                return StatusCode(404);
+            }
             return StatusCode(200, response);
-      
         }
 
         // POST: api/employee/job-offers

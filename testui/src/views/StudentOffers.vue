@@ -1,30 +1,51 @@
 <template>
   <div class="StudentOffers">
-    <ItemList v-bind:title="'Brigády'" v-bind:items="this.offers">
-        <template v-slot:itemSlot="item">
-            <StudentOfferItem v-bind:offer="item"></StudentOfferItem>
-        </template>
+    <PageHeader v-bind:title="'Nabídky'"></PageHeader>
+    <ItemList v-bind:items="this.offers">
+      <template v-slot:itemSlot="item">
+        <StudentOfferItem v-bind:offer="item"></StudentOfferItem>
+      </template>
     </ItemList>
+    <b-alert show variant="danger" v-if="errorMsg" v-html="errorMsg"></b-alert>
   </div>
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
+import apiService from "../helpers/apiService";
+import { mapGetters } from "vuex";
 import StudentOfferItem from "../components/StudentOfferItem";
-import ItemList from '../components/ItemList';
+import PageHeader from "../components/PageHeader";
+import ItemList from "../components/ItemList";
 import router from "../router";
 
 export default {
   name: "StudentOffers",
   components: {
     StudentOfferItem,
-    ItemList
+    ItemList,
+    PageHeader,
+  },
+  data() {
+    return {
+      offers: null,
+      errorMsg: null
+    };
   },
   methods: {
-    ...mapActions("student", ["getAllOffers"]),
+    getAllOffers() {
+      this.errorMsg = null;
+      this.offers = null;
+      apiService
+        .get("/student/job-offers")
+        .then((response) => {
+          this.offers = response;
+        })
+        .catch((error) => {
+          this.errorMsg = error.message;
+        });
+    },
   },
   computed: {
-    ...mapState("student", ["offers"]),
     ...mapGetters("authentication", ["isStudentLogged"]),
   },
   mounted() {

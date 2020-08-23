@@ -1,16 +1,18 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import Login from '../views/Login'
-import StudentOffers from '../views/StudentOffers.vue'
-import StudentOfferDetail from '../views/StudentOfferDetail.vue'
-import StudentApplications from '../views/StudentApplications.vue'
-import EmployeeOffers from '../views/EmployeeOffers.vue'
-import EmployeeCreateOffer from '../views/EmployeeCreateOffer.vue'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import Home from '../views/Home';
+import Login from '../views/Login';
+import StudentOffers from '../views/StudentOffers';
+import StudentOfferDetail from '../views/StudentOfferDetail';
+import StudentApplications from '../views/StudentApplications';
+import EmployeeOffers from '../views/EmployeeOffers';
+import EmployeeCreateOffer from '../views/EmployeeCreateOffer';
+import EmployeeOfferDetail from '../views/EmployeeOfferDetail';
+import StudentRegister from '../views/StudentRegister';
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
-  const routes = [
+const routes = [
   {
     path: '/',
     name: 'Home',
@@ -38,9 +40,20 @@ Vue.use(VueRouter)
     component: StudentApplications,
   },
   {
+    path: '/student/register',
+    name: 'StudentRegister',
+    component: StudentRegister,
+  },
+  {
     path: '/employee/offers',
     name: 'EmplyoeeOffers',
     component: EmployeeOffers,
+  },
+  {
+    path: '/employee/offers/:id',
+    name: 'EmployeeOfferDetail',
+    component: EmployeeOfferDetail,
+    props: true
   },
   {
     path: '/employee/offers/create',

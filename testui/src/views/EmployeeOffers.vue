@@ -1,9 +1,10 @@
 <template>
   <div name="EmployeeOffers">
-    <ItemList v-bind:title="'Nabídky'" v-bind:items="this.offers">
-        <template v-slot:itemSlot="item">
-            <StudentOfferItem v-bind:offer="item"></StudentOfferItem>
-        </template>
+    <PageHeader v-bind:title="'Nabídky'"></PageHeader>
+    <ItemList v-bind:items="this.offers">
+      <template v-slot:itemSlot="item">
+        <EmployeeOfferItem v-bind:offer="item"></EmployeeOfferItem>
+      </template>
     </ItemList>
 
     <b-button variant="primary" :to="{name: 'EmployeeCreateOffer'}">Vytvořit nabídku</b-button>
@@ -13,21 +14,23 @@
 <script>
 import { mapState, mapActions, mapGetters } from "vuex";
 import ItemList from "../components/ItemList";
-import StudentOfferItem from "../components/StudentOfferItem";
+import PageHeader from "../components/PageHeader";
+import EmployeeOfferItem from "../components/EmployeeOfferItem";
 import router from "../router";
 
 export default {
   name: "EmployeeOffers",
   components: {
     ItemList,
-    StudentOfferItem,
+    EmployeeOfferItem,
+    PageHeader,
   },
   methods: {
     ...mapActions("employee", ["getAllOffers"]),
   },
   computed: {
     ...mapState("employee", ["offers"]),
-    ...mapGetters("authentication", ["isEmployeeLogged"])
+    ...mapGetters("authentication", ["isEmployeeLogged"]),
   },
   mounted() {
     if (!this.isEmployeeLogged) {

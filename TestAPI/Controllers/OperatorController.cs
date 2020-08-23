@@ -27,6 +27,7 @@ namespace TestAPI.Controllers
 
         // POST: api/operator/employee
         [HttpPost("employee")]
+        [AllowAnonymous] // zatím
         public async Task<ActionResult<EmployeeRegisterResponse>> CreateEmployee([FromBody] EmployeeRegisterRequest request)
         {
             var response = await _employeeService.CreateEmployeeAsync(request);

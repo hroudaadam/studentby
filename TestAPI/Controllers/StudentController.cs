@@ -49,10 +49,6 @@ namespace TestAPI.Controllers
             int userId = int.Parse(HttpContext.User.Identity.Name);
 
             var response = await _jobOfferService.GetStudentJobOffersAsync(userId);
-            if (response == null)
-            {
-                return StatusCode(404);
-            }
             return StatusCode(200, response);
         }
 
@@ -60,7 +56,7 @@ namespace TestAPI.Controllers
         [HttpGet("job-offers/{id}")]
         public async Task<ActionResult<JobOffer>> GetJobOfferDetail([FromRoute] int id)
         {
-            var response = await _jobOfferService.GetJobOfferDetailAsync(id);
+            var response = await _jobOfferService.GetJobOfferDetailStudentAsync(id);
             if (response == null)
             {
                 return StatusCode(404);
@@ -85,10 +81,6 @@ namespace TestAPI.Controllers
             int userId = int.Parse(HttpContext.User.Identity.Name);
 
             var response = await _jobApplicationService.GetStudentApplicationsAsync(userId);
-            if (response == null)
-            {
-                return StatusCode(404);
-            }
             return StatusCode(200, response);
         }
 
@@ -96,8 +88,9 @@ namespace TestAPI.Controllers
         [HttpDelete("job-applications/{id}")]
         public async Task<ActionResult<User>> CancelApplication([FromRoute] int id)
         {
-            bool response = await _jobApplicationService.CancelApplicationsAsync(id);
+            await _jobApplicationService.CancelApplicationsAsync(id);
             return StatusCode(204);
+            // 404 ???
         }
     }
 }

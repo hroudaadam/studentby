@@ -13,7 +13,7 @@ namespace TestAPI.Services
     {
         Task<JobApplicationCreateResponse> CreateJobApplicationAsync(JobApplicationCreateRequest model, int userId);
         Task<IEnumerable<JobApplicationResponse>> GetStudentApplicationsAsync(int userId);
-        Task<bool> CancelApplicationsAsync(int applicationId);
+        Task CancelApplicationsAsync(int applicationId);
     }
 
     public class JobApplicationService: IJobApplicationService
@@ -92,9 +92,14 @@ namespace TestAPI.Services
                 .Include(ja => ja.JobOffer)
                 .FirstOrDefaultAsync(ja => ja.JobApplicationId == applicationId);
 
-            if (jobApplication == null || jobApplication.State != State.Pending)
+            if (jobApplication == null)
             {
                 throw new StudentbyException("doplnit...");
+            }
+
+            if (jobApplication.State != State.Pending)
+            {
+                throw new StudentbyException("Přihláška není nezpracovaná");
             }
 
             bool hasJobStarted = jobApplication.JobOffer.Start.Date <=

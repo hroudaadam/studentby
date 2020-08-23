@@ -14,7 +14,7 @@ namespace TestAPI.Controllers
     public class ErrorController : ControllerBase
     {
         [Route("/error")]
-        public ActionResult<ErrorResponse> Error()
+        public ActionResult<string> Error()
         {
             var exception = HttpContext.Features.Get<IExceptionHandlerFeature>().Error;
 

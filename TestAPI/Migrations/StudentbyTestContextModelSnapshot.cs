@@ -54,7 +54,7 @@ namespace TestAPI.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.ToTable("Employees");
+                    b.ToTable("Employee");
                 });
 
             modelBuilder.Entity("TestAPI.Entities.JobApplication", b =>
