@@ -35,9 +35,14 @@ async function deleteMehod(specUrl) {
         throw new Error('Vyskytla se chyba');
     });
 
-    if (response.status >= 200 && response.status <= 299 ) {
+    if (response.status == 200 || response.status == 201 ) {
         return response.json();
     }
+
+    if (response.status == 204) {
+        return response.text();
+    }
+
     else {
         var errorMsg = await response.text();
         throw new Error(errorMsg);

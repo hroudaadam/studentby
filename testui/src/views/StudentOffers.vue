@@ -14,7 +14,7 @@
 import apiService from "../helpers/apiService";
 import { mapGetters } from "vuex";
 import StudentOfferItem from "../components/StudentOfferItem";
-import PageHeader from "../components/PageHeader";
+import PageHeader from '../components/PageHeader';
 import ItemList from "../components/ItemList";
 import router from "../router";
 

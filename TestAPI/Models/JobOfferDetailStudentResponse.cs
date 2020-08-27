@@ -14,13 +14,14 @@ namespace TestAPI.Models
 
         public double Wage { get; set; }
         public int Spaces { get; set; }
+        public int FreeSpaces { get; set; }
 
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
 
         public string CompanyName { get; set; }
 
-        public JobOfferDetailStudentResponse(JobOffer job)
+        public JobOfferDetailStudentResponse(JobOffer job, int freeSpaces)
         {
             Id = job.JobOfferId;
             Title = job.Title;
@@ -30,6 +31,7 @@ namespace TestAPI.Models
             Start = job.Start;
             End = job.End;
             CompanyName = job.Company.Title;
+            FreeSpaces = freeSpaces;
         }
     }
 }

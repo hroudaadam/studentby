@@ -11,7 +11,7 @@
 
     <div class="d-flex w-100 justify-content-between">
       <small>Text2</small>
-      <b-button size="sm" variant="secondary" class="mb-2 pr-2 pl-2" v-on:click="cancelJobApplication(application.id)">
+      <b-button size="sm" variant="secondary" class="mb-2 pr-2 pl-2" v-on:click="$emit('cancel', application.id)">
         Zrušit
     </b-button>
     </div>
@@ -19,17 +19,14 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
 
 export default {
   name: "StudentApplicationItem",
   components: {},
   props: ["application"],
   computed: {
-    ...mapState('store', ['states'])
   },
   methods: {
-    ...mapActions('student', ['cancelJobApplication'])
   }
 };
 </script>

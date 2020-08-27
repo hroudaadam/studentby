@@ -1,15 +1,23 @@
 function dateToString(isoDate) {
     var date = new Date(isoDate);
-    var strDate = 
+    var strDate =
         date.getDate() + '.' +
         date.getMonth() + '.' +
         date.getFullYear() + ' ' +
         date.getHours() + ':' +
-        (date.getMinutes() < 10 ? '0':'') + date.getMinutes();
-    
+        (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+
     return strDate;
 }
 
+function dateToIsoString(date, time) {
+    var stringDate = date + 'T' + time;
+    var isoDate = new Date(stringDate);
+    return isoDate.toISOString();
+}
+
+
 export default {
-    dateToString
+    dateToString,
+    dateToIsoString
 }

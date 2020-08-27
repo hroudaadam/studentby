@@ -7,7 +7,7 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>  
           <b-nav-item v-if="isStudentLogged" :to="{name: 'StudentOffers'}">Brigády</b-nav-item>
-          <b-nav-item v-if="isStudentLogged" :to="{name: 'StudentApplications'}">Přihlášky</b-nav-item>
+          <b-nav-item v-if="isStudentLogged" :to="{name: 'StudentJobApplications'}">Přihlášky</b-nav-item>
 
           <b-nav-item v-if="isEmployeeLogged" :to="{name: 'EmplyoeeOffers'}" >Nabídky</b-nav-item>
         </b-navbar-nav>

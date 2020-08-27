@@ -18,6 +18,8 @@ namespace TestAPI.Services
 
         Task<JobOfferDetailStudentResponse> GetJobOfferDetailStudentAsync(int id);
         Task<JobOfferDetailEmployeeResponse> GetJobOfferDetailEmployeeAsync(int id, int userId);
+
+        Task<int> GetFreeSpacesAsync(int jobOfferId);
     }
 
     public class JobOfferService : IJobOfferService
@@ -72,46 +74,46 @@ namespace TestAPI.Services
             return result;
         }
 
-        public async Task<JobOfferDetailStudentResponse> GetJobOfferDetailStudentAsync(int id)
+        public async Task<JobOfferDetailStudentResponse> GetJobOfferDetailStudentAsync(int jobOfferId)
         {
             var jobOffer = await _context.JobOffers
                 .Include(jo => jo.Company)
-                .FirstOrDefaultAsync(jo => jo.JobOfferId == id);
+                .FirstOrDefaultAsync(jo => jo.JobOfferId == jobOfferId);
 
             if (jobOffer == null)
             {
                 return null;
             }
-            return new JobOfferDetailStudentResponse(jobOffer);
+
+            int freeSpaces = await GetFreeSpacesAsync(jobOfferId);
+
+            return new JobOfferDetailStudentResponse(jobOffer, freeSpaces);
         }
 
-        public async Task<JobOfferDetailEmployeeResponse> GetJobOfferDetailEmployeeAsync(int id, int userId)
+        public async Task<JobOfferDetailEmployeeResponse> GetJobOfferDetailEmployeeAsync(int jobOfferId, int userId)
         {
             var user = await _context.Users
                 .Include(us => us.Employee)
                 .FirstOrDefaultAsync(us => us.UserId == userId);
 
             var jobOffer = await _context.JobOffers
-                /*.Include(jo => jo.JobApplications)
-                    .ThenInclude(ja => ja.Student)*/
-                .FirstOrDefaultAsync(jo => jo.JobOfferId == id);
+                .FirstOrDefaultAsync(jo => jo.JobOfferId == jobOfferId);
 
             if (jobOffer == null)
             {
                 return null;
             }
 
-            var jobApplications = await _context.JobApplications
-                .Where(ja => (ja.JobOfferId == jobOffer.JobOfferId) && (ja.State == State.Approved))
-                .Include(ja => ja.Student)
-                .ToListAsync();                
-
-
             if (jobOffer.CompanyId != user.Employee.CompanyId)
             {
                 throw new StudentbyException("Nabídka nepatří k dané skupině");
             }
-            
+
+            var jobApplications = await _context.JobApplications
+                .Where(ja => (ja.JobOfferId == jobOffer.JobOfferId) && (ja.State == State.Approved))
+                .Include(ja => ja.Student)
+                .ToListAsync();              
+
             return new JobOfferDetailEmployeeResponse(jobOffer, jobApplications);
         }
 
@@ -142,6 +144,16 @@ namespace TestAPI.Services
             await _context.SaveChangesAsync();
 
             return new JobCreateResponse(jobOffer);
-        }    
+        }
+        
+        public async Task<int> GetFreeSpacesAsync(int jobOfferId)
+        {
+            var jobOffer = await _context.JobOffers
+                .Include(jo => jo.JobApplications)
+                .FirstOrDefaultAsync(jo => jo.JobOfferId == jobOfferId);
+
+            int occupied = jobOffer.JobApplications.Count(ja => ja.State == State.Approved);
+            return jobOffer.Spaces - occupied;
+        }
     }
 }

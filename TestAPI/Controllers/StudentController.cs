@@ -88,9 +88,12 @@ namespace TestAPI.Controllers
         [HttpDelete("job-applications/{id}")]
         public async Task<ActionResult<User>> CancelApplication([FromRoute] int id)
         {
-            await _jobApplicationService.CancelApplicationsAsync(id);
-            return StatusCode(204);
-            // 404 ???
+            bool found = await _jobApplicationService.CancelApplicationsAsync(id);
+            if (found)
+            {
+                return StatusCode(204);
+            }
+            return StatusCode(404);
         }
     }
 }

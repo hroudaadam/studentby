@@ -18,16 +18,6 @@ export default {
 
     },
     actions: {
-        getAllOffers({ commit }) {            
-            apiSevice.get('/employee/job-offers')
-                .then((jsonResponse) => {
-                    console.log(jsonResponse);
-                    commit('setOffers', jsonResponse);
-                })
-                .catch((error) => {
-                    console.log(error.message);
-                });
-        },
         createOffer({ commit, state, getters }) {
             var body = {
                 title: state.newOffer.title,

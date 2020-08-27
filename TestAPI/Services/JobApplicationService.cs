@@ -13,16 +13,18 @@ namespace TestAPI.Services
     {
         Task<JobApplicationCreateResponse> CreateJobApplicationAsync(JobApplicationCreateRequest model, int userId);
         Task<IEnumerable<JobApplicationResponse>> GetStudentApplicationsAsync(int userId);
-        Task CancelApplicationsAsync(int applicationId);
+        Task<bool> CancelApplicationsAsync(int applicationId);
     }
 
     public class JobApplicationService: IJobApplicationService
     {
         private readonly StudentbyTestContext _context;
+        private readonly IJobOfferService _jobOfferService;
 
-        public JobApplicationService(StudentbyTestContext context)
+        public JobApplicationService(StudentbyTestContext context, IJobOfferService jobOfferService)
         {
             _context = context;
+            _jobOfferService = jobOfferService;
         }
 
         public async Task<JobApplicationCreateResponse> CreateJobApplicationAsync(JobApplicationCreateRequest model, int userId)
@@ -36,6 +38,8 @@ namespace TestAPI.Services
 
             Student student = await _context.Students
                 .Include(student => student.User)
+                .Include(st => st.JobApplications)
+                    .ThenInclude(ja => ja.JobOffer)
                 .Where(student => student.User.UserId == userId)
                 .FirstOrDefaultAsync();
 
@@ -51,6 +55,15 @@ namespace TestAPI.Services
             if (applicationExists)
             {
                 throw new StudentbyException("Přihláška již existuje");
+            }
+
+            // kontrola, zda již neexistuje přihláška na práci v časovém intervalu, který se překrývá s tímto
+            foreach (var ja in student.JobApplications)
+            {
+                if (ja.JobOffer.Start <= jobOffer.End && ja.JobOffer.End >= jobOffer.Start)
+                {
+                    throw new StudentbyException("Přihláška se překrývá s termínem jiné přihlášky");
+                }
             }
 
             JobApplication jobApplication = new JobApplication
@@ -86,7 +99,7 @@ namespace TestAPI.Services
             return result;
         }
 
-        public async Task CancelApplicationsAsync(int applicationId)
+        public async Task<bool> CancelApplicationsAsync(int applicationId)
         {
             var jobApplication = await _context.JobApplications
                 .Include(ja => ja.JobOffer)
@@ -94,12 +107,12 @@ namespace TestAPI.Services
 
             if (jobApplication == null)
             {
-                throw new StudentbyException("doplnit...");
+                return false;
             }
 
             if (jobApplication.State != State.Pending)
             {
-                throw new StudentbyException("Přihláška není nezpracovaná");
+                throw new StudentbyException("Přihláška je již zpracovaná");
             }
 
             bool hasJobStarted = jobApplication.JobOffer.Start.Date <=
@@ -107,11 +120,13 @@ namespace TestAPI.Services
 
             if (hasJobStarted)
             {
-                throw new StudentbyException("doplnit...");
+                throw new StudentbyException("Práce již započala");
             }
 
             _context.JobApplications.Remove(jobApplication);
             await _context.SaveChangesAsync();
+
+            return true;
         }
 
     }

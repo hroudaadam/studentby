@@ -35,8 +35,8 @@ const routes = [
     props: true
   },
   {
-    path: '/student/applications',
-    name: 'StudentApplications',
+    path: '/student/job-applications',
+    name: 'StudentJobApplications',
     component: StudentApplications,
   },
   {
