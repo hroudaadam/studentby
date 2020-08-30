@@ -35,7 +35,7 @@ namespace WebAPI.Controllers
         // POST: api/student
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult<StudentRegisterResponse>> CreateStudent([FromBody] StudentRegisterRequest request)
+        public async Task<ActionResult<StudentResponse>> CreateStudent([FromBody] StudentRequest request)
         {
             var response = await _studentService.CreateStudentAsync(request);
             return StatusCode(201, response);
@@ -44,17 +44,17 @@ namespace WebAPI.Controllers
 
         // GET: api/student/job-offers
         [HttpGet("job-offers")]
-        public async Task<ActionResult<IEnumerable<JobOfferCreateResponse>>> GetJobOffers()
+        public async Task<ActionResult<IEnumerable<JobOfferSimpleResponse>>> GetJobOffers()
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
 
-            var response = await _jobOfferService.GetStudentJobOffersAsync(userId);
+            var response = await _jobOfferService.GetJobOffersStudentAsync(userId);
             return StatusCode(200, response);
         }
 
         // GET: api/student/job-offers/:id
         [HttpGet("job-offers/{id}")]
-        public async Task<ActionResult<JobOffer>> GetJobOfferDetail([FromRoute] int id)
+        public async Task<ActionResult<JobOfferDetailResponse>> GetJobOfferDetail([FromRoute] int id)
         {
             var response = await _jobOfferService.GetJobOfferDetailStudentAsync(id);
             if (response == null)
@@ -66,7 +66,7 @@ namespace WebAPI.Controllers
 
         // POST: api/student/job-applications
         [HttpPost("job-applications")]
-        public async Task<ActionResult<JobApplicationCreateResponse>> CreateJobApplication([FromBody] JobApplicationCreateRequest request)
+        public async Task<ActionResult<JobApplicationSimpleResponse>> CreateJobApplication([FromBody] JobApplicationRequest request)
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
 
@@ -76,21 +76,21 @@ namespace WebAPI.Controllers
 
         // GET: api/student/job-applications
         [HttpGet("job-applications")]
-        public async Task<ActionResult<IEnumerable<JobOfferCreateResponse>>> GetJobApplications()
+        public async Task<ActionResult<IEnumerable<JobApplicationSimpleResponse>>> GetJobApplications()
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
 
-            var response = await _jobApplicationService.GetStudentApplicationsAsync(userId);
+            var response = await _jobApplicationService.GetApplicationsStudentAsync(userId);
             return StatusCode(200, response);
         }
 
         // GET: api/student/job-applications/:id
         [HttpGet("job-applications/{id}")]
-        public async Task<ActionResult<JobApplicationDetailStudentResponse>> GetJobApplicationDetail([FromRoute] int id)
+        public async Task<ActionResult<JobApplicationDetailResponse>> GetJobApplicationDetail([FromRoute] int id)
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
 
-            var response = await _jobApplicationService.GetStudentApplicationDetailAsync(id, userId);
+            var response = await _jobApplicationService.GetApplicationDetailStudentAsync(id, userId);
             if (response == null)
             {
                 return StatusCode(404);
@@ -100,7 +100,7 @@ namespace WebAPI.Controllers
 
         // DELETE: api/student/job-applications/:id
         [HttpDelete("job-applications/{id}")]
-        public async Task<ActionResult<User>> CancelApplication([FromRoute] int id)
+        public async Task<ActionResult> CancelApplication([FromRoute] int id)
         {
             bool found = await _jobApplicationService.CancelApplicationsAsync(id);
             if (found)

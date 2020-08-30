@@ -19,7 +19,7 @@ namespace WebAPI.Services
     public interface IUserService
     {
         Task<AdminRegisterResponse> CreateAdminAsync(AdminRegisterRequest model);
-        Task<UserAuthenticateResponse> AuthenticateAsync(UserAuthenticateRequest model);
+        Task<AuthenticateResponse> AuthenticateAsync(AuthenticateRequest model);
         Task<User> CreateUserAsync(string email, string password, string role);
     }
 
@@ -64,23 +64,23 @@ namespace WebAPI.Services
             }
         }
 
-        public async Task<UserAuthenticateResponse> AuthenticateAsync(UserAuthenticateRequest model)
+        public async Task<AuthenticateResponse> AuthenticateAsync(AuthenticateRequest model)
         {
             var user = await _context.Users.SingleOrDefaultAsync(x => x.Email == model.Email);
 
             if (user == null)
             {
-                return null;
+                throw new StudentbyException("Špatný email nebo heslo");
             }
 
             if (!VerifyPassword(model.Password, user.PasswordHash, user.PasswordSalt))
             {
-                return null;
+                throw new StudentbyException("Špatný email nebo heslo");
             }
 
             string token = GenerateJwtToken(user);
 
-            return new UserAuthenticateResponse(user, token);
+            return new AuthenticateResponse(user, token);
         }
 
         private bool VerifyPassword(string password, byte[] dbHash, byte[] dbSalt)

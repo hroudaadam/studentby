@@ -11,7 +11,7 @@ namespace WebAPI.Services
 {
     public interface IStudentService
     {
-        Task<StudentRegisterResponse> CreateStudentAsync(StudentRegisterRequest model);
+        Task<StudentResponse> CreateStudentAsync(StudentRequest model);
     }
 
     public class StudentService : IStudentService
@@ -25,7 +25,7 @@ namespace WebAPI.Services
             _userService = userService;
         }
 
-        public async Task<StudentRegisterResponse> CreateStudentAsync(StudentRegisterRequest model)
+        public async Task<StudentResponse> CreateStudentAsync(StudentRequest model)
         {
             User user = await _userService.CreateUserAsync(model.Email, model.Password, Role.Student);
 
@@ -40,7 +40,7 @@ namespace WebAPI.Services
             _context.Students.Add(student);
             await _context.SaveChangesAsync();
 
-            return new StudentRegisterResponse(student);
+            return new StudentResponse(student);
         }
     }
 }

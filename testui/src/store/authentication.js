@@ -1,4 +1,5 @@
-import router from '../router'
+import router from '../router';
+import store from './index';
 
 export default {
     namespaced: true,
@@ -18,13 +19,13 @@ export default {
             return !!state.accessToken;
         },
         isStudentLogged(state){
-            return (!!state.accessToken && state.userRole === "Student");
+            return (!!state.accessToken && state.userRole === store.state.roles.student);
         },
-        isEmployeeLogged(state){
-            return (!!state.accessToken && state.userRole === "Employee");
+        isCustomerLogged(state){
+            return (!!state.accessToken && state.userRole === store.state.roles.customer);
         },
         isOperatorLogged(state){
-            return (!!state.accessToken && state.userRole === "Admin");
+            return (!!state.accessToken && state.userRole === store.state.roles.operator);
         }
     },
     mutations: {

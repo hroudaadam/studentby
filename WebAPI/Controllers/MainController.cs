@@ -27,19 +27,11 @@ namespace WebAPI.Controllers
 
         // POST: api/login
         [HttpPost("login")]
-        public async Task<ActionResult<UserAuthenticateResponse>> Login(UserAuthenticateRequest request)
+        public async Task<ActionResult<AuthenticateResponse>> Login(AuthenticateRequest request)
         {
             var response = await _userService.AuthenticateAsync(request);
             return StatusCode(200, response);
 
-        }
-
-        // POST: api/admin
-        [HttpPost("admin")]
-        public async Task<ActionResult<AdminRegisterResponse>> CreateAdmin([FromBody] AdminRegisterRequest request)
-        {
-            var response = await _userService.CreateAdminAsync(request);
-            return StatusCode(201, response);
         }
 
         // GET: api/test

@@ -7,7 +7,10 @@ using WebAPI.Entities;
 
 namespace WebAPI.Models
 {
-    public class JobApplicationResponse
+    /// <summary>
+    /// 
+    /// </summary>
+    public class JobApplicationSimpleResponse
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -17,7 +20,7 @@ namespace WebAPI.Models
 
         public string State { get; set; }
 
-        public JobApplicationResponse(JobApplication jobApplication)
+        public JobApplicationSimpleResponse(JobApplication jobApplication)
         {
             Id = jobApplication.JobApplicationId;
             Title = jobApplication.JobOffer.Title;
@@ -27,19 +30,25 @@ namespace WebAPI.Models
         }
     }
 
-    public class JobApplicationCustomerResponse
+    /// <summary>
+    /// 
+    /// </summary>
+    public class ApplicantNameResponse
     {
         public string StudentFirstName { get; set; }
         public string StudentLastName { get; set; }
 
-        public JobApplicationCustomerResponse(JobApplication jobApplication)
+        public ApplicantNameResponse(JobApplication jobApplication)
         {
             StudentFirstName = jobApplication.Student.FirstName;
             StudentLastName = jobApplication.Student.LastName;
         }
     }
 
-    public class JobApplicationDetailStudentResponse
+    /// <summary>
+    /// 
+    /// </summary>
+    public class JobApplicationDetailResponse
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -55,7 +64,7 @@ namespace WebAPI.Models
         public string GroupName { get; set; }
         public string State { get; set; }
 
-        public JobApplicationDetailStudentResponse(JobApplication jobApplication, int freeSpaces)
+        public JobApplicationDetailResponse(JobApplication jobApplication, int freeSpaces)
         {
             Id = jobApplication.JobApplicationId;
             Title = jobApplication.JobOffer.Title;
@@ -70,18 +79,26 @@ namespace WebAPI.Models
         }
     }
 
-    public class JobApplicationCreateRequest
+    /// <summary>
+    /// 
+    /// </summary>
+    public class JobApplicationRequest
     {
         [Required]
         public int JobOfferId { get; set; }
     }
 
-    public class JobApplicationCreateResponse
+    /// <summary>
+    /// 
+    /// </summary>
+    public class JobApplicationResponse
     {
+        public int JobOfferId { get; set; }
         public string State { get; set; }
 
-        public JobApplicationCreateResponse(JobApplication jobApplication)
+        public JobApplicationResponse(JobApplication jobApplication)
         {
+            JobOfferId = jobApplication.JobOfferId;
             State = jobApplication.State;
         }
     }

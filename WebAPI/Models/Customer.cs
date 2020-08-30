@@ -7,7 +7,10 @@ using WebAPI.Entities;
 
 namespace WebAPI.Models
 {
-    public class CustomerRegisterRequest
+    /// <summary>
+    /// 
+    /// </summary>
+    public class CustomerRequest
     {
         [Required]
         public string Email { get; set; }
@@ -25,7 +28,10 @@ namespace WebAPI.Models
         public int GroupId { get; set; }
     }
 
-    public class CustomerRegisterResponse
+    /// <summary>
+    /// 
+    /// </summary>
+    public class CustomerResponse
     {
         public int UserId { get; set; }
         public string Email { get; set; }
@@ -34,8 +40,7 @@ namespace WebAPI.Models
 
         public string GroupTitle { get; set; }
 
-
-        public CustomerRegisterResponse(Customer customer)
+        public CustomerResponse(Customer customer)
         {
             UserId = customer.User.UserId;
             Email = customer.User.Email;

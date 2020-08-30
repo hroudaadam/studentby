@@ -11,9 +11,9 @@ namespace WebAPI.Services
 {
     public interface IJobApplicationService
     {
-        Task<JobApplicationCreateResponse> CreateJobApplicationAsync(JobApplicationCreateRequest model, int userId);
-        Task<IEnumerable<JobApplicationResponse>> GetStudentApplicationsAsync(int userId);
-        Task<JobApplicationDetailStudentResponse> GetStudentApplicationDetailAsync(int jobApplicationId, int userId);
+        Task<JobApplicationResponse> CreateJobApplicationAsync(JobApplicationRequest model, int userId);
+        Task<IEnumerable<JobApplicationSimpleResponse>> GetApplicationsStudentAsync(int userId);
+        Task<JobApplicationDetailResponse> GetApplicationDetailStudentAsync(int jobApplicationId, int userId);
         Task<bool> CancelApplicationsAsync(int applicationId);
     }
 
@@ -28,7 +28,7 @@ namespace WebAPI.Services
             _jobOfferService = jobOfferService;
         }
 
-        public async Task<JobApplicationCreateResponse> CreateJobApplicationAsync(JobApplicationCreateRequest model, int userId)
+        public async Task<JobApplicationResponse> CreateJobApplicationAsync(JobApplicationRequest model, int userId)
         {
             JobOffer jobOffer = await _context.JobOffers.FirstOrDefaultAsync(x => x.JobOfferId == model.JobOfferId);
 
@@ -77,10 +77,10 @@ namespace WebAPI.Services
             _context.JobApplications.Add(jobApplication);
             await _context.SaveChangesAsync();
 
-            return new JobApplicationCreateResponse(jobApplication);
+            return new JobApplicationResponse(jobApplication);
         }
 
-        public async Task<IEnumerable<JobApplicationResponse>> GetStudentApplicationsAsync(int userId)
+        public async Task<IEnumerable<JobApplicationSimpleResponse>> GetApplicationsStudentAsync(int userId)
         {
             var jobApplications = await _context.JobApplications
                 .Include(ap => ap.Student)
@@ -89,17 +89,17 @@ namespace WebAPI.Services
                 .Where(ap => ap.Student.User.UserId == userId)
                 .ToListAsync();
 
-            List<JobApplicationResponse> result = new List<JobApplicationResponse>();
+            List<JobApplicationSimpleResponse> result = new List<JobApplicationSimpleResponse>();
 
             foreach (var jobApplication in jobApplications)
             {
-                result.Add(new JobApplicationResponse(jobApplication));
+                result.Add(new JobApplicationSimpleResponse(jobApplication));
             }
 
             return result;
         }
 
-        public async Task<JobApplicationDetailStudentResponse> GetStudentApplicationDetailAsync(int jobApplicationId, int userId)
+        public async Task<JobApplicationDetailResponse> GetApplicationDetailStudentAsync(int jobApplicationId, int userId)
         {
             var jobApplication = await _context.JobApplications
                 .Include(ja => ja.JobOffer)
@@ -120,7 +120,7 @@ namespace WebAPI.Services
             }
 
             int freeSpaces = await _jobOfferService.GetFreeSpacesAsync(jobApplication.JobOfferId);
-            return new JobApplicationDetailStudentResponse(jobApplication, freeSpaces);
+            return new JobApplicationDetailResponse(jobApplication, freeSpaces);
         }
 
         public async Task<bool> CancelApplicationsAsync(int applicationId)

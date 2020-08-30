@@ -12,12 +12,12 @@ namespace WebAPI.Services
 {
     public interface IJobOfferService
     {
-        Task<JobOfferCreateResponse> CreateJobOfferAsync(JobOfferCreateRequest model, int userId);
-        Task<IEnumerable<JobOfferResponse>> GetStudentJobOffersAsync(int userId);        
-        Task<IEnumerable<JobOfferResponse>> GetCompanyJobOffersAsync(int userId);
+        Task<JobOfferResponse> CreateJobOfferAsync(JobOfferRequest model, int userId);
+        Task<IEnumerable<JobOfferSimpleResponse>> GetJobOffersStudentAsync(int userId);        
+        Task<IEnumerable<JobOfferSimpleResponse>> GetJobOffersCustomerAsync(int userId);
 
-        Task<JobOfferDetailStudentResponse> GetJobOfferDetailStudentAsync(int id);
-        Task<JobOfferDetailCustomerResponse> GetJobOfferDetailEmployeeAsync(int id, int userId);
+        Task<JobOfferDetailResponse> GetJobOfferDetailStudentAsync(int id);
+        Task<JobOfferDetailWithApplicationsResponse> GetJobOfferDetailCustomerAsync(int id, int userId);
 
         Task<int> GetFreeSpacesAsync(int jobOfferId);
     }
@@ -31,7 +31,7 @@ namespace WebAPI.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<JobOfferResponse>> GetStudentJobOffersAsync(int userId)
+        public async Task<IEnumerable<JobOfferSimpleResponse>> GetJobOffersStudentAsync(int userId)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
 
@@ -42,17 +42,17 @@ namespace WebAPI.Services
                     .All(ja => ja.StudentId != user.StudentId))
                 .ToListAsync();
 
-            List<JobOfferResponse> result = new List<JobOfferResponse>();
+            List<JobOfferSimpleResponse> result = new List<JobOfferSimpleResponse>();
 
             foreach (var jobOffer in jobOffers)
             {
-                result.Add(new JobOfferResponse(jobOffer));
+                result.Add(new JobOfferSimpleResponse(jobOffer));
             }
 
             return result;
         }
 
-        public async Task<IEnumerable<JobOfferResponse>> GetCompanyJobOffersAsync(int userId)
+        public async Task<IEnumerable<JobOfferSimpleResponse>> GetJobOffersCustomerAsync(int userId)
         {
             User user = await _context.Users
                 .Include(us => us.Customer)
@@ -64,17 +64,17 @@ namespace WebAPI.Services
                 .Where(jo => jo.GroupId == groupId)
                 .ToListAsync();
 
-            List<JobOfferResponse> result = new List<JobOfferResponse>();
+            List<JobOfferSimpleResponse> result = new List<JobOfferSimpleResponse>();
 
             foreach (var jobOffer in jobOffers)
             {
-                result.Add(new JobOfferResponse(jobOffer));
+                result.Add(new JobOfferSimpleResponse(jobOffer));
             }
 
             return result;
         }
 
-        public async Task<JobOfferDetailStudentResponse> GetJobOfferDetailStudentAsync(int jobOfferId)
+        public async Task<JobOfferDetailResponse> GetJobOfferDetailStudentAsync(int jobOfferId)
         {
             var jobOffer = await _context.JobOffers
                 .Include(jo => jo.Group)
@@ -87,10 +87,10 @@ namespace WebAPI.Services
 
             int freeSpaces = await GetFreeSpacesAsync(jobOfferId);
 
-            return new JobOfferDetailStudentResponse(jobOffer, freeSpaces);
+            return new JobOfferDetailResponse(jobOffer, freeSpaces);
         }
 
-        public async Task<JobOfferDetailCustomerResponse> GetJobOfferDetailEmployeeAsync(int jobOfferId, int userId)
+        public async Task<JobOfferDetailWithApplicationsResponse> GetJobOfferDetailCustomerAsync(int jobOfferId, int userId)
         {
             var user = await _context.Users
                 .Include(us => us.Customer)
@@ -114,10 +114,10 @@ namespace WebAPI.Services
                 .Include(ja => ja.Student)
                 .ToListAsync();              
 
-            return new JobOfferDetailCustomerResponse(jobOffer, jobApplications);
+            return new JobOfferDetailWithApplicationsResponse(jobOffer, jobApplications);
         }
 
-        public async Task<JobOfferCreateResponse> CreateJobOfferAsync(JobOfferCreateRequest model, int userId)
+        public async Task<JobOfferResponse> CreateJobOfferAsync(JobOfferRequest model, int userId)
         {
             User user = await _context.Users
                 .Include(us => us.Customer)
@@ -143,7 +143,7 @@ namespace WebAPI.Services
             _context.JobOffers.Add(jobOffer);
             await _context.SaveChangesAsync();
 
-            return new JobOfferCreateResponse(jobOffer);
+            return new JobOfferResponse(jobOffer);
         }
         
         public async Task<int> GetFreeSpacesAsync(int jobOfferId)

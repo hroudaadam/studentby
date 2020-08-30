@@ -48,19 +48,6 @@ export default {
           this.errorMsg = error.message;
         });
     },
-
-    cancelJobApplication(applicationId) {
-      this.errorMsg = null;
-      apiSevice
-        .deleteMehod("/student/job-applications/" + applicationId.toString())
-        .then((response) => {
-          console.log(response);
-          this.getStudentApplications();
-        })
-        .catch((error) => {
-          this.errorMsg = error.message;
-        });
-    },
   },
   computed: {
     ...mapGetters("authentication", ["isStudentLogged"]),

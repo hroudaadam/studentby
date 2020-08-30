@@ -9,10 +9,10 @@ export default new Vuex.Store({
     baseApiUrl: 'https://192.168.0.103:5001/api',
     roles: {
       student: "Student",
-      emplyoee: "Employee",
+      customer: "Customer",
       operator: "Operator"
     },
-    states: {
+    jobApplicationState: {
       pending: "Pending",
       approved: "Approved",
       denied: "Denied"

@@ -72,7 +72,7 @@ export default {
         end: mixinService.dateToIsoString(this.endDate, this.endTime),
       };
       apiSevice
-        .post("/employee/job-offers", body)
+        .post("/customer/job-offers", body)
         .then((response) => {
           console.log(response);
         })
@@ -82,10 +82,10 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("authentication", ["isEmployeeLogged"]),
+    ...mapGetters("authentication", ["isCustomerLogged"]),
   },
   mounted() {
-    if (!this.isEmployeeLogged) {
+    if (!this.isCustomerLogged) {
       router.push("/login");
     }
   },

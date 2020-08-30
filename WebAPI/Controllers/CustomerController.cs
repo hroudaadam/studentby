@@ -26,21 +26,21 @@ namespace WebAPI.Controllers
 
         // GET: api/customer/job-offers
         [HttpGet("job-offers")]
-        public async Task<ActionResult<IEnumerable<JobOfferResponse>>> GetJobOffers()
+        public async Task<ActionResult<IEnumerable<JobOfferSimpleResponse>>> GetJobOffers()
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
 
-            var response = await _jobOfferService.GetCompanyJobOffersAsync(userId);         
+            var response = await _jobOfferService.GetJobOffersCustomerAsync(userId);         
             return StatusCode(200, response);      
         }
 
         // GET: api/customer/job-offers/:id
         [HttpGet("job-offers/{id}")]
-        public async Task<ActionResult<JobOfferDetailCustomerResponse>> GetJobOfferDetail([FromRoute] int id)
+        public async Task<ActionResult<JobOfferDetailWithApplicationsResponse>> GetJobOfferDetail([FromRoute] int id)
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
 
-            var response = await _jobOfferService.GetJobOfferDetailEmployeeAsync(id, userId);  
+            var response = await _jobOfferService.GetJobOfferDetailCustomerAsync(id, userId);  
             if (response == null)
             {
                 return StatusCode(404);
@@ -50,7 +50,7 @@ namespace WebAPI.Controllers
 
         // POST: api/customer/job-offers
         [HttpPost("job-offers")]        
-        public async Task<ActionResult<JobOfferCreateResponse>> CreateJobOffer([FromBody] JobOfferCreateRequest request)
+        public async Task<ActionResult<JobOfferResponse>> CreateJobOffer([FromBody] JobOfferRequest request)
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
 

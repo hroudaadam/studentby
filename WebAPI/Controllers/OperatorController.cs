@@ -17,19 +17,25 @@ namespace WebAPI.Controllers
     [ApiController]
     public class OperatorController : ControllerBase
     {
-        private readonly ICustomerService Customer;
+        private readonly ICustomerService _customerService;
 
         public OperatorController(ICustomerService customerService)
         {
-            Customer = customerService;
+            _customerService = customerService;
         }
 
-        // POST: api/operator/employee
-        [HttpPost("employee")]
-        [AllowAnonymous] // zatím
-        public async Task<ActionResult<CustomerRegisterResponse>> CreateEmployee([FromBody] CustomerRegisterRequest request)
+        // POST: api/operator/
+        [HttpPost()]
+        public ActionResult<bool> CreateOperator()
         {
-            var response = await Customer.CreateEmployeeAsync(request);
+            return StatusCode(200, true);
+        }
+
+        // POST: api/operator/customer
+        [HttpPost("customer")]
+        public async Task<ActionResult<CustomerResponse>> CreateCustomer([FromBody] CustomerRequest request)
+        {
+            var response = await _customerService.CreateCustomerAsync(request);
             return StatusCode(201, response);
         }
 

@@ -9,7 +9,7 @@
           <b-nav-item v-if="isStudentLogged" :to="{name: 'StudentJobOffers'}">Brigády</b-nav-item>
           <b-nav-item v-if="isStudentLogged" :to="{name: 'StudentJobApplications'}">Přihlášky</b-nav-item>
 
-          <b-nav-item v-if="isEmployeeLogged" :to="{name: 'CustomerJobOffers'}" >Nabídky</b-nav-item>
+          <b-nav-item v-if="isCustomerLogged" :to="{name: 'CustomerJobOffers'}" >Nabídky</b-nav-item>
 
           <b-nav-item v-if="isOperatorLogged" :to="{name: 'Home'}" >Přihlášky</b-nav-item>
 
@@ -39,7 +39,7 @@ export default {
     ...mapGetters("authentication", [
       "isUserLoggedIn",
       "isStudentLogged",
-      "isEmployeeLogged",
+      "isCustomerLogged",
       "isOperatorLogged",
       ])
   },

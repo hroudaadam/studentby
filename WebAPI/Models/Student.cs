@@ -7,7 +7,10 @@ using WebAPI.Entities;
 
 namespace WebAPI.Models
 {
-    public class StudentRegisterRequest
+    /// <summary>
+    /// 
+    /// </summary>
+    public class StudentRequest
     {
         [Required]
         public string Email { get; set; }
@@ -25,7 +28,10 @@ namespace WebAPI.Models
         public DateTime? DateOfBirth { get; set; }
     }
 
-    public class StudentRegisterResponse
+    /// <summary>
+    /// 
+    /// </summary>
+    public class StudentResponse
     {
         public int UserId { get; set; }
         public string Email { get; set; }
@@ -33,7 +39,7 @@ namespace WebAPI.Models
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
 
-        public StudentRegisterResponse(Student student)
+        public StudentResponse(Student student)
         {
             UserId = student.User.UserId;
             Email = student.User.Email;
