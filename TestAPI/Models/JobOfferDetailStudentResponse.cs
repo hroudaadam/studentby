@@ -28,10 +28,10 @@ namespace TestAPI.Models
             Description = job.Description;
             Wage = job.Wage;
             Spaces = job.Spaces;
+            FreeSpaces = freeSpaces;
             Start = job.Start;
             End = job.End;
-            CompanyName = job.Company.Title;
-            FreeSpaces = freeSpaces;
+            CompanyName = job.Company.Title;            
         }
     }
 }

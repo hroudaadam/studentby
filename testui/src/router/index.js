@@ -1,14 +1,19 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '../views/Home';
-import Login from '../views/Login';
-import StudentOffers from '../views/StudentOffers';
-import StudentOfferDetail from '../views/StudentOfferDetail';
-import StudentApplications from '../views/StudentApplications';
-import EmployeeOffers from '../views/EmployeeOffers';
-import EmployeeCreateOffer from '../views/EmployeeCreateOffer';
-import EmployeeOfferDetail from '../views/EmployeeOfferDetail';
-import StudentRegister from '../views/StudentRegister';
+import Home from '../views/Home'; 
+import Login from '../views/Login'; 
+
+import StudentRegister from '../views/student/Register';
+import StudentJobOffers from '../views/student/JobOffers'; 
+import StudentJobOfferDetail from '../views/student/JobOfferDetail'; 
+import StudentJobApplications from '../views/student/JobApplications';
+import StudentJobApplicationDetail from '../views/student/JobApplicationDetail';
+
+import CustomerJobOffers from '../views/customer/JobOffers';
+import CustomerJobOfferCreate from '../views/customer/JobOfferCreate'; 
+import CustomerJobOfferDetail from '../views/customer/JobOfferDetail'; 
+
+
 
 Vue.use(VueRouter);
 
@@ -24,20 +29,26 @@ const routes = [
     component: Login
   },
   {
-    path: '/student/offers',
-    name: 'StudentOffers',
-    component: StudentOffers
+    path: '/student/job-offers',
+    name: 'StudentJobOffers',
+    component: StudentJobOffers
   },
   {
-    path: '/student/offers/:id',
-    name: 'StudentOfferDetail',
-    component: StudentOfferDetail,
+    path: '/student/job-offers/:id',
+    name: 'StudentJobOfferDetail',
+    component: StudentJobOfferDetail,
     props: true
   },
   {
     path: '/student/job-applications',
     name: 'StudentJobApplications',
-    component: StudentApplications,
+    component: StudentJobApplications,
+  },
+  {
+    path: '/student/job-applications/:id',
+    name: 'StudentJobApplicationDetail',
+    component: StudentJobApplicationDetail,
+    props: true
   },
   {
     path: '/student/register',
@@ -45,20 +56,20 @@ const routes = [
     component: StudentRegister,
   },
   {
-    path: '/employee/offers',
-    name: 'EmplyoeeOffers',
-    component: EmployeeOffers,
+    path: '/customer/job-offers',
+    name: 'CustomerJobOffers',
+    component: CustomerJobOffers,
   },
   {
-    path: '/employee/offers/:id',
-    name: 'EmployeeOfferDetail',
-    component: EmployeeOfferDetail,
+    path: '/customer/job-offers/:id',
+    name: 'CustomerJobOfferDetail',
+    component: CustomerJobOfferDetail,
     props: true
   },
   {
-    path: '/employee/offers/create',
-    name: 'EmployeeCreateOffer',
-    component: EmployeeCreateOffer,
+    path: '/customer/job-offers/create',
+    name: 'CustomerJobOfferCreate',
+    component: CustomerJobOfferCreate,
   }
 ]
 

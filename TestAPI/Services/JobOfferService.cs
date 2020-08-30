@@ -12,7 +12,7 @@ namespace TestAPI.Services
 {
     public interface IJobOfferService
     {
-        Task<JobCreateResponse> CreateJobOfferAsync(JobCreateRequest model, int userId);
+        Task<JobOfferCreateResponse> CreateJobOfferAsync(JobOfferCreateRequest model, int userId);
         Task<IEnumerable<JobOfferResponse>> GetStudentJobOffersAsync(int userId);        
         Task<IEnumerable<JobOfferResponse>> GetCompanyJobOffersAsync(int userId);
 
@@ -117,7 +117,7 @@ namespace TestAPI.Services
             return new JobOfferDetailEmployeeResponse(jobOffer, jobApplications);
         }
 
-        public async Task<JobCreateResponse> CreateJobOfferAsync(JobCreateRequest model, int userId)
+        public async Task<JobOfferCreateResponse> CreateJobOfferAsync(JobOfferCreateRequest model, int userId)
         {
             User user = await _context.Users
                 .Include(us => us.Employee)
@@ -143,7 +143,7 @@ namespace TestAPI.Services
             _context.JobOffers.Add(jobOffer);
             await _context.SaveChangesAsync();
 
-            return new JobCreateResponse(jobOffer);
+            return new JobOfferCreateResponse(jobOffer);
         }
         
         public async Task<int> GetFreeSpacesAsync(int jobOfferId)

@@ -41,7 +41,8 @@ namespace TestAPI
                         builder.WithOrigins(
                             "http://localhost:8080",
                             "http://192.168.0.103:8080",
-                            "http://192.168.0.106:8080")
+                            "http://192.168.0.106:8080",
+                            "http://192.168.0.104:8080")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                     });

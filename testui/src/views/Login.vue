@@ -7,8 +7,7 @@
             id="input-1"
             required
             placeholder="Email"
-            :value="loginEmail"
-            @input="setLoginEmail"
+            v-model="email"
           ></b-form-input>
         </b-form-group>
 
@@ -18,31 +17,53 @@
             type="password"
             required
             placeholder="Password"
-            :value="loginPassword"
-            @input="setLoginPassword"
+            v-model="password"
           ></b-form-input>
         </b-form-group>
 
-        <b-alert show variant="danger" v-if="!!loginError">{{loginError}}</b-alert>
+        <b-alert show variant="danger" v-if="!!this.errorMsg">{{this.errorMsg}}</b-alert>
 
-        <b-button type="submit" variant="primary" v-on:click="login">Přihlásit</b-button>
+        <b-button type="submit" variant="primary" v-on:click="this.login">Přihlásit</b-button>
       </b-form>
     </b-container>
   </div>
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions } from "vuex";
+import { mapMutations } from "vuex";
+import apiSevice from '../helpers/apiService';
+import router from "../router";
 
 export default {
   name: "Login",
   components: {},
+  data() {
+    return {
+      email: null,
+      password: null,
+      errorMsg: null
+    }
+  },
   computed: {
-    ...mapState("authentication", ["loginEmail", "loginPassword", "loginError"]),
   },
   methods: {
-    ...mapMutations("authentication", ["setLoginEmail", "setLoginPassword"]),
-    ...mapActions("authentication", ["login"])
+    ...mapMutations("authentication", ["setAccessToken", "setUserRole"]),
+    login() {
+      this.errorMsg = null;
+      var body = {
+          email: this.email,
+          password: this.password
+      }
+      apiSevice.post("/login", body)
+        .then((response) => {
+          this.setAccessToken(response.token);
+          this.setUserRole(response.role);
+          router.push("/");
+        })
+        .catch((error) => {
+          this.errorMsg = error.message;
+        });
+    },
   },
 };
 </script>

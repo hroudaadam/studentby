@@ -6,10 +6,14 @@
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>  
-          <b-nav-item v-if="isStudentLogged" :to="{name: 'StudentOffers'}">Brigády</b-nav-item>
+          <b-nav-item v-if="isStudentLogged" :to="{name: 'StudentJobOffers'}">Brigády</b-nav-item>
           <b-nav-item v-if="isStudentLogged" :to="{name: 'StudentJobApplications'}">Přihlášky</b-nav-item>
 
-          <b-nav-item v-if="isEmployeeLogged" :to="{name: 'EmplyoeeOffers'}" >Nabídky</b-nav-item>
+          <b-nav-item v-if="isEmployeeLogged" :to="{name: 'CustomerJobOffers'}" >Nabídky</b-nav-item>
+
+          <b-nav-item v-if="isOperatorLogged" :to="{name: 'Home'}" >Přihlášky</b-nav-item>
+
+
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">  

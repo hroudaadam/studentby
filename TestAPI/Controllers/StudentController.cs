@@ -44,7 +44,7 @@ namespace TestAPI.Controllers
 
         // GET: api/student/job-offers
         [HttpGet("job-offers")]
-        public async Task<ActionResult<IEnumerable<JobCreateResponse>>> GetJobOffers()
+        public async Task<ActionResult<IEnumerable<JobOfferCreateResponse>>> GetJobOffers()
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
 
@@ -76,11 +76,25 @@ namespace TestAPI.Controllers
 
         // GET: api/student/job-applications
         [HttpGet("job-applications")]
-        public async Task<ActionResult<IEnumerable<JobCreateResponse>>> GetJobApplications()
+        public async Task<ActionResult<IEnumerable<JobOfferCreateResponse>>> GetJobApplications()
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
 
             var response = await _jobApplicationService.GetStudentApplicationsAsync(userId);
+            return StatusCode(200, response);
+        }
+
+        // GET: api/student/job-applications/:id
+        [HttpGet("job-applications/{id}")]
+        public async Task<ActionResult<JobApplicationDetailStudentResponse>> GetJobApplicationDetail([FromRoute] int id)
+        {
+            int userId = int.Parse(HttpContext.User.Identity.Name);
+
+            var response = await _jobApplicationService.GetStudentApplicationDetailAsync(id, userId);
+            if (response == null)
+            {
+                return StatusCode(404);
+            }
             return StatusCode(200, response);
         }
 

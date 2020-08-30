@@ -13,6 +13,7 @@ namespace TestAPI.Services
     {
         Task<JobApplicationCreateResponse> CreateJobApplicationAsync(JobApplicationCreateRequest model, int userId);
         Task<IEnumerable<JobApplicationResponse>> GetStudentApplicationsAsync(int userId);
+        Task<JobApplicationDetailStudentResponse> GetStudentApplicationDetailAsync(int jobApplicationId, int userId);
         Task<bool> CancelApplicationsAsync(int applicationId);
     }
 
@@ -85,7 +86,6 @@ namespace TestAPI.Services
                 .Include(ap => ap.Student)
                     .ThenInclude(st => st.User)
                 .Include(ap => ap.JobOffer)
-                    .ThenInclude(of => of.Company)
                 .Where(ap => ap.Student.User.UserId == userId)
                 .ToListAsync();
 
@@ -97,6 +97,30 @@ namespace TestAPI.Services
             }
 
             return result;
+        }
+
+        public async Task<JobApplicationDetailStudentResponse> GetStudentApplicationDetailAsync(int jobApplicationId, int userId)
+        {
+            var jobApplication = await _context.JobApplications
+                .Include(ja => ja.JobOffer)
+                    .ThenInclude(jo => jo.Company)
+                .FirstOrDefaultAsync(ja => ja.JobApplicationId == jobApplicationId);
+
+            if (jobApplication == null)
+            {
+                return null;
+            }
+
+            var user = await _context.Users
+                .FirstOrDefaultAsync(us => us.UserId == userId);
+
+            if (jobApplication.StudentId != user.StudentId)
+            {
+                throw new StudentbyException("Přihláška napatří studentovi");
+            }
+
+            int freeSpaces = await _jobOfferService.GetFreeSpacesAsync(jobApplication.JobOfferId);
+            return new JobApplicationDetailStudentResponse(jobApplication, freeSpaces);
         }
 
         public async Task<bool> CancelApplicationsAsync(int applicationId)

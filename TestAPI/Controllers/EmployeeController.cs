@@ -51,7 +51,7 @@ namespace TestAPI.Controllers
 
         // POST: api/employee/job-offers
         [HttpPost("job-offers")]        
-        public async Task<ActionResult<JobCreateResponse>> CreateJobOffer([FromBody] JobCreateRequest request)
+        public async Task<ActionResult<JobOfferCreateResponse>> CreateJobOffer([FromBody] JobOfferCreateRequest request)
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
 
