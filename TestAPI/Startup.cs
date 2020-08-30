@@ -71,7 +71,6 @@ namespace TestAPI
                     };
                 });
 
-
             // AppSettings configured
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);

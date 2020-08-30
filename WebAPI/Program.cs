@@ -22,5 +22,9 @@ namespace WebAPI
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+            /*  .ConfigureLogging(config =>
+                {
+                    config.ClearProviders();
+                }); */
     }
 }
