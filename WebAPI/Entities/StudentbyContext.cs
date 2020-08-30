@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Entities
 {
-    public class StudentbyTestContext : DbContext
+    public class StudentbyContext : DbContext
     {
-        public StudentbyTestContext(DbContextOptions<StudentbyTestContext> options)
+        public StudentbyContext(DbContextOptions<StudentbyContext> options)
             : base(options)
         {
         }

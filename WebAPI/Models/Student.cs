@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebAPI.Entities;
 
-namespace TestAPI.Models
+namespace WebAPI.Models
 {
     public class StudentRegisterRequest
     {

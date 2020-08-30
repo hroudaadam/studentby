@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using WebAPI.Entities;
 using WebAPI.Models;
 
-namespace TestAPI.Models
+namespace WebAPI.Models
 {
     public class JobOfferDetailStudentResponse
     {
