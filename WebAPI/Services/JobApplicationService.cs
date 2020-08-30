@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using WebAPI.Entities;
 using WebAPI.Helpers;
@@ -14,7 +15,10 @@ namespace WebAPI.Services
         Task<JobApplicationResponse> CreateJobApplicationAsync(JobApplicationRequest model, int userId);
         Task<IEnumerable<JobApplicationSimpleResponse>> GetApplicationsStudentAsync(int userId);
         Task<JobApplicationDetailResponse> GetApplicationDetailStudentAsync(int jobApplicationId, int userId);
-        Task<bool> CancelApplicationsAsync(int applicationId);
+        Task<bool> CancelJobApplicationAsync(int jobApplicationId);
+        Task<IEnumerable<JobApplicationSimpleResponse>> GetPendingApplicationsAsync();
+        Task<JobApplicationDetailWithStudentResponse> GetApplicationDetailOperatorAsync(int jobApplicationId);
+        Task<JobApplicationResponse> EditJobApplicationStateAsync(int jobApplicationId, JobApplicationStateRequest model);
     }
 
     public class JobApplicationService: IJobApplicationService
@@ -123,11 +127,11 @@ namespace WebAPI.Services
             return new JobApplicationDetailResponse(jobApplication, freeSpaces);
         }
 
-        public async Task<bool> CancelApplicationsAsync(int applicationId)
+        public async Task<bool> CancelJobApplicationAsync(int jobApplicationId)
         {
             var jobApplication = await _context.JobApplications
                 .Include(ja => ja.JobOffer)
-                .FirstOrDefaultAsync(ja => ja.JobApplicationId == applicationId);
+                .FirstOrDefaultAsync(ja => ja.JobApplicationId == jobApplicationId);
 
             if (jobApplication == null)
             {
@@ -153,5 +157,60 @@ namespace WebAPI.Services
             return true;
         }
 
+        public async Task<IEnumerable<JobApplicationSimpleResponse>> GetPendingApplicationsAsync()
+        {
+            var jobApplications = await _context.JobApplications
+                                      .Where(ja => ja.State == JobApplicationState.Pending)   
+                                      .Include(ja => ja.JobOffer)
+                                      .ToListAsync();
+
+            List<JobApplicationSimpleResponse> result = new List<JobApplicationSimpleResponse>();
+            foreach (var jobApplication in jobApplications)
+            {
+                result.Add(new JobApplicationSimpleResponse(jobApplication));
+            }
+            return result;
+        }
+
+        public async Task<JobApplicationDetailWithStudentResponse> GetApplicationDetailOperatorAsync(int jobApplicationId)
+        {
+            var jobApplication = await _context.JobApplications
+                .Include(ja => ja.Student)
+                .Include(ja => ja.JobOffer)
+                    .ThenInclude(jo => jo.Group)
+                .FirstOrDefaultAsync(ja => ja.JobApplicationId == jobApplicationId);
+
+            if (jobApplication == null)
+            {
+                return null;
+            }
+                
+            int freeSpaces = await _jobOfferService.GetFreeSpacesAsync(jobApplication.JobOfferId);
+            return new JobApplicationDetailWithStudentResponse(jobApplication, freeSpaces);
+        }
+
+        public async Task<JobApplicationResponse> EditJobApplicationStateAsync(int jobApplicationId, JobApplicationStateRequest model)
+        {
+            if (jobApplicationId != model.JobApplicationId)
+            {
+                throw new StudentbyException("Něco...");
+            }
+
+            var jobApplication = await _context.JobApplications.FirstAsync(ja => ja.JobApplicationId == jobApplicationId);
+            if (jobApplication == null)
+            {
+                return null;
+            }
+
+            if (jobApplication.State != JobApplicationState.Pending)
+            {
+                throw new StudentbyException("Přihláška je již zpracovaná");
+            }
+
+            jobApplication.State = model.State;         
+            await _context.SaveChangesAsync();
+
+            return new JobApplicationResponse(jobApplication);
+        }
     }
 }

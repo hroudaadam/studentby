@@ -1,5 +1,5 @@
 <template>
-  <div class="JobApplicationDetail">
+  <div class="StudentJobApplicationDetail">
     <PageHeader v-bind:title="'Přihlášky'">
       <b-button variant="primary" :to="{name: 'StudentJobApplications'}">Zpět</b-button>
     </PageHeader>
@@ -29,7 +29,7 @@ import apiService from "../../helpers/apiService";
 import mixinService from "../../helpers/mixinService";
 
 export default {
-  name: "JobApplicationDetail",
+  name: "StudentJobApplicationDetail",
   props: ["id"],
   components: {
     PageHeader,
@@ -57,9 +57,9 @@ export default {
     cancelJobApplication() {
       this.errorMsg = null;
       apiService
-        .deleteMehod("/student/job-applications/" + this.id.toString())
-        .then((response) => {
-          console.log(response);
+        .del("/student/job-applications/" + this.id.toString())
+        .then(() => {
+          router.push({name: 'StudentJobApplications'});
         })
         .catch((error) => {
           this.errorMsg = error.message;

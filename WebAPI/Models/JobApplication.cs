@@ -93,6 +93,7 @@ namespace WebAPI.Models
     /// </summary>
     public class JobApplicationResponse
     {
+        public int JobApplicationId { get; set; }
         public int JobOfferId { get; set; }
         public string State { get; set; }
 
@@ -100,6 +101,59 @@ namespace WebAPI.Models
         {
             JobOfferId = jobApplication.JobOfferId;
             State = jobApplication.State;
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class JobApplicationStateRequest
+    {
+        [Required]
+        public int JobApplicationId { get; set; }
+
+        [Required]
+        public string State { get; set; }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class JobApplicationDetailWithStudentResponse
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+
+        public double Wage { get; set; }
+        public int Spaces { get; set; }
+        public int FreeSpaces { get; set; }
+
+        public DateTime Start { get; set; }
+        public DateTime End { get; set; }
+
+        public string GroupName { get; set; }
+        public string State { get; set; }
+
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public DateTime DateOfBirth { get; set; }
+
+        public JobApplicationDetailWithStudentResponse(JobApplication jobApplication, int freeSpaces)
+        {
+            Id = jobApplication.JobApplicationId;
+            Title = jobApplication.JobOffer.Title;
+            Description = jobApplication.JobOffer.Description;
+            Wage = jobApplication.JobOffer.Wage;
+            Spaces = jobApplication.JobOffer.Spaces;
+            FreeSpaces = freeSpaces;
+            Start = jobApplication.JobOffer.Start;
+            End = jobApplication.JobOffer.End;
+            GroupName = jobApplication.JobOffer.Group.Title;
+            State = jobApplication.State;
+            FirstName = jobApplication.Student.FirstName;
+            LastName = jobApplication.Student.LastName;
+            DateOfBirth = jobApplication.Student.DateOfBirth;
         }
     }
 }

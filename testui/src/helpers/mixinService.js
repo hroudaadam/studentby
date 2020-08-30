@@ -16,8 +16,18 @@ function dateToIsoString(date, time) {
     return isoDate.toISOString();
 }
 
+function dateOfBirthToString(isoDate) {
+    var date = new Date(isoDate);
+    var strDate =
+        date.getDate() + '.' +
+        date.getMonth() + '.' +
+        date.getFullYear() + ' ';
+    return strDate;
+}
+
 
 export default {
     dateToString,
-    dateToIsoString
+    dateToIsoString,
+    dateOfBirthToString
 }

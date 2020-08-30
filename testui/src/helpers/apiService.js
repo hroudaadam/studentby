@@ -1,35 +1,36 @@
 import store from '../store';
 
 async function get(specUrl) {
-    var response = await fetch(store.state.baseApiUrl + specUrl, {
-        method: "GET",
-        mode: "cors",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + store.state.authentication.accessToken
-        }
-    })
-    .catch(() => {
-        throw new Error('Vyskytla se chyba');
-    });
-
-    if (response.status >= 200 && response.status <= 299 ) {
-        return response.json();
-    }
-    else {
-        var errorMsg = await response.text();
-        throw new Error(errorMsg);
-    }
+    return httpRequest('GET', specUrl);
 }
 
-async function deleteMehod(specUrl) {
+async function del(specUrl) {
+    return httpRequest('DELETE', specUrl);
+}
+
+async function post(specUrl, body) {
+    return httpRequest('POST', specUrl, body)
+}
+
+async function put(specUrl, body) {
+    return httpRequest('PUT', specUrl, body);
+}
+
+async function httpRequest(method, specUrl, body=null)
+{
+    var stringBody = null;
+    if (body) {
+        stringBody = JSON.stringify(body, replacer)
+    }
+
     var response = await fetch(store.state.baseApiUrl + specUrl, {
-        method: "DELETE",
+        method: method,
         mode: "cors",
         headers: {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + store.state.authentication.accessToken
-        }
+        },
+        body: stringBody,
     })
     .catch(() => {
         throw new Error('Vyskytla se chyba');
@@ -38,33 +39,8 @@ async function deleteMehod(specUrl) {
     if (response.status == 200 || response.status == 201 ) {
         return response.json();
     }
-
     if (response.status == 204) {
         return response.text();
-    }
-
-    else {
-        var errorMsg = await response.text();
-        throw new Error(errorMsg);
-    }
-}
-
-async function post(specUrl, body) {
-    var response = await fetch(store.state.baseApiUrl + specUrl, {
-        method: "POST",
-        mode: "cors",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + store.state.authentication.accessToken
-        },
-        body: JSON.stringify(body, replacer),
-    })
-    .catch(() => {
-        throw new Error('Vyskytla se chyba');
-    });
-
-    if (response.status >= 200 && response.status <= 299 ) {
-        return response.json();
     }
     else {
         var errorMsg = await response.text();
@@ -82,5 +58,5 @@ function replacer(key, value) {
 }
 
 export default {
-    get, post, deleteMehod
+    get, post, put, del
 }

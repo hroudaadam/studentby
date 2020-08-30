@@ -31,7 +31,6 @@ namespace WebAPI.Controllers
         {
             var response = await _userService.AuthenticateAsync(request);
             return StatusCode(200, response);
-
         }
 
         // GET: api/test

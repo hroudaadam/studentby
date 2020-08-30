@@ -13,7 +13,8 @@ import CustomerJobOffers from '../views/customer/JobOffers';
 import CustomerJobOfferCreate from '../views/customer/JobOfferCreate'; 
 import CustomerJobOfferDetail from '../views/customer/JobOfferDetail'; 
 
-
+import OperatorJobApplications from '../views/operator/JobApplications';
+import OperatorJobApplicationDetail from '../views/operator/JobApplicationDetail';
 
 Vue.use(VueRouter);
 
@@ -70,6 +71,17 @@ const routes = [
     path: '/customer/job-offers/create',
     name: 'CustomerJobOfferCreate',
     component: CustomerJobOfferCreate,
+  },
+  {
+    path: '/operator/job-applications',
+    name: 'OperatorJobApplications',
+    component: OperatorJobApplications,
+  },
+  {
+    path: '/operator/job-applications/:id',
+    name: 'OperatorJobApplicationDetail',
+    component: OperatorJobApplicationDetail,
+    props: true
   }
 ]
 

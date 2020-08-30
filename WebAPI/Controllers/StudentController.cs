@@ -102,7 +102,7 @@ namespace WebAPI.Controllers
         [HttpDelete("job-applications/{id}")]
         public async Task<ActionResult> CancelApplication([FromRoute] int id)
         {
-            bool found = await _jobApplicationService.CancelApplicationsAsync(id);
+            bool found = await _jobApplicationService.CancelJobApplicationAsync(id);
             if (found)
             {
                 return StatusCode(204);

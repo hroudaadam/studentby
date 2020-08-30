@@ -13,7 +13,7 @@
     <b-card-text>
       <b class="mb-2">Základní informace</b>
       <p>
-        Odměna: {{job.wage}} €
+        Odměna: {{job.wage}} Kč/h
         <br />
         Volná místa: {{job.freeSpaces}} z {{job.spaces}}
         <br />

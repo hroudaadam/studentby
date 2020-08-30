@@ -18,14 +18,16 @@ namespace WebAPI.Controllers
     public class OperatorController : ControllerBase
     {
         private readonly ICustomerService _customerService;
+        private readonly IJobApplicationService _jobApplicationService;
 
-        public OperatorController(ICustomerService customerService)
+        public OperatorController(ICustomerService customerService, IJobApplicationService jobApplicationService)
         {
             _customerService = customerService;
+            _jobApplicationService = jobApplicationService;
         }
 
         // POST: api/operator/
-        [HttpPost()]
+        [HttpPost]
         public ActionResult<bool> CreateOperator()
         {
             return StatusCode(200, true);
@@ -39,5 +41,38 @@ namespace WebAPI.Controllers
             return StatusCode(201, response);
         }
 
+        // GET: api/operator/job-applications
+        [HttpGet("job-applications")]
+        public async Task<ActionResult<IEnumerable<JobApplicationSimpleResponse>>> GetJobApplications()
+        {
+            var response = await _jobApplicationService.GetPendingApplicationsAsync();
+            return StatusCode(200, response);       
+        }
+
+        // GET: api/operator/job-applications/:id
+        [HttpGet("job-applications/{id}")]
+        public async Task<ActionResult<JobApplicationDetailWithStudentResponse>> GetJobApplicationDetail([FromRoute] int id)
+        {
+            var response = await _jobApplicationService.GetApplicationDetailOperatorAsync(id);
+            if (response == null)
+            {
+                return StatusCode(404);
+            }
+            return StatusCode(200, response);
+        }
+
+        // PUT: api/operator/job-applications/:id
+        [HttpPut("job-applications/{id}")]
+        public async Task<ActionResult<JobApplicationDetailResponse>> EditJobApplication(
+            [FromRoute] int id, 
+            [FromBody] JobApplicationStateRequest request)
+        {
+            var response = await _jobApplicationService.EditJobApplicationStateAsync(id, request);
+            if (response == null)
+            {
+                return StatusCode(404);
+            }
+            return StatusCode(204);
+        }
     }
 }
