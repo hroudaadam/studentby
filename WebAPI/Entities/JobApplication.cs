@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace WebAPI.Entities
+{
+    [Table("JobApplication")]
+    public class JobApplication
+    {
+        public int JobApplicationId { get; set; }
+        public string State { get; set; }
+
+        public Student Student { get; set; }
+        public int StudentId { get; set; }
+
+        public JobOffer JobOffer { get; set; }
+        public int JobOfferId { get; set; }
+    }
+}
