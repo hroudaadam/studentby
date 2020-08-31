@@ -26,6 +26,12 @@
             <b-form-input id="input-4" required placeholder="Příjmení" v-model="lastName"></b-form-input>
           </b-form-group>
 
+          <b-form-group id="input-group-5">
+            <b-form-datepicker id="input-4" placeholder="Datum narození" v-model="dateOfBirth"></b-form-datepicker>
+          </b-form-group>
+
+          
+
           <b-alert show variant="danger" v-if="!!this.errorMsg">{{this.errorMsg}}</b-alert>
           <b-button
             block
@@ -60,9 +66,16 @@ export default {
   computed: {},
   methods: {
     register() {
+      var body = {
+        email: this.email,
+        password: this.password,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        dateOfBirth: this.dateOfBirth
+      };
       this.errorMsg = null;
       apiService
-        .get("/test")
+        .post("/student", body)
         .then((response) => {
           console.log(response);
         })
