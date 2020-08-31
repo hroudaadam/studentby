@@ -1,66 +1,75 @@
 <template>
   <div class="StudentRegister">
-    <b-container>
-      <b-form @submit.prevent>
-        <b-form-group id="input-group-1" label="Email address:" label-for="input-1">
-          <b-form-input
-            id="input-1"
-            required
-            placeholder="Email"
-            v-model="email"
-          ></b-form-input>
-        </b-form-group>
+    <b-card no-body class="mx-auto text-center" style="width: 380px">
+      <b-card-body>
+        <b-card-title>Registrace</b-card-title>
+        <b-form @submit.prevent>
+          <b-form-group id="input-group-1">
+            <b-form-input id="input-1" required placeholder="Email" v-model="email"></b-form-input>
+          </b-form-group>
 
-        <b-form-group id="input-group-2" label="Password:" label-for="input-2">
-          <b-form-input
-            id="input-2"
-            type="password"
-            required
-            placeholder="Password"
-            v-model="password"
-          ></b-form-input>
-        </b-form-group>
+          <b-form-group id="input-group-2">
+            <b-form-input
+              id="input-2"
+              type="password"
+              required
+              placeholder="Heslo"
+              v-model="password"
+            ></b-form-input>
+          </b-form-group>
 
-        <b-alert show variant="danger" v-if="errorMsg" v-html="errorMsg"></b-alert>
-        <b-alert show variant="success" v-if="response" v-html="response"></b-alert>
+          <b-form-group id="input-group-3">
+            <b-form-input id="input-3" required placeholder="Jméno" v-model="firstName"></b-form-input>
+          </b-form-group>
 
-        <b-button type="submit" variant="primary" v-on:click="register">Registrovat</b-button>
-      </b-form>
-    </b-container>
+          <b-form-group id="input-group-4">
+            <b-form-input id="input-4" required placeholder="Příjmení" v-model="lastName"></b-form-input>
+          </b-form-group>
+
+          <b-alert show variant="danger" v-if="!!this.errorMsg">{{this.errorMsg}}</b-alert>
+          <b-button
+            block
+            type="submit"
+            variant="primary"
+            class="mb-2"
+            v-on:click="register"
+          >Registrovat</b-button>
+        </b-form>
+      </b-card-body>
+    </b-card>
   </div>
 </template>
 
 <script>
 // import { mapState, mapMutations, mapActions } from "vuex";
-import apiService from '../../helpers/apiService';
+import apiService from "../../helpers/apiService";
 
 export default {
   name: "StudentRegister",
-  components: {
-
-  },
+  components: {},
   data() {
-      return {
-          email: null,
-          password: null,
-          errorMsg: null,
-          response: null
-      }
+    return {
+      email: null,
+      password: null,
+      firstName: null,
+      lastName: null,
+      dateOfBirth: null,
+      errorMsg: null,
+    };
   },
-  computed: {
-  },
+  computed: {},
   methods: {
     register() {
-        this.registerError = null;
-        this.registerResponse = null;
-        apiService.get('/test')
+      this.errorMsg = null;
+      apiService
+        .get("/test")
         .then((response) => {
-            this.registerResponse = response;
+          console.log(response);
         })
         .catch((error) => {
-            this.registerError = error.message;
-        })
-    }
+          this.errorMsg = error.message;
+        });
+    },
   },
 };
 </script>

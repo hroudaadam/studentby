@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="Login">
     <b-card no-body class="mx-auto text-center" style="width: 380px">
       <b-card-body>
         <b-card-title>Přihlášení</b-card-title>
@@ -26,7 +26,7 @@
             class="mb-2"
             v-on:click="this.login"
           >Přihlásit</b-button>
-          <b-button block variant class="mb-2" v-on:click="this.login">Vytvořit nový účet</b-button>
+          <b-button block variant class="mb-2" :to="{name: 'StudentRegister'}">Vytvořit nový účet</b-button>
 
           <b-link :to="{name: 'Home'}">Zapomněli jste heslo?</b-link>
         </b-form>
