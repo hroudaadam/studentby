@@ -38,15 +38,12 @@ namespace WebAPI.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
-        public string GroupTitle { get; set; }
-
         public CustomerResponse(Customer customer)
         {
             UserId = customer.User.UserId;
             Email = customer.User.Email;
             FirstName = customer.FirstName;
             LastName = customer.LastName;
-            GroupTitle = customer.Group.Title;
         }
     }
 }

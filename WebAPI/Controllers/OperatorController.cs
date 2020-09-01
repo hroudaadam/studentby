@@ -78,6 +78,18 @@ namespace WebAPI.Controllers
             return StatusCode(200, response);
         }
 
+        // GET: api/operator/groups/:id
+        [HttpGet("groups/{id}")]
+        public async Task<ActionResult<GroupWithCustomersResponse>> GetGroup([FromRoute] int id)
+        {
+            var response = await _groupService.GetAsync(id);
+            if (response == null)
+            {
+                return StatusCode(404);
+            }
+            return StatusCode(200, response);
+        }
+
         // POST: api/operator/groups
         [HttpPost("groups")]
         public async Task<ActionResult<GroupResponse>> CreateGroup([FromBody] GroupRequest request)

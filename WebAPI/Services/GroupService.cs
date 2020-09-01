@@ -12,6 +12,7 @@ namespace WebAPI.Services
     {
         Task<GroupResponse> CreateAsync(GroupRequest model);
         Task<IEnumerable<GroupResponse>> GetAllAsync();
+        Task<GroupWithCustomersResponse> GetAsync(int groupId);
     }
 
     public class GroupService: IGroupService
@@ -34,6 +35,21 @@ namespace WebAPI.Services
             }
 
             return response;
+        }
+
+        public async Task<GroupWithCustomersResponse> GetAsync(int groupId)
+        {
+            var group = await _context.Groups
+                .Include(gr => gr.Customers)
+                    .ThenInclude(cu => cu.User)
+                .FirstOrDefaultAsync(gr => gr.GroupId == groupId);
+
+            if (group == null)
+            {
+                return null;
+            }
+
+            return new GroupWithCustomersResponse(group);
         }
 
         public async Task<GroupResponse> CreateAsync(GroupRequest model)

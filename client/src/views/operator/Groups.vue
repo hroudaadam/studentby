@@ -1,15 +1,19 @@
 <template>
   <div class="OperatorGroups">
     <PageHeader v-bind:title="'Skupiny'">
-      <b-button variant="primary">Vytvořit</b-button>
+      <b-button variant="primary" :to="{name:'OperatorGroupCreate'}">Vytvořit</b-button>
     </PageHeader>
     <div v-if="!!groups && groups.length > 0">
       <b-list-group>
-        <b-list-group-item :to="onClickLink" class="flex-column align-items-start mb-2">
+        <b-list-group-item
+          v-bind:key="group.groupId"
+          v-for="group in groups"
+          :to="{name: 'OperatorGroupDetail', params: {id: group.groupId}}"
+          class="flex-column align-items-start"
+        >
           <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">{{group.title}}</h5>
+            <h5>{{group.title}}</h5>
           </div>
-          <p class="mb-1">Text</p>
         </b-list-group-item>
       </b-list-group>
     </div>
