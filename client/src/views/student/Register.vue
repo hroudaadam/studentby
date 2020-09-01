@@ -48,7 +48,8 @@
 
 <script>
 // import { mapState, mapMutations, mapActions } from "vuex";
-import apiService from "../../helpers/apiService";
+import apiService from "@/helpers/apiService";
+import router from '@/router/index';
 
 export default {
   name: "StudentRegister",
@@ -76,8 +77,8 @@ export default {
       this.errorMsg = null;
       apiService
         .post("/student", body)
-        .then((response) => {
-          console.log(response);
+        .then(() => {
+          router.push({name: 'Login'});
         })
         .catch((error) => {
           this.errorMsg = error.message;

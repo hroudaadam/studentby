@@ -2,14 +2,14 @@
   <div class="StudentJobApplications">
     <PageHeader v-bind:title="'Přihlášky'"></PageHeader>
     <div v-if="!!jobApplications && jobApplications.length > 0">
-      <div class="mt-2">
-        <b-list-group v-bind:key="jobApplication.id" v-for="jobApplication in jobApplications">
+        <b-list-group>
           <JobListItem
+          v-bind:key="jobApplication.id" 
+          v-for="jobApplication in jobApplications"
             v-bind:job="jobApplication"
             v-bind:onClickLink="{name: 'StudentJobApplicationDetail', params: {id: jobApplication.id}}"
           ></JobListItem>
         </b-list-group>
-      </div>
     </div>
     <div v-else>Nemáte žádné přihlášky</div>
     <b-alert show variant="danger" v-if="errorMsg" v-html="errorMsg"></b-alert>
@@ -36,7 +36,7 @@ export default {
     };
   },
   methods: {
-    getStudentApplications() {
+    getApplications() {
       this.errorMsg = null;
       this.jobApplications = null;
       apiSevice
@@ -56,7 +56,7 @@ export default {
     if (!this.isStudentLogged) {
       router.push("/login");
     } else {
-      this.getStudentApplications();
+      this.getApplications();
     }
   },
 };

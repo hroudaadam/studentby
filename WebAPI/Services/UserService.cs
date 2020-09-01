@@ -18,7 +18,7 @@ namespace WebAPI.Services
 {
     public interface IUserService
     {
-        Task<AdminRegisterResponse> CreateAdminAsync(AdminRegisterRequest model);
+        Task<bool> EnsureOperatorAsync();
         Task<AuthenticateResponse> AuthenticateAsync(AuthenticateRequest model);
         Task<User> CreateUserAsync(string email, string password, string role);
     }
@@ -119,20 +119,17 @@ namespace WebAPI.Services
 
         /* ------------------------------------------------------------ */
 
-        public async Task<AdminRegisterResponse> CreateAdminAsync(AdminRegisterRequest model)
+        public async Task<bool> EnsureOperatorAsync()
         {
-            if (await _context.Users.AnyAsync(x => x.Role == Role.Operator))
+            if (!await _context.Users.AnyAsync(us => us.Role == Role.Operator))
             {
-                throw new StudentbyException("Admin already exists");
+                User user = await CreateUserAsync("operator", "test", Role.Operator);
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+                return true;
             }
-            
-            User user = await CreateUserAsync(model.Email, model.Password, Role.Operator);
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            return new AdminRegisterResponse(user);
+            return false;            
         }      
-
         
     }
 }

@@ -101,6 +101,7 @@ namespace WebAPI
             services.AddScoped<IJobApplicationService, JobApplicationService>();
             services.AddScoped<IStudentService, StudentService>();
             services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<IGroupService, GroupService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -12,6 +12,7 @@
           <b-nav-item v-if="isCustomerLogged" :to="{name: 'CustomerJobOffers'}" >Nabídky</b-nav-item>
 
           <b-nav-item v-if="isOperatorLogged" :to="{name: 'OperatorJobApplications'}" >Přihlášky</b-nav-item>
+          <b-nav-item v-if="isOperatorLogged" :to="{name: 'OperatorGroups'}" >Skupiny</b-nav-item>
 
 
         </b-navbar-nav>

@@ -19,18 +19,13 @@ namespace WebAPI.Controllers
     {
         private readonly ICustomerService _customerService;
         private readonly IJobApplicationService _jobApplicationService;
+        private readonly IGroupService _groupService;
 
-        public OperatorController(ICustomerService customerService, IJobApplicationService jobApplicationService)
+        public OperatorController(ICustomerService customerService, IJobApplicationService jobApplicationService, IGroupService groupService)
         {
             _customerService = customerService;
             _jobApplicationService = jobApplicationService;
-        }
-
-        // POST: api/operator/
-        [HttpPost]
-        public ActionResult<bool> CreateOperator()
-        {
-            return StatusCode(200, true);
+            _groupService = groupService;
         }
 
         // POST: api/operator/customer
@@ -73,6 +68,22 @@ namespace WebAPI.Controllers
                 return StatusCode(404);
             }
             return StatusCode(204);
+        }
+
+        // GET: api/operator/groups
+        [HttpGet("groups")]
+        public async Task<ActionResult<IEnumerable<GroupResponse>>> GetGroups()
+        {
+            var response = await _groupService.GetAllAsync();
+            return StatusCode(200, response);
+        }
+
+        // POST: api/operator/groups
+        [HttpPost("groups")]
+        public async Task<ActionResult<GroupResponse>> CreateGroup([FromBody] GroupRequest request)
+        {
+            var response = await _groupService.CreateAsync(request);
+            return StatusCode(201, response);
         }
     }
 }

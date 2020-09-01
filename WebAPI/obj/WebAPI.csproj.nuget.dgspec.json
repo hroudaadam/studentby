@@ -10,11 +10,11 @@
         "projectUniqueName": "D:\\Programování\\Studentby\\WebAPI\\WebAPI.csproj",
         "projectName": "WebAPI",
         "projectPath": "D:\\Programování\\Studentby\\WebAPI\\WebAPI.csproj",
-        "packagesPath": "C:\\Users\\hroud\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\Adam\\.nuget\\packages\\",
         "outputPath": "D:\\Programování\\Studentby\\WebAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\hroud\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Adam\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -87,7 +87,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.400\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
         }
       }
     }

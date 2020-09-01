@@ -33,9 +33,20 @@ namespace WebAPI.Controllers
             return StatusCode(200, response);
         }
 
+        // GET: api/admin
+        [HttpGet("admin")]
+        public async Task<ActionResult> Admin()
+        {
+            if (await _userService.EnsureOperatorAsync())
+            {
+                return StatusCode(201);
+            }
+            return StatusCode(204);
+        }
+
         // GET: api/test
         [HttpGet("test")]
-        public ActionResult<int> Test()
+        public ActionResult Test()
         {
             int i = new Random().Next(2);
             if (i == 0)

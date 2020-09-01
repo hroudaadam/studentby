@@ -15,6 +15,7 @@ import CustomerJobOfferDetail from '../views/customer/JobOfferDetail';
 
 import OperatorJobApplications from '../views/operator/JobApplications';
 import OperatorJobApplicationDetail from '../views/operator/JobApplicationDetail';
+import OperatorGroups from '../views/operator/Groups';
 
 Vue.use(VueRouter);
 
@@ -82,6 +83,11 @@ const routes = [
     name: 'OperatorJobApplicationDetail',
     component: OperatorJobApplicationDetail,
     props: true
+  },
+  {
+    path: '/operator/groups',
+    name: 'OperatorGroups',
+    component: OperatorGroups,
   }
 ]
 
