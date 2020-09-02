@@ -21,6 +21,9 @@
             </b-list-group>
           </div>
         </b-card-body>
+        <b-card-body>
+          <b-button variant="primary" :to="{name: 'OperatorCustomerCreate', params:{groupId: id}}">Nový uživatel</b-button>
+        </b-card-body>
       </b-card>
     </div>
   </div>

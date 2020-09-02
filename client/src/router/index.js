@@ -18,6 +18,7 @@ import OperatorJobApplicationDetail from '../views/operator/JobApplicationDetail
 import OperatorGroups from '../views/operator/Groups';
 import OperatorGroupCreate from '../views/operator/GroupCreate';
 import OperatorGroupDetail from '../views/operator/GroupDetail';
+import OperatorCustomerCreate from '../views/operator/CustomerCreate';
 
 Vue.use(VueRouter);
 
@@ -101,6 +102,12 @@ const routes = [
     path: '/operator/groups/create',
     name: 'OperatorGroupCreate',
     component: OperatorGroupCreate,
+  },
+  {
+    path: '/operator/groups/:groupId/customers/create',
+    name: 'OperatorCustomerCreate',
+    component: OperatorCustomerCreate,
+    props: true
   },
 ]
 
