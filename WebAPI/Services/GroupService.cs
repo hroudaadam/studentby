@@ -56,7 +56,7 @@ namespace WebAPI.Services
         {
             var group = new Group
             {
-                Title = model.Title
+                Name = model.Name
             };
             _context.Groups.Add(group);
             await _context.SaveChangesAsync();

@@ -104,7 +104,7 @@ const routes = [
     component: OperatorGroupCreate,
   },
   {
-    path: '/operator/groups/:groupId/customers/create',
+    path: '/operator/customers/create',
     name: 'OperatorCustomerCreate',
     component: OperatorCustomerCreate,
     props: true

@@ -17,7 +17,7 @@ namespace WebAPI.Services
         Task<IEnumerable<JobOfferSimpleResponse>> GetJobOffersCustomerAsync(int userId);
 
         Task<JobOfferDetailResponse> GetJobOfferDetailStudentAsync(int id);
-        Task<JobOfferDetailWithApplicationsResponse> GetJobOfferDetailCustomerAsync(int id, int userId);
+        Task<JobOfferDetailWithStudentsResponse> GetJobOfferDetailCustomerAsync(int id, int userId);
 
         Task<int> GetFreeSpacesAsync(int jobOfferId);
     }
@@ -90,7 +90,7 @@ namespace WebAPI.Services
             return new JobOfferDetailResponse(jobOffer, freeSpaces);
         }
 
-        public async Task<JobOfferDetailWithApplicationsResponse> GetJobOfferDetailCustomerAsync(int jobOfferId, int userId)
+        public async Task<JobOfferDetailWithStudentsResponse> GetJobOfferDetailCustomerAsync(int jobOfferId, int userId)
         {
             var user = await _context.Users
                 .Include(us => us.Customer)
@@ -114,7 +114,7 @@ namespace WebAPI.Services
                 .Include(ja => ja.Student)
                 .ToListAsync();              
 
-            return new JobOfferDetailWithApplicationsResponse(jobOffer, jobApplications);
+            return new JobOfferDetailWithStudentsResponse(jobOffer, jobApplications);
         }
 
         public async Task<JobOfferResponse> CreateJobOfferAsync(JobOfferRequest model, int userId)

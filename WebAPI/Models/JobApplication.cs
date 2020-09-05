@@ -12,7 +12,7 @@ namespace WebAPI.Models
     /// </summary>
     public class JobApplicationSimpleResponse
     {
-        public int Id { get; set; }
+        public int JobApplicationId { get; set; }
         public string Title { get; set; }
 
         public DateTime Start { get; set; }
@@ -22,7 +22,7 @@ namespace WebAPI.Models
 
         public JobApplicationSimpleResponse(JobApplication jobApplication)
         {
-            Id = jobApplication.JobApplicationId;
+            JobApplicationId = jobApplication.JobApplicationId;
             Title = jobApplication.JobOffer.Title;
             Start = jobApplication.JobOffer.Start;
             End = jobApplication.JobOffer.End;
@@ -33,24 +33,9 @@ namespace WebAPI.Models
     /// <summary>
     /// 
     /// </summary>
-    public class ApplicantNameResponse
-    {
-        public string StudentFirstName { get; set; }
-        public string StudentLastName { get; set; }
-
-        public ApplicantNameResponse(JobApplication jobApplication)
-        {
-            StudentFirstName = jobApplication.Student.FirstName;
-            StudentLastName = jobApplication.Student.LastName;
-        }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
     public class JobApplicationDetailResponse
     {
-        public int Id { get; set; }
+        public int JobApplicationId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
 
@@ -66,7 +51,7 @@ namespace WebAPI.Models
 
         public JobApplicationDetailResponse(JobApplication jobApplication, int freeSpaces)
         {
-            Id = jobApplication.JobApplicationId;
+            JobApplicationId = jobApplication.JobApplicationId;
             Title = jobApplication.JobOffer.Title;
             Description = jobApplication.JobOffer.Description;
             Wage = jobApplication.JobOffer.Wage;
@@ -74,7 +59,7 @@ namespace WebAPI.Models
             FreeSpaces = freeSpaces;
             Start = jobApplication.JobOffer.Start;
             End = jobApplication.JobOffer.End;
-            GroupName = jobApplication.JobOffer.Group.Title;
+            GroupName = jobApplication.JobOffer.Group.Name;
             State = jobApplication.State;
         }
     }
@@ -93,13 +78,10 @@ namespace WebAPI.Models
     /// </summary>
     public class JobApplicationResponse
     {
-        public int JobApplicationId { get; set; }
-        public int JobOfferId { get; set; }
         public string State { get; set; }
 
         public JobApplicationResponse(JobApplication jobApplication)
         {
-            JobOfferId = jobApplication.JobOfferId;
             State = jobApplication.State;
         }
     }
@@ -121,7 +103,7 @@ namespace WebAPI.Models
     /// </summary>
     public class JobApplicationDetailWithStudentResponse
     {
-        public int Id { get; set; }
+        public int JobApplicationId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
 
@@ -141,7 +123,7 @@ namespace WebAPI.Models
 
         public JobApplicationDetailWithStudentResponse(JobApplication jobApplication, int freeSpaces)
         {
-            Id = jobApplication.JobApplicationId;
+            JobApplicationId = jobApplication.JobApplicationId;
             Title = jobApplication.JobOffer.Title;
             Description = jobApplication.JobOffer.Description;
             Wage = jobApplication.JobOffer.Wage;
@@ -149,7 +131,7 @@ namespace WebAPI.Models
             FreeSpaces = freeSpaces;
             Start = jobApplication.JobOffer.Start;
             End = jobApplication.JobOffer.End;
-            GroupName = jobApplication.JobOffer.Group.Title;
+            GroupName = jobApplication.JobOffer.Group.Name;
             State = jobApplication.State;
             FirstName = jobApplication.Student.FirstName;
             LastName = jobApplication.Student.LastName;

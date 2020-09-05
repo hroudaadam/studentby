@@ -13,7 +13,7 @@ namespace WebAPI.Models
     /// </summary>
     public class JobOfferDetailResponse
     {
-        public int Id { get; set; }
+        public int JobOfferId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
 
@@ -28,7 +28,7 @@ namespace WebAPI.Models
 
         public JobOfferDetailResponse(JobOffer job, int freeSpaces)
         {
-            Id = job.JobOfferId;
+            JobOfferId = job.JobOfferId;
             Title = job.Title;
             Description = job.Description;
             Wage = job.Wage;
@@ -36,16 +36,16 @@ namespace WebAPI.Models
             FreeSpaces = freeSpaces;
             Start = job.Start;
             End = job.End;
-            GroupName = job.Group.Title;            
+            GroupName = job.Group.Name;            
         }
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public class JobOfferDetailWithApplicationsResponse
+    public class JobOfferDetailWithStudentsResponse
     {
-        public int Id { get; set; }
+        public int JobOfferId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
 
@@ -55,27 +55,27 @@ namespace WebAPI.Models
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
 
-        public ICollection<ApplicantNameResponse> ApprovedJobApplications { get; set; }
+        public ICollection<StudentSimpleResponse> Students { get; set; }
 
-        public JobOfferDetailWithApplicationsResponse(JobOffer job, ICollection<JobApplication> jobApplications)
+        public JobOfferDetailWithStudentsResponse(JobOffer job, ICollection<JobApplication> jobApplications)
         {
-            Id = job.JobOfferId;
+            JobOfferId = job.JobOfferId;
             Title = job.Title;
             Description = job.Description;
             Wage = job.Wage;
             Spaces = job.Spaces;
             Start = job.Start;
             End = job.End;
-            ApprovedJobApplications = MapJobApplications(jobApplications);
+            Students = MapJobApplications(jobApplications);
         }
 
-        private List<ApplicantNameResponse> MapJobApplications(ICollection<JobApplication> jobApplications)
+        private List<StudentSimpleResponse> MapJobApplications(ICollection<JobApplication> jobApplications)
         {
-            var output = new List<ApplicantNameResponse>();
+            var output = new List<StudentSimpleResponse>();
 
             foreach (var jobApplication in jobApplications)
             {
-                output.Add(new ApplicantNameResponse(jobApplication));
+                output.Add(new StudentSimpleResponse(jobApplication.Student));
             }
 
             return output;
@@ -87,7 +87,7 @@ namespace WebAPI.Models
     /// </summary>
     public class JobOfferSimpleResponse
     {
-        public int Id { get; set; }
+        public int JobOfferId { get; set; }
         public string Title { get; set; }
 
         public double Wage { get; set; }
@@ -99,7 +99,7 @@ namespace WebAPI.Models
 
         public JobOfferSimpleResponse(JobOffer job)
         {
-            Id = job.JobOfferId;
+            JobOfferId = job.JobOfferId;
             Title = job.Title;
             Wage = job.Wage;
             Spaces = job.Spaces;
@@ -114,7 +114,6 @@ namespace WebAPI.Models
     public class JobOfferRequest
     {
         [Required]
-        [MinLength(6, ErrorMessage = "Min delka je 6")]
         public string Title { get; set; }
         [Required]
         public string Description { get; set; }

@@ -6,10 +6,7 @@
     <div v-if="!!group">
       <b-card no-body>
         <b-card-body>
-          Text
-        </b-card-body>
-        <b-card-body>
-          <b>Uživatelé</b>
+          <b-card-title>{{group.title}}</b-card-title>
           <div class="mt-2">
             <b-list-group
               v-bind:key="customer.id"

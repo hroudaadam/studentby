@@ -29,9 +29,10 @@ namespace WebAPI
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+
         public void ConfigureServices(IServiceCollection services)
         {
+            // CORS
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(
@@ -40,37 +41,42 @@ namespace WebAPI
                         builder.WithOrigins(
                             "http://localhost:8080",
                             "http://192.168.0.103:8080",
-                            "http://192.168.0.106:8080",
                             "http://192.168.0.104:8080")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                     });
             });
 
+
+            // DataBase
             services.AddDbContext<StudentbyContext>(options =>
             {
                 string connectionString = Configuration.GetConnectionString("DefaultConnection");
                 options.UseSqlServer(connectionString);
             });
 
+            // controllers
             services.AddControllers()
                 .AddNewtonsoftJson(options =>
                 {
+                    // serialization to UTC date format
                     options.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
                 })
                 .ConfigureApiBehaviorOptions(options =>
                 {
+                    // DTO validation errors
                     options.InvalidModelStateResponseFactory = cont =>
                     {
                         var errors = string.Join(", ", cont.ModelState.Values.Where(v => v.Errors.Count > 0)
                           .SelectMany(v => v.Errors)
                           .Select(v => v.ErrorMessage));
 
+                        // global error handler
                         throw new StudentbyException(errors);
                     };
                 });
 
-            // AppSettings configured
+            // AppSettings
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
 
@@ -96,6 +102,7 @@ namespace WebAPI
                     };
                 });
 
+            // services
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IJobOfferService, JobOfferService>();
             services.AddScoped<IJobApplicationService, JobApplicationService>();
@@ -104,7 +111,7 @@ namespace WebAPI
             services.AddScoped<IGroupService, GroupService>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

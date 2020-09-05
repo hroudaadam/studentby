@@ -10,7 +10,7 @@ namespace WebAPI.Entities
     public class Group
     {
         public int GroupId { get; set; }
-        public string Title { get; set; }
+        public string Name { get; set; }
 
         public ICollection<Customer> Customers { get; set; }
         public ICollection<JobOffer> JobOffers { get; set; }

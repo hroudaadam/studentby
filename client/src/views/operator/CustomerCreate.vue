@@ -30,7 +30,9 @@ export default {
       errorMsg: null
     };
   },
-  props: ['groupId'],
+  props: {
+    groupId: Number
+  },
   methods: {
     createCustomer() {
       this.errorMsg = null;

@@ -33,7 +33,6 @@ namespace WebAPI.Models
     /// </summary>
     public class StudentResponse
     {
-        public int UserId { get; set; }
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -41,11 +40,27 @@ namespace WebAPI.Models
 
         public StudentResponse(Student student)
         {
-            UserId = student.User.UserId;
             Email = student.User.Email;
             FirstName = student.FirstName;
             LastName = student.LastName;
             DateOfBirth = student.DateOfBirth;
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class StudentSimpleResponse
+    {
+        public int StudentId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+
+        public StudentSimpleResponse(Student student)
+        {
+            StudentId = student.StudentId;
+            FirstName = student.FirstName;
+            LastName = student.LastName;
         }
     }
 }

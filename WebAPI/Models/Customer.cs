@@ -33,15 +33,27 @@ namespace WebAPI.Models
     /// </summary>
     public class CustomerResponse
     {
-        public int UserId { get; set; }
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
         public CustomerResponse(Customer customer)
         {
-            UserId = customer.User.UserId;
             Email = customer.User.Email;
+            FirstName = customer.FirstName;
+            LastName = customer.LastName;
+        }
+    }
+
+    public class CustomerSimpleResponse
+    {
+        public int CustomerId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+
+        public CustomerSimpleResponse(Customer customer)
+        {
+            CustomerId = customer.CustomerId;
             FirstName = customer.FirstName;
             LastName = customer.LastName;
         }

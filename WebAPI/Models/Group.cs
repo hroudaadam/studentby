@@ -10,41 +10,41 @@ namespace WebAPI.Models
     public class GroupRequest
     {
         [Required]
-        public string Title { get; set; }
+        public string Name { get; set; }
     }
 
     public class GroupResponse
     {
         public int GroupId { get; set; }
-        public string Title { get; set; }
+        public string Name { get; set; }
 
         public GroupResponse(Group group)
         {
             GroupId = group.GroupId;
-            Title = group.Title;
+            Name = group.Name;
         }
     }
 
     public class GroupWithCustomersResponse
     {
         public int GroupId { get; set; }
-        public string Title { get; set; }
-        ICollection<CustomerResponse> Customers { get; set; }
+        public string Name { get; set; }
+        public ICollection<CustomerSimpleResponse> Customers { get; set; }
 
         public GroupWithCustomersResponse(Group group)
         {
             GroupId = group.GroupId;
-            Title = group.Title;
+            Name = group.Name;
             Customers = MapCustomers(group.Customers);
         }
 
-        private List<CustomerResponse> MapCustomers(ICollection<Customer> customers)
+        private List<CustomerSimpleResponse> MapCustomers(ICollection<Customer> customers)
         {
-            var output = new List<CustomerResponse>();
+            var output = new List<CustomerSimpleResponse>();
 
             foreach (var customer in customers)
             {
-                output.Add(new CustomerResponse(customer));
+                output.Add(new CustomerSimpleResponse(customer));
             }
             return output;
         }

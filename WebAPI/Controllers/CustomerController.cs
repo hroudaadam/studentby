@@ -36,7 +36,7 @@ namespace WebAPI.Controllers
 
         // GET: api/customer/job-offers/:id
         [HttpGet("job-offers/{id}")]
-        public async Task<ActionResult<JobOfferDetailWithApplicationsResponse>> GetJobOfferDetail([FromRoute] int id)
+        public async Task<ActionResult<JobOfferDetailWithStudentsResponse>> GetJobOfferDetail([FromRoute] int id)
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
 
