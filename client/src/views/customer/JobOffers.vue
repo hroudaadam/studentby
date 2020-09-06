@@ -4,8 +4,8 @@
       <b-button variant="primary" :to="{name: 'CustomerJobOfferCreate'}">Nový</b-button>
     </PageHeader>
     <div class="mt-2">
-      <b-list-group v-bind:key="jobOffer.id" v-for="jobOffer in jobOffers">
-        <JobListItem v-bind:job="jobOffer" v-bind:onClickLink="{ name: 'CustomerJobOfferDetail', params: {id: jobOffer.id}}"></JobListItem>
+      <b-list-group v-bind:key="jobOffer.jobOfferId" v-for="jobOffer in jobOffers">
+        <JobListItem v-bind:job="jobOffer" v-bind:onClickLink="{ name: 'CustomerJobOfferDetail', params: {id: jobOffer.jobOfferId}}"></JobListItem>
       </b-list-group>
     </div>
   </div>

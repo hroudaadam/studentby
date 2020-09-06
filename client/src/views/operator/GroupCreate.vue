@@ -4,7 +4,7 @@
     <b-card>
       <b-form @submit.prevent>
         <b-form-group id="input-group-1" label="Název:" label-for="input-1">
-          <b-form-input id="input-1" v-model="title" type="text" placeholder="Název"></b-form-input>
+          <b-form-input id="input-1" v-model="name" type="text" placeholder="Název"></b-form-input>
         </b-form-group>
         <b-alert show variant="danger" v-if="!!this.errorMsg">{{this.errorMsg}}</b-alert>
         <b-button type="submit" v-on:click="createGroup" variant="primary">Vytvořit</b-button>
@@ -27,14 +27,14 @@ export default {
   data() {
     return {
       errorMsg: null,
-      title: null
+      name: null
     };
   },
   methods: {
     createGroup() {
       this.errorMsg = null;
       var body = {
-        title: this.title,
+        name: this.name,
       };
       apiSevice
         .post("/operator/groups", body)

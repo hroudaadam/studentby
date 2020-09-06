@@ -40,7 +40,7 @@ import mixinService from "../../helpers/mixinService";
 
 export default {
   name: "OperatorJobApplicationDetail",
-  props: ["id"],
+  props: ["jobApplicationId"],
   components: {
     PageHeader,
     JobInfo,
@@ -56,7 +56,7 @@ export default {
       this.jobApplication = null;
       this.errorMsg = null;
       apiService
-        .get("/operator/job-applications/" + this.id.toString())
+        .get("/operator/job-applications/" + this.jobApplicationId.toString())
         .then((response) => {
           this.jobApplication = response;
         })
@@ -68,11 +68,11 @@ export default {
       this.errorMsg = null;
       var state = approve ? this.jobApplicationState.approved : this.jobApplicationState.denied;
       var body = {
-        jobApplicationId: this.id,
+        jobApplicationId: this.jobApplicationId,
         state: state
       };
       apiService
-        .put("/operator/job-applications/" + this.id.toString(), body)
+        .put("/operator/job-applications/" + this.jobApplicationId.toString(), body)
         .then(() => {
           router.push({name: 'OperatorJobApplications'});
         })

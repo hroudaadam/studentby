@@ -39,7 +39,7 @@ const routes = [
     component: StudentJobOffers
   },
   {
-    path: '/student/job-offers/:id',
+    path: '/student/job-offers/:jobOfferId',
     name: 'StudentJobOfferDetail',
     component: StudentJobOfferDetail,
     props: true
@@ -50,7 +50,7 @@ const routes = [
     component: StudentJobApplications,
   },
   {
-    path: '/student/job-applications/:id',
+    path: '/student/job-applications/:jobApplicationId',
     name: 'StudentJobApplicationDetail',
     component: StudentJobApplicationDetail,
     props: true
@@ -82,7 +82,7 @@ const routes = [
     component: OperatorJobApplications,
   },
   {
-    path: '/operator/job-applications/:id',
+    path: '/operator/job-applications/:jobApplicationId',
     name: 'OperatorJobApplicationDetail',
     component: OperatorJobApplicationDetail,
     props: true

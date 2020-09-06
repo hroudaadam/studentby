@@ -6,14 +6,15 @@
     <div v-if="!!group">
       <b-card no-body>
         <b-card-body>
-          <b-card-title>{{group.title}}</b-card-title>
+          <b-card-title>{{group.name
+            }}</b-card-title>
           <div class="mt-2">
             <b-list-group
               v-bind:key="customer.id"
               v-for="customer in group.customers"
             >
               <b-list-group-item class="d-flex justify-content-between align-items-center">
-                {{customer.firstName}}
+                {{customer.firstName}} {{customer.lastName}}
               </b-list-group-item>
             </b-list-group>
           </div>
@@ -51,7 +52,6 @@ export default {
         .get("/operator/groups/" + this.id.toString())
         .then((response) => {
           this.group = response;
-          console.log(response);
         })
         .catch((error) => {
           this.errorMsg = error.message;

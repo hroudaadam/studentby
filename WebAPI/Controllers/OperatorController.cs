@@ -29,7 +29,7 @@ namespace WebAPI.Controllers
         }
 
         // POST: api/operator/customer
-        [HttpPost("customer")]
+        [HttpPost("customers")]
         public async Task<ActionResult<CustomerResponse>> CreateCustomer([FromBody] CustomerRequest request)
         {
             var response = await _customerService.CreateCustomerAsync(request);

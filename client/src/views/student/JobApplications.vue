@@ -4,10 +4,10 @@
     <div v-if="!!jobApplications && jobApplications.length > 0">
         <b-list-group>
           <JobListItem
-          v-bind:key="jobApplication.id" 
+          v-bind:key="jobApplication.jobApplicationId" 
           v-for="jobApplication in jobApplications"
             v-bind:job="jobApplication"
-            v-bind:onClickLink="{name: 'StudentJobApplicationDetail', params: {id: jobApplication.id}}"
+            v-bind:onClickLink="{name: 'StudentJobApplicationDetail', params: {jobApplicationId: jobApplication.jobApplicationId}}"
           ></JobListItem>
         </b-list-group>
     </div>

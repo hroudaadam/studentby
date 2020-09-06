@@ -30,7 +30,7 @@ import mixinService from "../../helpers/mixinService";
 
 export default {
   name: "StudentJobApplicationDetail",
-  props: ["id"],
+  props: ["jobApplicationId"],
   components: {
     PageHeader,
     JobInfo
@@ -46,7 +46,7 @@ export default {
       this.jobApplication = null;
       this.errorMsg = null;
       apiService
-        .get("/student/job-applications/" + this.id.toString())
+        .get("/student/job-applications/" + this.jobApplicationId.toString())
         .then((response) => {
           this.jobApplication = response;
         })
@@ -57,7 +57,7 @@ export default {
     cancelJobApplication() {
       this.errorMsg = null;
       apiService
-        .del("/student/job-applications/" + this.id.toString())
+        .del("/student/job-applications/" + this.jobApplicationId.toString())
         .then(() => {
           router.push({name: 'StudentJobApplications'});
         })

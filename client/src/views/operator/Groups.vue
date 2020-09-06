@@ -12,7 +12,7 @@
           class="flex-column align-items-start"
         >
           <div class="d-flex w-100 justify-content-between">
-            <h5>{{group.title}}</h5>
+            <h5>{{group.name}}</h5>
           </div>
         </b-list-group-item>
       </b-list-group>

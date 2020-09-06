@@ -1,5 +1,5 @@
 <template>
-  <b-list-group-item :to="onClickLink" class="flex-column align-items-start mb-2">
+  <b-list-group-item :to="onClickLink" class="flex-column align-items-start">
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1">{{job.title}}</h5>
       <small v-if="!!job.wage">{{job.wage}} Kč/h</small>

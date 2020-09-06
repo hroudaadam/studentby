@@ -5,10 +5,10 @@
       <div class="mt-2">
         <b-list-group >
           <JobListItem
-            v-bind:key="jobApplication.id" 
+            v-bind:key="jobApplication.jobApplicationId" 
             v-for="jobApplication in jobApplications"
             v-bind:job="jobApplication"
-            v-bind:onClickLink="{name: 'OperatorJobApplicationDetail', params: {id: jobApplication.id}}"
+            v-bind:onClickLink="{name: 'OperatorJobApplicationDetail', params: {jobApplicationId: jobApplication.jobApplicationId}}"
           ></JobListItem>
         </b-list-group>
       </div>

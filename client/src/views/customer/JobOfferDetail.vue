@@ -12,11 +12,11 @@
           <b>Přijaté přihlášky</b>
           <div class="mt-2">
             <b-list-group
-              v-bind:key="jobApplication.id"
-              v-for="jobApplication in jobOffer.approvedJobApplications"
+              v-bind:key="student.id"
+              v-for="student in jobOffer.students"
             >
               <b-list-group-item class="d-flex justify-content-between align-items-center">
-                {{jobApplication.studentFirstName}} {{jobApplication.studentLastName}}
+                {{student.firstName}} {{student.lastName}}
                 <b-badge pill class="p-2" variant="success">Potvrzeno</b-badge>
               </b-list-group-item>
             </b-list-group>
@@ -54,7 +54,6 @@ export default {
         .get("/customer/job-offers/" + this.id.toString())
         .then((response) => {
           this.jobOffer = response;
-          console.log(response);
         })
         .catch((error) => {
           this.errorMsg = error.message;
@@ -67,7 +66,8 @@ export default {
   mounted() {
     if (!this.isCustomerLogged) {
       router.push("/login");
-    } else {
+    } 
+    else {
       this.getOfferDetail();
     }
   },

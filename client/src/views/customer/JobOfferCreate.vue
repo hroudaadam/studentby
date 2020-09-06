@@ -73,8 +73,8 @@ export default {
       };
       apiSevice
         .post("/customer/job-offers", body)
-        .then((response) => {
-          console.log(response);
+        .then(() => {
+          router.push({name:'CustomerJobOffers'});
         })
         .catch((error) => {
           this.errorMsg = error.message;

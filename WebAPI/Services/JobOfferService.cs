@@ -112,9 +112,11 @@ namespace WebAPI.Services
             var jobApplications = await _context.JobApplications
                 .Where(ja => (ja.JobOfferId == jobOffer.JobOfferId) && (ja.State == JobApplicationState.Approved))
                 .Include(ja => ja.Student)
-                .ToListAsync();              
+                .ToListAsync();
 
-            return new JobOfferDetailWithStudentsResponse(jobOffer, jobApplications);
+            int freeSpaces = await GetFreeSpacesAsync(jobOffer.JobOfferId);
+
+            return new JobOfferDetailWithStudentsResponse(jobOffer, jobApplications, freeSpaces);
         }
 
         public async Task<JobOfferResponse> CreateJobOfferAsync(JobOfferRequest model, int userId)

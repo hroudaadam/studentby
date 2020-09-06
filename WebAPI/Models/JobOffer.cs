@@ -51,19 +51,21 @@ namespace WebAPI.Models
 
         public double Wage { get; set; }
         public int Spaces { get; set; }
+        public int FreeSpaces { get; set; }
 
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
 
         public ICollection<StudentSimpleResponse> Students { get; set; }
 
-        public JobOfferDetailWithStudentsResponse(JobOffer job, ICollection<JobApplication> jobApplications)
+        public JobOfferDetailWithStudentsResponse(JobOffer job, ICollection<JobApplication> jobApplications, int freeSpaces)
         {
             JobOfferId = job.JobOfferId;
             Title = job.Title;
             Description = job.Description;
             Wage = job.Wage;
             Spaces = job.Spaces;
+            FreeSpaces = freeSpaces;
             Start = job.Start;
             End = job.End;
             Students = MapJobApplications(jobApplications);
