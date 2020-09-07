@@ -11,7 +11,7 @@ namespace WebAPI.Services
 {
     public interface ICustomerService
     {
-        Task<CustomerResponse> CreateCustomerAsync(CustomerRequest model);
+        Task<CustomerResponse> CreateAsync(CustomerRequest model);
     }
 
     public class CustomerService: ICustomerService
@@ -25,7 +25,7 @@ namespace WebAPI.Services
             _userService = userService;
         }
 
-        public async Task<CustomerResponse> CreateCustomerAsync(CustomerRequest model)
+        public async Task<CustomerResponse> CreateAsync(CustomerRequest model)
         {
             User user = await _userService.CreateUserAsync(model.Email, "test", Role.Customer);
             Group group = await _context.Groups.SingleOrDefaultAsync(x => x.GroupId == model.GroupId);
@@ -37,7 +37,6 @@ namespace WebAPI.Services
                 User = user,
                 Group = group
             };
-
             _context.Customers.Add(customer);
             await _context.SaveChangesAsync();
 

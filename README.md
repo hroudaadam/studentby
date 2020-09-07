@@ -11,3 +11,4 @@
 - promyslet finance pro zákazníka (balíčky - počet nabídek/míst na měsíc)
 - promyslet hodnocení
 - promyslet datamodel po vykonání práce (počet hodin,...)
+- filtery a sorty pro endpointy

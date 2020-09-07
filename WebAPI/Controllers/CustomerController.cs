@@ -30,7 +30,7 @@ namespace WebAPI.Controllers
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
 
-            var response = await _jobOfferService.GetJobOffersCustomerAsync(userId);         
+            var response = await _jobOfferService.GetListCustomerAsync(userId);         
             return StatusCode(200, response);      
         }
 
@@ -40,7 +40,7 @@ namespace WebAPI.Controllers
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
 
-            var response = await _jobOfferService.GetJobOfferDetailCustomerAsync(id, userId);  
+            var response = await _jobOfferService.GetDetailCustomerAsync(id, userId);  
             if (response == null)
             {
                 return StatusCode(404);
@@ -54,7 +54,7 @@ namespace WebAPI.Controllers
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
 
-            var response = await _jobOfferService.CreateJobOfferAsync(request, userId);
+            var response = await _jobOfferService.CreateAsync(request, userId);
             return StatusCode(201, response);
         }
 

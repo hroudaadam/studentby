@@ -48,7 +48,7 @@ namespace WebAPI.Controllers
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
 
-            var response = await _jobOfferService.GetJobOffersStudentAsync(userId);
+            var response = await _jobOfferService.GetListStudentAsync(userId);
             return StatusCode(200, response);
         }
 
@@ -56,7 +56,7 @@ namespace WebAPI.Controllers
         [HttpGet("job-offers/{id}")]
         public async Task<ActionResult<JobOfferDetailResponse>> GetJobOfferDetail([FromRoute] int id)
         {
-            var response = await _jobOfferService.GetJobOfferDetailStudentAsync(id);
+            var response = await _jobOfferService.GetDetailStudentAsync(id);
             if (response == null)
             {
                 return StatusCode(404);
@@ -70,7 +70,7 @@ namespace WebAPI.Controllers
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
 
-            var response = await _jobApplicationService.CreateJobApplicationAsync(request, userId);
+            var response = await _jobApplicationService.CreateAsync(request, userId);
             return StatusCode(201, response);
         }
 
@@ -80,7 +80,7 @@ namespace WebAPI.Controllers
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
 
-            var response = await _jobApplicationService.GetApplicationsStudentAsync(userId);
+            var response = await _jobApplicationService.GetListStudentAsync(userId);
             return StatusCode(200, response);
         }
 
@@ -90,7 +90,7 @@ namespace WebAPI.Controllers
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
 
-            var response = await _jobApplicationService.GetApplicationDetailStudentAsync(id, userId);
+            var response = await _jobApplicationService.GetDetailStudentAsync(id, userId);
             if (response == null)
             {
                 return StatusCode(404);
@@ -102,7 +102,7 @@ namespace WebAPI.Controllers
         [HttpDelete("job-applications/{id}")]
         public async Task<ActionResult> CancelApplication([FromRoute] int id)
         {
-            bool found = await _jobApplicationService.CancelJobApplicationAsync(id);
+            bool found = await _jobApplicationService.DeleteAsync(id);
             if (found)
             {
                 return StatusCode(204);

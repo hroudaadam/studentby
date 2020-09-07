@@ -11,8 +11,8 @@ namespace WebAPI.Services
     public interface IGroupService
     {
         Task<GroupResponse> CreateAsync(GroupRequest model);
-        Task<IEnumerable<GroupResponse>> GetAllAsync();
-        Task<GroupWithCustomersResponse> GetAsync(int groupId);
+        Task<IEnumerable<GroupResponse>> GetListAsync();
+        Task<GroupWithCustomersResponse> GetDetailAsync(int groupId);
     }
 
     public class GroupService: IGroupService
@@ -24,7 +24,7 @@ namespace WebAPI.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<GroupResponse>> GetAllAsync()
+        public async Task<IEnumerable<GroupResponse>> GetListAsync()
         {
             var groups = await _context.Groups.ToListAsync();
 
@@ -37,7 +37,7 @@ namespace WebAPI.Services
             return response;
         }
 
-        public async Task<GroupWithCustomersResponse> GetAsync(int groupId)
+        public async Task<GroupWithCustomersResponse> GetDetailAsync(int groupId)
         {
             var group = await _context.Groups
                 .Include(gr => gr.Customers)

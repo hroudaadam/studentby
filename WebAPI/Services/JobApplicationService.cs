@@ -12,13 +12,13 @@ namespace WebAPI.Services
 {
     public interface IJobApplicationService
     {
-        Task<JobApplicationResponse> CreateJobApplicationAsync(JobApplicationRequest model, int userId);
-        Task<IEnumerable<JobApplicationSimpleResponse>> GetApplicationsStudentAsync(int userId);
-        Task<JobApplicationDetailResponse> GetApplicationDetailStudentAsync(int jobApplicationId, int userId);
-        Task<bool> CancelJobApplicationAsync(int jobApplicationId);
-        Task<IEnumerable<JobApplicationSimpleResponse>> GetPendingApplicationsAsync();
-        Task<JobApplicationDetailWithStudentResponse> GetApplicationDetailOperatorAsync(int jobApplicationId);
-        Task<JobApplicationResponse> EditJobApplicationStateAsync(int jobApplicationId, JobApplicationStateRequest model);
+        Task<JobApplicationResponse> CreateAsync(JobApplicationRequest model, int userId);
+        Task<IEnumerable<JobApplicationSimpleResponse>> GetListStudentAsync(int userId);
+        Task<JobApplicationDetailResponse> GetDetailStudentAsync(int jobApplicationId, int userId);
+        Task<bool> DeleteAsync(int jobApplicationId);
+        Task<IEnumerable<JobApplicationSimpleResponse>> GetListOperatorAsync();
+        Task<JobApplicationDetailWithStudentResponse> GetDetailOperatorAsync(int jobApplicationId);
+        Task<JobApplicationResponse> EditStateAsync(int jobApplicationId, JobApplicationStateRequest model);
     }
 
     public class JobApplicationService: IJobApplicationService
@@ -32,37 +32,40 @@ namespace WebAPI.Services
             _jobOfferService = jobOfferService;
         }
 
-        public async Task<JobApplicationResponse> CreateJobApplicationAsync(JobApplicationRequest model, int userId)
+        public async Task<JobApplicationResponse> CreateAsync(JobApplicationRequest model, int userId)
         {
+            // kontrola existence nabídky
             JobOffer jobOffer = await _context.JobOffers.FirstOrDefaultAsync(x => x.JobOfferId == model.JobOfferId);
-
             if (jobOffer == null)
             {
-                throw new StudentbyException("Nabídka neexistuje");
+                throw new StudentbyException("Nabídka nenalezena");
             }
 
+            // kontrola existence studenta
             Student student = await _context.Students
                 .Include(student => student.User)
                 .Include(st => st.JobApplications)
                     .ThenInclude(ja => ja.JobOffer)
                 .Where(student => student.User.UserId == userId)
                 .FirstOrDefaultAsync();
-
             if (student == null)
             {
                 throw new StudentbyException("Uživatel nenalezen");
             }
 
+            // kontrola data v budoucnosti
+            // ...
+
+            // kontrola duplicity přihlášky pro nabídku
             bool applicationExists = await _context.JobApplications.AnyAsync((ja) =>  
                 ja.JobOfferId == jobOffer.JobOfferId &&
                 ja.StudentId == student.StudentId);
-
             if (applicationExists)
             {
                 throw new StudentbyException("Přihláška již existuje");
             }
 
-            // kontrola, zda již neexistuje přihláška na práci v časovém intervalu, který se překrývá s tímto
+            // kontrola duplicity přihlášky v časovém intervalu
             foreach (var ja in student.JobApplications)
             {
                 if (ja.JobOffer.Start <= jobOffer.End && ja.JobOffer.End >= jobOffer.Start)
@@ -71,20 +74,20 @@ namespace WebAPI.Services
                 }
             }
 
+            // vytvoření přihlášky
             JobApplication jobApplication = new JobApplication
             {
                 State = JobApplicationState.Pending,
                 Student = student,
                 JobOffer = jobOffer
             };
-
             _context.JobApplications.Add(jobApplication);
             await _context.SaveChangesAsync();
 
             return new JobApplicationResponse(jobApplication);
         }
 
-        public async Task<IEnumerable<JobApplicationSimpleResponse>> GetApplicationsStudentAsync(int userId)
+        public async Task<IEnumerable<JobApplicationSimpleResponse>> GetListStudentAsync(int userId)
         {
             var jobApplications = await _context.JobApplications
                 .Include(ap => ap.Student)
@@ -94,22 +97,21 @@ namespace WebAPI.Services
                 .ToListAsync();
 
             List<JobApplicationSimpleResponse> result = new List<JobApplicationSimpleResponse>();
-
             foreach (var jobApplication in jobApplications)
             {
                 result.Add(new JobApplicationSimpleResponse(jobApplication));
             }
-
             return result;
         }
 
-        public async Task<JobApplicationDetailResponse> GetApplicationDetailStudentAsync(int jobApplicationId, int userId)
+        public async Task<JobApplicationDetailResponse> GetDetailStudentAsync(int jobApplicationId, int userId)
         {
             var jobApplication = await _context.JobApplications
                 .Include(ja => ja.JobOffer)
                     .ThenInclude(jo => jo.Group)
                 .FirstOrDefaultAsync(ja => ja.JobApplicationId == jobApplicationId);
-
+            
+            // kontrola existence přihlášky
             if (jobApplication == null)
             {
                 return null;
@@ -118,6 +120,7 @@ namespace WebAPI.Services
             var user = await _context.Users
                 .FirstOrDefaultAsync(us => us.UserId == userId);
 
+            // kontrola příslušnosti k uživateli
             if (jobApplication.StudentId != user.StudentId)
             {
                 throw new StudentbyException("Přihláška napatří studentovi");
@@ -127,25 +130,27 @@ namespace WebAPI.Services
             return new JobApplicationDetailResponse(jobApplication, freeSpaces);
         }
 
-        public async Task<bool> CancelJobApplicationAsync(int jobApplicationId)
+        public async Task<bool> DeleteAsync(int jobApplicationId)
         {
             var jobApplication = await _context.JobApplications
                 .Include(ja => ja.JobOffer)
                 .FirstOrDefaultAsync(ja => ja.JobApplicationId == jobApplicationId);
 
+            // kontrola, zda přihláška existuje
             if (jobApplication == null)
             {
                 return false;
             }
 
+            // kontrola, zda je přihláška nezpracovaná
             if (jobApplication.State != JobApplicationState.Pending)
             {
                 throw new StudentbyException("Přihláška je již zpracovaná");
             }
 
+            // kontrola, zda práce již začala
             bool hasJobStarted = jobApplication.JobOffer.Start.Date <=
                 DateTime.Today.ToUniversalTime();
-
             if (hasJobStarted)
             {
                 throw new StudentbyException("Práce již započala");
@@ -153,12 +158,12 @@ namespace WebAPI.Services
 
             _context.JobApplications.Remove(jobApplication);
             await _context.SaveChangesAsync();
-
             return true;
         }
 
-        public async Task<IEnumerable<JobApplicationSimpleResponse>> GetPendingApplicationsAsync()
+        public async Task<IEnumerable<JobApplicationSimpleResponse>> GetListOperatorAsync()
         {
+            // pouze nezpracované
             var jobApplications = await _context.JobApplications
                                       .Where(ja => ja.State == JobApplicationState.Pending)   
                                       .Include(ja => ja.JobOffer)
@@ -172,7 +177,7 @@ namespace WebAPI.Services
             return result;
         }
 
-        public async Task<JobApplicationDetailWithStudentResponse> GetApplicationDetailOperatorAsync(int jobApplicationId)
+        public async Task<JobApplicationDetailWithStudentResponse> GetDetailOperatorAsync(int jobApplicationId)
         {
             var jobApplication = await _context.JobApplications
                 .Include(ja => ja.Student)
@@ -189,11 +194,11 @@ namespace WebAPI.Services
             return new JobApplicationDetailWithStudentResponse(jobApplication, freeSpaces);
         }
 
-        public async Task<JobApplicationResponse> EditJobApplicationStateAsync(int jobApplicationId, JobApplicationStateRequest model)
+        public async Task<JobApplicationResponse> EditStateAsync(int jobApplicationId, JobApplicationStateRequest model)
         {
             if (jobApplicationId != model.JobApplicationId)
             {
-                throw new StudentbyException("Něco...");
+                throw new StudentbyException("Neplatná přihláška");
             }
 
             var jobApplication = await _context.JobApplications.FirstAsync(ja => ja.JobApplicationId == jobApplicationId);
@@ -202,6 +207,7 @@ namespace WebAPI.Services
                 return null;
             }
 
+            // kontrola, zda je přihláška nezpracovaná
             if (jobApplication.State != JobApplicationState.Pending)
             {
                 throw new StudentbyException("Přihláška je již zpracovaná");

@@ -32,7 +32,7 @@ namespace WebAPI.Controllers
         [HttpPost("customers")]
         public async Task<ActionResult<CustomerResponse>> CreateCustomer([FromBody] CustomerRequest request)
         {
-            var response = await _customerService.CreateCustomerAsync(request);
+            var response = await _customerService.CreateAsync(request);
             return StatusCode(201, response);
         }
 
@@ -40,7 +40,7 @@ namespace WebAPI.Controllers
         [HttpGet("job-applications")]
         public async Task<ActionResult<IEnumerable<JobApplicationSimpleResponse>>> GetJobApplications()
         {
-            var response = await _jobApplicationService.GetPendingApplicationsAsync();
+            var response = await _jobApplicationService.GetListOperatorAsync();
             return StatusCode(200, response);       
         }
 
@@ -48,7 +48,7 @@ namespace WebAPI.Controllers
         [HttpGet("job-applications/{id}")]
         public async Task<ActionResult<JobApplicationDetailWithStudentResponse>> GetJobApplicationDetail([FromRoute] int id)
         {
-            var response = await _jobApplicationService.GetApplicationDetailOperatorAsync(id);
+            var response = await _jobApplicationService.GetDetailOperatorAsync(id);
             if (response == null)
             {
                 return StatusCode(404);
@@ -62,7 +62,7 @@ namespace WebAPI.Controllers
             [FromRoute] int id, 
             [FromBody] JobApplicationStateRequest request)
         {
-            var response = await _jobApplicationService.EditJobApplicationStateAsync(id, request);
+            var response = await _jobApplicationService.EditStateAsync(id, request);
             if (response == null)
             {
                 return StatusCode(404);
@@ -74,7 +74,7 @@ namespace WebAPI.Controllers
         [HttpGet("groups")]
         public async Task<ActionResult<IEnumerable<GroupResponse>>> GetGroups()
         {
-            var response = await _groupService.GetAllAsync();
+            var response = await _groupService.GetListAsync();
             return StatusCode(200, response);
         }
 
@@ -82,7 +82,7 @@ namespace WebAPI.Controllers
         [HttpGet("groups/{id}")]
         public async Task<ActionResult<GroupWithCustomersResponse>> GetGroup([FromRoute] int id)
         {
-            var response = await _groupService.GetAsync(id);
+            var response = await _groupService.GetDetailAsync(id);
             if (response == null)
             {
                 return StatusCode(404);
