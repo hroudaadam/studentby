@@ -37,7 +37,7 @@ export default {
         name: this.name,
       };
       apiSevice
-        .post("/operator/groups", body)
+        .post("/groups", body)
         .then(() => {
           router.push({name: 'OperatorGroups'})
         })
@@ -51,7 +51,7 @@ export default {
   },
   mounted() {
     if (!this.isOperatorLogged) {
-      router.push("/login");
+      router.push({name: 'Login'});
     }
   },
 };

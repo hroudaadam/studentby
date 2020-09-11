@@ -19,10 +19,12 @@ namespace WebAPI.Controllers
     public class MainController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly ICustomerService _customerService;
 
-        public MainController(IUserService userService)
+        public MainController(IUserService userService, ICustomerService customerService)
         {
             _userService = userService;
+            _customerService = customerService;
         }
 
         // POST: api/login

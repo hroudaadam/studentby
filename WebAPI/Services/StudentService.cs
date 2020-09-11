@@ -27,7 +27,7 @@ namespace WebAPI.Services
 
         public async Task<StudentResponse> CreateStudentAsync(StudentRequest model)
         {
-            User user = await _userService.CreateUserAsync(model.Email, model.Password, Role.Student);
+            User user = await _userService.CreateUserAsync(model.Email, model.Password, Role.StudentUnver);
 
             Student student = new Student
             {
@@ -42,5 +42,7 @@ namespace WebAPI.Services
 
             return new StudentResponse(student);
         }
+
+
     }
 }

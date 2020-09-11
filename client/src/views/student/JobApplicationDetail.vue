@@ -46,7 +46,7 @@ export default {
       this.jobApplication = null;
       this.errorMsg = null;
       apiService
-        .get("/student/job-applications/" + this.jobApplicationId.toString())
+        .get("/job-applications/" + this.jobApplicationId.toString())
         .then((response) => {
           this.jobApplication = response;
         })
@@ -57,7 +57,7 @@ export default {
     cancelJobApplication() {
       this.errorMsg = null;
       apiService
-        .del("/student/job-applications/" + this.jobApplicationId.toString())
+        .del("/job-applications/" + this.jobApplicationId.toString())
         .then(() => {
           router.push({name: 'StudentJobApplications'});
         })
@@ -77,7 +77,7 @@ export default {
   },
   mounted() {
     if (!this.isStudentLogged) {
-      router.push("/login");
+      router.push({name: 'Login'});
     } else {
       this.getOfferDetail();
     }

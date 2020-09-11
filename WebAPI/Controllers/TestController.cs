@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.Entities;
+using WebAPI.Helpers;
+using WebAPI.Services;
 
 namespace WebAPI.Controllers
 {
@@ -14,10 +16,12 @@ namespace WebAPI.Controllers
     public class TestController : ControllerBase
     {
         private readonly StudentbyContext _context;
+        private readonly IUserService _userService;
 
-        public TestController(StudentbyContext context)
+        public TestController(StudentbyContext context, IUserService userService)
         {
             _context = context;
+            _userService = userService;
         }
 
         // GET: api/Test
@@ -104,6 +108,46 @@ namespace WebAPI.Controllers
         private bool UserExists(int id)
         {
             return _context.Users.Any(e => e.UserId == id);
+        }
+
+        // GET: api/test/adam
+        [HttpGet("adam")]
+        public async Task<ActionResult<ITestDTO>> TryAdam()
+        {
+            int userId = int.Parse(HttpContext.User.Identity.Name);
+            string userRole = await _userService.GetUserRole(userId);
+
+            if (userRole == Role.Student)
+            {
+                var response = new TestDTO1();
+                return StatusCode(200, response);
+            }
+
+            if (userRole == Role.Operator)
+            {
+                var response = new TestDTO2();
+                return StatusCode(200, response);
+            }
+
+            throw new Exception();
+        }
+
+        public interface ITestDTO
+        {
+            int TestId { get; set; }
+        }
+
+        public class TestDTO1: ITestDTO
+        {
+            public string TestStudent { get; set; } = "Ahoj";
+            public int TestId { get; set; } = 1;
+        }
+
+        public class TestDTO2: ITestDTO
+        {
+            public string TestOperator { get; set; } = "Sbohem";
+            public int TestId { get; set; } = 5;
+            public string AddDesc { get; set; } = "Test";
         }
     }
 }

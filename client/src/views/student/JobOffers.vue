@@ -39,7 +39,7 @@ export default {
       this.errorMsg = null;
       this.jobOffers = null;
       apiService
-        .get("/student/job-offers")
+        .get("/job-offers")
         .then((response) => {
           this.jobOffers = response;
         })
@@ -53,7 +53,7 @@ export default {
   },
   mounted() {
     if (!this.isStudentLogged) {
-      router.push("/login");
+      router.push({name: 'Login'});
     } else {
       this.getOffers();
     }

@@ -40,7 +40,7 @@ export default {
       this.errorMsg = null;
       this.jobApplications = null;
       apiSevice
-        .get("/student/job-applications")
+        .get("/job-applications")
         .then((response) => {
           this.jobApplications = response;
         })
@@ -54,7 +54,7 @@ export default {
   },
   mounted() {
     if (!this.isStudentLogged) {
-      router.push("/login");
+      router.push({name: 'Login'});
     } else {
       this.getApplications();
     }

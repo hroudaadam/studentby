@@ -54,7 +54,7 @@ export default {
         groupId: this.groupId
       }; */
       apiSevice
-        .post("/operator/customers", this.body)
+        .post("/customers", this.body)
         .then(() => {
           router.push({name: 'OperatorGroupDetail', params: {id: this.groupId}})
         })
@@ -76,7 +76,7 @@ export default {
   },
   mounted() {
     if (!this.isOperatorLogged) {
-      router.push("/login");
+      router.push({name: 'Login'});
     }
   },
 };

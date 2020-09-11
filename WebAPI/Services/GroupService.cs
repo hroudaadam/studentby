@@ -12,7 +12,7 @@ namespace WebAPI.Services
     {
         Task<GroupResponse> CreateAsync(GroupRequest model);
         Task<IEnumerable<GroupResponse>> GetListAsync();
-        Task<GroupWithCustomersResponse> GetDetailAsync(int groupId);
+        Task<GroupDetailWithCustomersResponse> GetDetailAsync(int groupId);
     }
 
     public class GroupService: IGroupService
@@ -37,7 +37,7 @@ namespace WebAPI.Services
             return response;
         }
 
-        public async Task<GroupWithCustomersResponse> GetDetailAsync(int groupId)
+        public async Task<GroupDetailWithCustomersResponse> GetDetailAsync(int groupId)
         {
             var group = await _context.Groups
                 .Include(gr => gr.Customers)
@@ -49,7 +49,7 @@ namespace WebAPI.Services
                 return null;
             }
 
-            return new GroupWithCustomersResponse(group);
+            return new GroupDetailWithCustomersResponse(group);
         }
 
         public async Task<GroupResponse> CreateAsync(GroupRequest model)
@@ -64,4 +64,5 @@ namespace WebAPI.Services
             return new GroupResponse(group);
         }
     }
+
 }

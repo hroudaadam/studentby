@@ -7,6 +7,23 @@ using WebAPI.Entities;
 
 namespace WebAPI.Models
 {
+    public interface IJobApplicationDetail
+    {
+        int JobApplicationId { get; set; }
+        string Title { get; set; }
+        string Description { get; set; }
+
+        double Wage { get; set; }
+        int Spaces { get; set; }
+        int FreeSpaces { get; set; }
+
+        DateTime Start { get; set; }
+        DateTime End { get; set; }
+
+        string GroupName { get; set; }
+        string State { get; set; }
+    }
+
     /// <summary>
     /// 
     /// </summary>
@@ -33,7 +50,7 @@ namespace WebAPI.Models
     /// <summary>
     /// 
     /// </summary>
-    public class JobApplicationDetailResponse
+    public class JobApplicationDetailResponse: IJobApplicationDetail
     {
         public int JobApplicationId { get; set; }
         public string Title { get; set; }
@@ -67,6 +84,17 @@ namespace WebAPI.Models
     /// <summary>
     /// 
     /// </summary>
+    public class JobApplicationStateRequest
+    {
+        [Required]
+        public int JobApplicationId { get; set; }
+        [Required]
+        public string State { get; set; }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
     public class JobApplicationRequest
     {
         [Required]
@@ -78,10 +106,12 @@ namespace WebAPI.Models
     /// </summary>
     public class JobApplicationResponse
     {
+        public int JobApplicationId { get; set; }
         public string State { get; set; }
 
         public JobApplicationResponse(JobApplication jobApplication)
         {
+            JobApplicationId = jobApplication.JobApplicationId;
             State = jobApplication.State;
         }
     }
@@ -89,19 +119,7 @@ namespace WebAPI.Models
     /// <summary>
     /// 
     /// </summary>
-    public class JobApplicationStateRequest
-    {
-        [Required]
-        public int JobApplicationId { get; set; }
-
-        [Required]
-        public string State { get; set; }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public class JobApplicationDetailWithStudentResponse
+    public class JobApplicationDetailWithStudentResponse: IJobApplicationDetail
     {
         public int JobApplicationId { get; set; }
         public string Title { get; set; }

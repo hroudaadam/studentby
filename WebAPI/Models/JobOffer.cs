@@ -8,10 +8,24 @@ using WebAPI.Models;
 
 namespace WebAPI.Models
 {
+    public interface IJobOfferDetail
+    {
+        int JobOfferId { get; set; }
+        string Title { get; set; }
+        string Description { get; set; }
+
+        double Wage { get; set; }
+        int Spaces { get; set; }
+        int FreeSpaces { get; set; }
+
+        DateTime Start { get; set; }
+        DateTime End { get; set; }
+    }
+
     /// <summary>
     /// 
     /// </summary>
-    public class JobOfferDetailResponse
+    public class JobOfferDetailResponse: IJobOfferDetail
     {
         public int JobOfferId { get; set; }
         public string Title { get; set; }
@@ -43,7 +57,7 @@ namespace WebAPI.Models
     /// <summary>
     /// 
     /// </summary>
-    public class JobOfferDetailWithStudentsResponse
+    public class JobOfferDetailWithStudentsResponse: IJobOfferDetail
     {
         public int JobOfferId { get; set; }
         public string Title { get; set; }

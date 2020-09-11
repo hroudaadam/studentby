@@ -11,7 +11,7 @@ export default {
         logout({commit}) {
             commit('setAccessToken', null);
             commit("setUserRole", null);
-            router.push('/');
+            router.push({name: 'Home'});
         }
     },
     getters: {

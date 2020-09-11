@@ -49,7 +49,7 @@ export default {
   methods: {
     getGroup() {
       apiService
-        .get("/operator/groups/" + this.id.toString())
+        .get("/groups/" + this.id.toString())
         .then((response) => {
           this.group = response;
         })
@@ -63,7 +63,7 @@ export default {
   },
   mounted() {
     if (!this.isOperatorLogged) {
-      router.push("/login");
+      router.push({name: 'Login'});
     } else {
       this.getGroup();
     }

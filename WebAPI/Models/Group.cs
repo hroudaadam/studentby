@@ -25,13 +25,13 @@ namespace WebAPI.Models
         }
     }
 
-    public class GroupWithCustomersResponse
+    public class GroupDetailWithCustomersResponse
     {
         public int GroupId { get; set; }
         public string Name { get; set; }
         public ICollection<CustomerSimpleResponse> Customers { get; set; }
 
-        public GroupWithCustomersResponse(Group group)
+        public GroupDetailWithCustomersResponse(Group group)
         {
             GroupId = group.GroupId;
             Name = group.Name;

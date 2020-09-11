@@ -65,7 +65,7 @@ export default {
         .then((response) => {
           this.setAccessToken(response.token);
           this.setUserRole(response.role);
-          router.push("/");
+          router.push({name: 'Home'});
         })
         .catch((error) => {
           this.errorMsg = error.message;

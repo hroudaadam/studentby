@@ -21,6 +21,7 @@ namespace WebAPI.Services
         Task<bool> EnsureOperatorAsync();
         Task<AuthenticateResponse> AuthenticateAsync(AuthenticateRequest model);
         Task<User> CreateUserAsync(string email, string password, string role);
+        Task<string> GetUserRole(int userId);
     }
 
     public class UserService : IUserService
@@ -129,7 +130,13 @@ namespace WebAPI.Services
                 return true;
             }
             return false;            
-        }      
+        }  
+        
+        public async Task<string> GetUserRole(int userId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(us => us.UserId == userId);
+            return user.Role;
+        }
         
     }
 }

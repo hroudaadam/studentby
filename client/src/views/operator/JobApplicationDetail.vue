@@ -56,7 +56,7 @@ export default {
       this.jobApplication = null;
       this.errorMsg = null;
       apiService
-        .get("/operator/job-applications/" + this.jobApplicationId.toString())
+        .get("/job-applications/" + this.jobApplicationId.toString())
         .then((response) => {
           this.jobApplication = response;
         })
@@ -72,7 +72,7 @@ export default {
         state: state
       };
       apiService
-        .put("/operator/job-applications/" + this.jobApplicationId.toString(), body)
+        .put("/job-applications/" + this.jobApplicationId.toString(), body)
         .then(() => {
           router.push({name: 'OperatorJobApplications'});
         })
@@ -96,7 +96,7 @@ export default {
   },
   mounted() {
     if (!this.isOperatorLogged) {
-      router.push("/login");
+      router.push({name: 'Login'});
     } else {
       this.getOfferDetail();
     }

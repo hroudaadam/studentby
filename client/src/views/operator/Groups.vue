@@ -44,7 +44,7 @@ export default {
       this.errorMsg = null;
       this.groups = null;
       apiSevice
-        .get("/operator/groups")
+        .get("/groups")
         .then((response) => {
           this.groups = response;
         })
@@ -58,7 +58,7 @@ export default {
   },
   mounted() {
     if (!this.isOperatorLogged) {
-      router.push("/login");
+      router.push({name: 'Login'});
     } else {
       this.getGroups();
     }

@@ -46,7 +46,7 @@ export default {
       this.jobOffer = null;
       this.errorMsg = null;
       apiService
-        .get("/student/job-offers/" + this.jobOfferId.toString())
+        .get("/job-offers/" + this.jobOfferId.toString())
         .then((response) => {
           this.jobOffer = response;
         })
@@ -59,9 +59,8 @@ export default {
       var body = { jobOfferId: this.jobOfferId };
 
       apiService
-        .post("/student/job-applications", body)
-        .then((response) => {
-          console.log(response);
+        .post("/job-applications", body)
+        .then(() => {
           router.push({ name: "StudentJobApplications" });
         })
         .catch((error) => {
@@ -80,7 +79,7 @@ export default {
   },
   mounted() {
     if (!this.isStudentLogged) {
-      router.push("/login");
+      router.push({name: 'Login'});
     } else {
       this.getOfferDetail();
     }

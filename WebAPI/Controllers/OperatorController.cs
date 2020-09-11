@@ -13,7 +13,6 @@ using WebAPI.Services;
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize(Roles = Role.Operator)]
     [ApiController]
     public class OperatorController : ControllerBase
     {
@@ -29,23 +28,23 @@ namespace WebAPI.Controllers
         }
 
         // POST: api/operator/customer
-        [HttpPost("customers")]
+/*        [HttpPost("customers")]
         public async Task<ActionResult<CustomerResponse>> CreateCustomer([FromBody] CustomerRequest request)
         {
             var response = await _customerService.CreateAsync(request);
             return StatusCode(201, response);
-        }
+        }*/
 
         // GET: api/operator/job-applications
-        [HttpGet("job-applications")]
+/*        [HttpGet("job-applications")]
         public async Task<ActionResult<IEnumerable<JobApplicationSimpleResponse>>> GetJobApplications()
         {
             var response = await _jobApplicationService.GetListOperatorAsync();
             return StatusCode(200, response);       
-        }
+        }*/
 
         // GET: api/operator/job-applications/:id
-        [HttpGet("job-applications/{id}")]
+/*        [HttpGet("job-applications/{id}")]
         public async Task<ActionResult<JobApplicationDetailWithStudentResponse>> GetJobApplicationDetail([FromRoute] int id)
         {
             var response = await _jobApplicationService.GetDetailOperatorAsync(id);
@@ -54,10 +53,10 @@ namespace WebAPI.Controllers
                 return StatusCode(404);
             }
             return StatusCode(200, response);
-        }
+        }*/
 
         // PUT: api/operator/job-applications/:id
-        [HttpPut("job-applications/{id}")]
+/*        [HttpPut("job-applications/{id}")]
         public async Task<ActionResult<JobApplicationDetailResponse>> EditJobApplication(
             [FromRoute] int id, 
             [FromBody] JobApplicationStateRequest request)
@@ -68,19 +67,19 @@ namespace WebAPI.Controllers
                 return StatusCode(404);
             }
             return StatusCode(204);
-        }
+        }*/
 
         // GET: api/operator/groups
-        [HttpGet("groups")]
+/*        [HttpGet("groups")]
         public async Task<ActionResult<IEnumerable<GroupResponse>>> GetGroups()
         {
             var response = await _groupService.GetListAsync();
             return StatusCode(200, response);
-        }
+        }*/
 
         // GET: api/operator/groups/:id
-        [HttpGet("groups/{id}")]
-        public async Task<ActionResult<GroupWithCustomersResponse>> GetGroup([FromRoute] int id)
+/*        [HttpGet("groups/{id}")]
+        public async Task<ActionResult<GroupDetailWithCustomersResponse>> GetGroup([FromRoute] int id)
         {
             var response = await _groupService.GetDetailAsync(id);
             if (response == null)
@@ -88,14 +87,14 @@ namespace WebAPI.Controllers
                 return StatusCode(404);
             }
             return StatusCode(200, response);
-        }
+        }*/
 
         // POST: api/operator/groups
-        [HttpPost("groups")]
+/*        [HttpPost("groups")]
         public async Task<ActionResult<GroupResponse>> CreateGroup([FromBody] GroupRequest request)
         {
             var response = await _groupService.CreateAsync(request);
             return StatusCode(201, response);
-        }
+        }*/
     }
 }

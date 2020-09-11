@@ -51,7 +51,7 @@ export default {
   methods: {
     getOfferDetail() {
       apiService
-        .get("/customer/job-offers/" + this.id.toString())
+        .get("/job-offers/" + this.id.toString())
         .then((response) => {
           this.jobOffer = response;
         })
@@ -65,7 +65,7 @@ export default {
   },
   mounted() {
     if (!this.isCustomerLogged) {
-      router.push("/login");
+      router.push({name: 'Login'});
     } 
     else {
       this.getOfferDetail();

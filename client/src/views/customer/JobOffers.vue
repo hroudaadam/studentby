@@ -36,7 +36,7 @@ export default {
       this.errorMsg = null;
 
       apiSevice
-        .get("/customer/job-offers")
+        .get("/job-offers")
         .then((response) => {
           this.jobOffers = response;
         })
@@ -50,7 +50,7 @@ export default {
   },
   mounted() {
     if (!this.isCustomerLogged) {
-      router.push("/login");
+      router.push({name: 'Login'});
     } else {
       this.getAllOffers();
     }
