@@ -63,4 +63,16 @@ namespace WebAPI.Models
             LastName = student.LastName;
         }
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class StudentRoleRequest
+    {
+        [Required]
+        public int StudentId { get; set; }
+
+        [Required]
+        public string Role { get; set; }
+    }
 }

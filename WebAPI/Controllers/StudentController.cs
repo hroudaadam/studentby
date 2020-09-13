@@ -13,100 +13,42 @@ using WebAPI.Services;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/students")]
     [ApiController]
     public class StudentController : ControllerBase
     {
         private readonly IStudentService _studentService;
-        private readonly IJobOfferService _jobOfferService;
-        private readonly IJobApplicationService _jobApplicationService;
 
         public StudentController(
-            IStudentService studentService,
-            IJobOfferService jobOfferService,
-            IJobApplicationService jobApplicationService)
+            IStudentService studentService
+            )
         {
-            _jobOfferService = jobOfferService;
             _studentService = studentService;
-            _jobApplicationService = jobApplicationService;
         }
-
-        // POST: api/student
+        
+        // POST: api/students
         [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult<StudentResponse>> Post([FromBody] StudentRequest request)
         {
-            var response = await _studentService.CreateStudentAsync(request);
+            var response = await _studentService.CreateAsync(request);
             return StatusCode(201, response);
 
         }
 
-        // GET: api/student/job-offers
-        /*[HttpGet("job-offers")]
-        public async Task<ActionResult<IEnumerable<JobOfferSimpleResponse>>> GetJobOffers()
+        // PUT: api/students/1
+        [Authorize(Roles = Role.Operator)]
+        [HttpPut("{studentId}")]
+        public async Task<IActionResult> Put(
+            [FromRoute] int studentId,
+            [FromBody] StudentRoleRequest request)
         {
-            int userId = int.Parse(HttpContext.User.Identity.Name);
-
-            var response = await _jobOfferService.GetListStudentAsync(userId);
-            return StatusCode(200, response);
-        }*/
-
-        // GET: api/student/job-offers/:id
-        /*[HttpGet("job-offers/{id}")]
-        public async Task<ActionResult<JobOfferDetailResponse>> GetJobOfferDetail([FromRoute] int id)
-        {
-            var response = await _jobOfferService.GetDetailStudentAsync(id);
-            if (response == null)
+            bool response = await _studentService.ChangeRoleAsync(studentId, request);
+            if (!response)
             {
                 return StatusCode(404);
             }
-            return StatusCode(200, response); 
-        }*/
-
-        // POST: api/student/job-applications
-        /*[HttpPost("job-applications")]
-        public async Task<ActionResult<JobApplicationSimpleResponse>> CreateJobApplication([FromBody] JobApplicationRequest request)
-        {
-            int userId = int.Parse(HttpContext.User.Identity.Name);
-
-            var response = await _jobApplicationService.CreateAsync(request, userId);
-            return StatusCode(201, response);
-        }*/
-
-        // GET: api/student/job-applications
-      /*  [HttpGet("job-applications")]
-        public async Task<ActionResult<IEnumerable<JobApplicationSimpleResponse>>> GetJobApplications()
-        {
-            int userId = int.Parse(HttpContext.User.Identity.Name);
-
-            var response = await _jobApplicationService.GetListStudentAsync(userId);
-            return StatusCode(200, response);
+            return StatusCode(204);
         }
-*/
-        // GET: api/student/job-applications/:id
-/*        [HttpGet("job-applications/{id}")]
-        public async Task<ActionResult<JobApplicationDetailResponse>> GetJobApplicationDetail([FromRoute] int id)
-        {
-            int userId = int.Parse(HttpContext.User.Identity.Name);
-
-            var response = await _jobApplicationService.GetDetailStudentAsync(id, userId);
-            if (response == null)
-            {
-                return StatusCode(404);
-            }
-            return StatusCode(200, response);
-        }*/
-
-        // DELETE: api/student/job-applications/:id
-/*        [HttpDelete("job-applications/{id}")]
-        public async Task<ActionResult> CancelApplication([FromRoute] int id)
-        {
-            bool found = await _jobApplicationService.DeleteAsync(id);
-            if (found)
-            {
-                return StatusCode(204);
-            }
-            return StatusCode(404);
-        }*/
     }
 }

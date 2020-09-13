@@ -33,40 +33,5 @@ namespace WebAPI.Controllers
             var response = await _customerService.CreateAsync(request);
             return StatusCode(201, response);
         }
-
-        // GET: api/customer/job-offers
-        /*[HttpGet("job-offers")]
-        public async Task<ActionResult<IEnumerable<JobOfferSimpleResponse>>> GetJobOffers()
-        {
-            int userId = int.Parse(HttpContext.User.Identity.Name);
-
-            var response = await _jobOfferService.GetListCustomerAsync(userId);         
-            return StatusCode(200, response);      
-        }*/
-
-        // GET: api/customer/job-offers/:id
-        /*        [HttpGet("job-offers/{id}")]
-                public async Task<ActionResult<JobOfferDetailWithStudentsResponse>> GetJobOfferDetail([FromRoute] int id)
-                {
-                    int userId = int.Parse(HttpContext.User.Identity.Name);
-
-                    var response = await _jobOfferService.GetDetailCustomerAsync(id, userId);  
-                    if (response == null)
-                    {
-                        return StatusCode(404);
-                    }
-                    return StatusCode(200, response);
-                }*/
-
-        // POST: api/customer/job-offers
-        /*        [HttpPost("job-offers")]        
-                public async Task<ActionResult<JobOfferResponse>> CreateJobOffer([FromBody] JobOfferRequest request)
-                {
-                    int userId = int.Parse(HttpContext.User.Identity.Name);
-
-                    var response = await _jobOfferService.CreateAsync(request, userId);
-                    return StatusCode(201, response);
-                }*/
-
     }
 }

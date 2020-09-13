@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,8 @@ namespace WebAPI.Services
 {
     public interface IStudentService
     {
-        Task<StudentResponse> CreateStudentAsync(StudentRequest model);
+        Task<StudentResponse> CreateAsync(StudentRequest model);
+        Task<bool> ChangeRoleAsync(int studentId, StudentRoleRequest model);
     }
 
     public class StudentService : IStudentService
@@ -25,7 +27,7 @@ namespace WebAPI.Services
             _userService = userService;
         }
 
-        public async Task<StudentResponse> CreateStudentAsync(StudentRequest model)
+        public async Task<StudentResponse> CreateAsync(StudentRequest model)
         {
             User user = await _userService.CreateUserAsync(model.Email, model.Password, Role.StudentUnver);
 
@@ -43,6 +45,43 @@ namespace WebAPI.Services
             return new StudentResponse(student);
         }
 
+        public async Task<bool> ChangeRoleAsync(int studentId, StudentRoleRequest model)
+        {
+            if (studentId != model.StudentId)
+            {
+                throw new StudentbyException("Neplatný požadavek");
+            }
 
+            var student = await _context.Students
+                .Include(st => st.User)
+                .FirstOrDefaultAsync(st => st.StudentId == studentId);
+            if (student == null)
+            {
+                return false;
+            }
+
+            // aktivace studentského účtu
+            if (student.User.Role == Role.StudentUnver &&
+                model.Role == Role.Student)
+            {
+                // má ban??
+                student.User.Role = Role.Student;
+            }
+            // deaktivace studentského účtu
+            else if (student.User.Role == Role.Student &&
+                model.Role == Role.StudentUnver)
+            {
+                // má nějaké aktivity??
+                student.User.Role = Role.StudentUnver;
+            }
+            else
+            {
+                throw new StudentbyException("Neplatný požadavek");
+            }
+
+            await _context.SaveChangesAsync();
+            return true;
+
+        }
     }
 }

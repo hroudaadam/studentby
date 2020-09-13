@@ -18,7 +18,7 @@ namespace WebAPI.Services
         Task<bool> DeleteAsync(int jobApplicationId);
         Task<IEnumerable<JobApplicationSimpleResponse>> GetListOperatorAsync();
         Task<JobApplicationDetailWithStudentResponse> GetDetailOperatorAsync(int jobApplicationId);
-        Task<JobApplicationResponse> EditStateAsync(int jobApplicationId, JobApplicationStateRequest model);
+        Task<bool> EditStateAsync(int jobApplicationId, JobApplicationStateRequest model);
     }
 
     public class JobApplicationService: IJobApplicationService
@@ -194,17 +194,17 @@ namespace WebAPI.Services
             return new JobApplicationDetailWithStudentResponse(jobApplication, freeSpaces);
         }
 
-        public async Task<JobApplicationResponse> EditStateAsync(int jobApplicationId, JobApplicationStateRequest model)
+        public async Task<bool> EditStateAsync(int jobApplicationId, JobApplicationStateRequest model)
         {
             if (jobApplicationId != model.JobApplicationId)
             {
-                throw new StudentbyException("Neplatná přihláška");
+                throw new StudentbyException("Neplatný požadavek");
             }
 
             var jobApplication = await _context.JobApplications.FirstAsync(ja => ja.JobApplicationId == jobApplicationId);
             if (jobApplication == null)
             {
-                return null;
+                return false;
             }
 
             // kontrola, zda je přihláška nezpracovaná
@@ -216,7 +216,7 @@ namespace WebAPI.Services
             jobApplication.State = model.State;         
             await _context.SaveChangesAsync();
 
-            return new JobApplicationResponse(jobApplication);
+            return true;
         }
     }
 }

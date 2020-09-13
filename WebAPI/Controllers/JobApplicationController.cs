@@ -94,12 +94,12 @@ namespace WebAPI.Controllers
         // PUT: api/job-applications/1
         [HttpPut("{jobApplicationId}")]
         [Authorize(Roles = Role.Operator)]
-        public async Task<ActionResult<JobApplicationResponse>> Put(
+        public async Task<IActionResult> Put(
             [FromRoute] int jobApplicationId,
             [FromBody] JobApplicationStateRequest request)
         {
-            var response = await _jobApplicationService.EditStateAsync(jobApplicationId, request);
-            if (response == null)
+            bool response = await _jobApplicationService.EditStateAsync(jobApplicationId, request);
+            if (!response)
             {
                 return StatusCode(404);
             }

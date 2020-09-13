@@ -11,7 +11,7 @@ using WebAPI.Services;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/alibaba")]
     [ApiController]
     public class TestController : ControllerBase
     {
