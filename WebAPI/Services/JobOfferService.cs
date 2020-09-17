@@ -13,12 +13,11 @@ namespace WebAPI.Services
     public interface IJobOfferService
     {
         Task<JobOfferResponse> CreateAsync(JobOfferRequest model, int userId);
+        Task<bool> DeleteAsync(int jobOfferId, int userId);
         Task<IEnumerable<JobOfferSimpleResponse>> GetListStudentAsync(int userId);        
         Task<IEnumerable<JobOfferSimpleResponse>> GetListCustomerAsync(int userId);
-
         Task<JobOfferDetailResponse> GetDetailStudentAsync(int id);
         Task<JobOfferDetailWithStudentsResponse> GetDetailCustomerAsync(int id, int userId);
-
         Task<int> GetFreeSpacesAsync(int jobOfferId);
     }
 
@@ -141,6 +140,37 @@ namespace WebAPI.Services
             await _context.SaveChangesAsync();
 
             return new JobOfferResponse(jobOffer);
+        }
+
+        public async Task<bool> DeleteAsync(int jobOfferId, int userId)
+        {
+            var user = await _context.Users
+                .Include(us => us.Customer)
+                .FirstOrDefaultAsync(us => us.UserId == userId);
+
+            var jobOffer = await _context.JobOffers
+                .FirstOrDefaultAsync(jo => jo.JobOfferId == jobOfferId);
+
+            // kontrola, zda nabídka existuje
+            if (jobOffer == null)
+            {
+                return false;
+            }
+
+            // kontrola, zda je nabídka od skupiny, které uživatel náleží
+            if (jobOffer.GroupId != user.Customer.GroupId)
+            {
+                throw new StudentbyException("Nabídka nepatří k dané skupině");
+            }
+
+            if (jobOffer.Start.Date < DateTime.UtcNow.Date)
+            {
+                throw new StudentbyException("Nabídka již započala");
+            }
+
+            _context.JobOffers.Remove(jobOffer);
+            await _context.SaveChangesAsync();
+            return true;
         }
         
         public async Task<int> GetFreeSpacesAsync(int jobOfferId)

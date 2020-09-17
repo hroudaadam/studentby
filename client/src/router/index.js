@@ -19,6 +19,7 @@ import OperatorGroups from '../views/operator/Groups';
 import OperatorGroupCreate from '../views/operator/GroupCreate';
 import OperatorGroupDetail from '../views/operator/GroupDetail';
 import OperatorCustomerCreate from '../views/operator/CustomerCreate';
+import OperatorStudents from '../views/operator/Students';
 
 Vue.use(VueRouter);
 
@@ -109,6 +110,12 @@ const routes = [
     component: OperatorCustomerCreate,
     props: true
   },
+  {
+    path: '/operator/students',
+    name: 'OperatorStudents',
+    component: OperatorStudents,
+    props: true
+  }
 ]
 
 const router = new VueRouter({

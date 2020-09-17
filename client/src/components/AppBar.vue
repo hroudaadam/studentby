@@ -13,6 +13,7 @@
 
           <b-nav-item v-if="isOperatorLogged" :to="{name: 'OperatorJobApplications'}">Přihlášky</b-nav-item>
           <b-nav-item v-if="isOperatorLogged" :to="{name: 'OperatorGroups'}">Skupiny</b-nav-item>
+          <b-nav-item v-if="isOperatorLogged" :to="{name: 'OperatorStudents'}">Studenti</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">

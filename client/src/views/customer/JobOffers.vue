@@ -4,8 +4,13 @@
       <b-button variant="primary" :to="{name: 'CustomerJobOfferCreate'}">Nový</b-button>
     </PageHeader>
     <div class="mt-2">
-      <b-list-group v-bind:key="jobOffer.jobOfferId" v-for="jobOffer in jobOffers">
-        <JobListItem v-bind:job="jobOffer" v-bind:onClickLink="{ name: 'CustomerJobOfferDetail', params: {id: jobOffer.jobOfferId}}"></JobListItem>
+      <b-list-group>
+        <JobListItem
+          v-bind:key="jobOffer.jobOfferId"
+          v-for="jobOffer in jobOffers"
+          v-bind:job="jobOffer"
+          v-bind:onClickLink="{ name: 'CustomerJobOfferDetail', params: {id: jobOffer.jobOfferId}}"
+        ></JobListItem>
       </b-list-group>
     </div>
   </div>
@@ -50,7 +55,7 @@ export default {
   },
   mounted() {
     if (!this.isCustomerLogged) {
-      router.push({name: 'Login'});
+      router.push({ name: "Login" });
     } else {
       this.getAllOffers();
     }

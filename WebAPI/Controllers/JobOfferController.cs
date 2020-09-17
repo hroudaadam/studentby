@@ -29,7 +29,7 @@ namespace WebAPI.Controllers
         // GET: api/job-offers
         [HttpGet]
         [Authorize(Roles = Role.Student + "," + Role.Customer)]
-        public async Task<ActionResult<IEnumerable<JobOfferSimpleResponse>>> GetAll()
+        public async Task<ActionResult<IEnumerable<JobOfferSimpleResponse>>> GetList()
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
             string userRole = await _userService.GetUserRole(userId);
@@ -84,7 +84,7 @@ namespace WebAPI.Controllers
         // POST: api/job-offers
         [HttpPost]
         [Authorize(Roles = Role.Customer)]
-        public async Task<ActionResult<JobOfferResponse>> CreateJobOffer([FromBody] JobOfferRequest request)
+        public async Task<ActionResult<JobOfferResponse>> Post([FromBody] JobOfferRequest request)
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
 
@@ -92,6 +92,20 @@ namespace WebAPI.Controllers
             return StatusCode(201, response);
         }
 
+        // DELETE: api/job-offers/1
+        [HttpDelete("{jobOfferId}")]
+        [Authorize(Roles = Role.Customer)]
+        public async Task<IActionResult> Delete([FromRoute] int jobOfferId)
+        {
+            int userId = int.Parse(HttpContext.User.Identity.Name);
 
+            bool deleted = await _jobOfferService.DeleteAsync(jobOfferId, userId);
+            if (deleted)
+            {
+                return StatusCode(204);
+            }
+            return StatusCode(404);
+
+        }
     }
 }
