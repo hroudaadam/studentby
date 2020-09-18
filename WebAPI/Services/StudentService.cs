@@ -14,6 +14,8 @@ namespace WebAPI.Services
     {
         Task<StudentResponse> CreateAsync(StudentRequest model);
         Task<bool> ChangeRoleAsync(int studentId, StudentRoleRequest model);
+        Task<IEnumerable<StudentSimpleResponse>> GetListAsync();
+        Task<StudentResponse> GetAsync(int studentId);
     }
 
     public class StudentService : IStudentService
@@ -25,6 +27,29 @@ namespace WebAPI.Services
         {
             _context = context;
             _userService = userService;
+        }
+
+        public async Task<IEnumerable<StudentSimpleResponse>> GetListAsync()
+        {
+            var students = await _context.Students.ToListAsync();
+            List<StudentSimpleResponse> output = new List<StudentSimpleResponse>();
+            foreach (var student in students)
+            {
+                output.Add(new StudentSimpleResponse(student));
+            }
+            return output;
+        }
+
+        public async Task<StudentResponse> GetAsync(int studentId)
+        {
+            var student = await _context.Students
+                .Include(st => st.User)
+                .FirstOrDefaultAsync(st => st.StudentId == studentId);
+            if (student == null)
+            {
+                return null;
+            }
+            return new StudentResponse(student);
         }
 
         public async Task<StudentResponse> CreateAsync(StudentRequest model)

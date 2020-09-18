@@ -1,7 +1,7 @@
 <template>
   <div class="OperatorStudents">
     <PageHeader v-bind:title="'Studenti'"></PageHeader>
-    <div v-if="!!groups && groups.length > 0">
+    <div v-if="!!students && students.length > 0">
       <b-list-group>
         <b-list-group-item
           v-bind:key="student.studentId"
@@ -20,15 +20,19 @@
 
 <script>
 import PageHeader from "@/components/PageHeader";
+import router from '@/router/index';
 export default {
+  name:'OperatorStudents',
+  components: {
+    PageHeader
+  },
   data() {
     return {
       students: null
     }
   },
   methods: {
-    getStudents() {
-      
+    getStudents() {      
     }
   },
   mounted () {

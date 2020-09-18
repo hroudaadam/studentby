@@ -25,7 +25,30 @@ namespace WebAPI.Controllers
         {
             _studentService = studentService;
         }
-        
+
+        // GET: api/students
+        [Authorize(Roles = Role.Operator)]
+        [HttpGet]
+        public async Task<ActionResult<StudentSimpleResponse>> GetAll()
+        {
+            var response = await _studentService.GetListAsync();
+            return StatusCode(200, response);
+
+        }
+
+        // GET: api/students/1
+        [Authorize(Roles = Role.Operator)]
+        [HttpGet("{studentId}")]
+        public async Task<ActionResult<StudentResponse>> Get([FromRoute] int studentId)
+        {
+            var response = await _studentService.GetAsync(studentId);
+            if (response == null)
+            {
+                return StatusCode(404);                
+            }
+            return StatusCode(200, response);
+        }
+
         // POST: api/students
         [AllowAnonymous]
         [HttpPost]

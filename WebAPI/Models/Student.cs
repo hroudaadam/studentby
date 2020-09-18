@@ -33,6 +33,7 @@ namespace WebAPI.Models
     /// </summary>
     public class StudentResponse
     {
+        public int StudentId { get; set; }
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -40,6 +41,7 @@ namespace WebAPI.Models
 
         public StudentResponse(Student student)
         {
+            StudentId = student.StudentId;
             Email = student.User.Email;
             FirstName = student.FirstName;
             LastName = student.LastName;
