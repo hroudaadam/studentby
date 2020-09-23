@@ -22,7 +22,7 @@ namespace WebAPI.Entities
         public DateTime End { get; set; }
 
         public Address Address { get; set; }
-        public int AddressId { get; set; }
+        public int? AddressId { get; set; }
 
         public Group Group { get; set; }
         public int GroupId { get; set; }

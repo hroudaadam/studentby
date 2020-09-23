@@ -109,6 +109,7 @@ namespace WebAPI
             services.AddScoped<IStudentService, StudentService>();
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IGroupService, GroupService>();
+            services.AddScoped<IAddressService, AddressService>();
         }
 
 

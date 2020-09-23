@@ -1,7 +1,7 @@
 # Studentby
 ## TODO - Prio
+- úprava JobApplication
 - aktivace studenta - FE
-- přidání adresy
 ## TODO - Backlog
 - promyslet finance pro zákazníka (balíčky - počet nabídek/míst na měsíc)
 - promyslet hodnocení
@@ -10,6 +10,7 @@
     - pozdní zrušení přihlášky
     - celkové bodování studenta i skupiny
 - promyslet datamodel po vykonání práce (počet hodin,...)
+- SMTP
 
 - filtery a sorty pro endpointy
 

@@ -3,10 +3,26 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebAPI.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Create : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Address",
+                columns: table => new
+                {
+                    AddressId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Country = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true),
+                    Street = table.Column<string>(nullable: true),
+                    Number = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Address", x => x.AddressId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Group",
                 columns: table => new
@@ -28,11 +44,18 @@ namespace WebAPI.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
-                    DateOfBirth = table.Column<DateTime>(nullable: false)
+                    DateOfBirth = table.Column<DateTime>(nullable: false),
+                    AddressId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Student", x => x.StudentId);
+                    table.ForeignKey(
+                        name: "FK_Student_Address_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Address",
+                        principalColumn: "AddressId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -68,11 +91,18 @@ namespace WebAPI.Migrations
                     Spaces = table.Column<int>(nullable: false),
                     Start = table.Column<DateTime>(nullable: false),
                     End = table.Column<DateTime>(nullable: false),
+                    AddressId = table.Column<int>(nullable: true),
                     GroupId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_JobOffer", x => x.JobOfferId);
+                    table.ForeignKey(
+                        name: "FK_JobOffer_Address_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Address",
+                        principalColumn: "AddressId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_JobOffer_Group_GroupId",
                         column: x => x.GroupId,
@@ -154,9 +184,19 @@ namespace WebAPI.Migrations
                 column: "StudentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_JobOffer_AddressId",
+                table: "JobOffer",
+                column: "AddressId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_JobOffer_GroupId",
                 table: "JobOffer",
                 column: "GroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Student_AddressId",
+                table: "Student",
+                column: "AddressId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_CustomerId",
@@ -192,6 +232,9 @@ namespace WebAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Group");
+
+            migrationBuilder.DropTable(
+                name: "Address");
         }
     }
 }

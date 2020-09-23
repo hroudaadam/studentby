@@ -22,11 +22,13 @@ namespace WebAPI.Services
     {
         private readonly StudentbyContext _context;
         private readonly IUserService _userService;
+        private readonly IAddressService _addressService;
 
-        public StudentService(StudentbyContext context, IUserService userService)
+        public StudentService(StudentbyContext context, IUserService userService, IAddressService addressService)
         {
             _context = context;
             _userService = userService;
+            _addressService = addressService;
         }
 
         public async Task<IEnumerable<StudentSimpleResponse>> GetListAsync()
@@ -55,13 +57,15 @@ namespace WebAPI.Services
         public async Task<StudentResponse> CreateAsync(StudentRequest model)
         {
             User user = await _userService.CreateUserAsync(model.Email, model.Password, UserRoles.StudentUnver);
+            Address address = _addressService.Create(model.Address);
 
             Student student = new Student
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 DateOfBirth = model.DateOfBirth.Value,
-                User = user
+                User = user,
+                Address = address
             };
 
             _context.Students.Add(student);

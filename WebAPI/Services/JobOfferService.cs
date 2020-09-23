@@ -24,10 +24,12 @@ namespace WebAPI.Services
     public class JobOfferService : IJobOfferService
     {
         private readonly StudentbyContext _context;
+        private readonly IAddressService _addressService;
 
-        public JobOfferService(StudentbyContext context)
+        public JobOfferService(StudentbyContext context, IAddressService addressService)
         {
             _context = context;
+            _addressService = addressService;
         }
 
         public async Task<IEnumerable<JobOfferSimpleResponse>> GetListStudentAsync(int userId)
@@ -125,6 +127,8 @@ namespace WebAPI.Services
                     .ThenInclude(em => em.Group)
                 .FirstOrDefaultAsync(us => us.UserId == userId);
 
+            Address address = _addressService.Create(model.Address);
+
             JobOffer jobOffer = new JobOffer
             {
                 Title = model.Title,
@@ -132,8 +136,9 @@ namespace WebAPI.Services
                 Wage = model.Wage,
                 Spaces = model.Spaces,
                 Start = model.Start.ToUniversalTime(),
-                End = model.End.ToUniversalTime(),                
-                Group = user.Customer.Group
+                End = model.End.ToUniversalTime(),
+                Group = user.Customer.Group,
+                Address = address
             };
 
             _context.JobOffers.Add(jobOffer);

@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200923190109_Create.cs" />
+    <Compile Remove="Migrations\20200923190109_Create.Designer.cs" />
+    <Compile Remove="Migrations\20200923190314_Create.cs" />
+    <Compile Remove="Migrations\20200923190314_Create.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.7" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.7" />

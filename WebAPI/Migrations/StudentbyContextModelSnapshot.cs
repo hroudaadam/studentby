@@ -19,6 +19,30 @@ namespace WebAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("WebAPI.Entities.Address", b =>
+                {
+                    b.Property<int>("AddressId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Number")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Street")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AddressId");
+
+                    b.ToTable("Address");
+                });
+
             modelBuilder.Entity("WebAPI.Entities.Customer", b =>
                 {
                     b.Property<int>("CustomerId")
@@ -89,6 +113,9 @@ namespace WebAPI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("AddressId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -112,6 +139,8 @@ namespace WebAPI.Migrations
 
                     b.HasKey("JobOfferId");
 
+                    b.HasIndex("AddressId");
+
                     b.HasIndex("GroupId");
 
                     b.ToTable("JobOffer");
@@ -124,6 +153,9 @@ namespace WebAPI.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("AddressId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
@@ -134,6 +166,8 @@ namespace WebAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("StudentId");
+
+                    b.HasIndex("AddressId");
 
                     b.ToTable("Student");
                 });
@@ -202,11 +236,22 @@ namespace WebAPI.Migrations
 
             modelBuilder.Entity("WebAPI.Entities.JobOffer", b =>
                 {
+                    b.HasOne("WebAPI.Entities.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+
                     b.HasOne("WebAPI.Entities.Group", "Group")
                         .WithMany("JobOffers")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("WebAPI.Entities.Student", b =>
+                {
+                    b.HasOne("WebAPI.Entities.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
                 });
 
             modelBuilder.Entity("WebAPI.Entities.User", b =>

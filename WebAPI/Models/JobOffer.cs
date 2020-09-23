@@ -141,6 +141,8 @@ namespace WebAPI.Models
         public DateTime Start { get; set; }
         [Required]
         public DateTime End { get; set; }
+        [Required]
+        public AddressRequest Address { get; set; }
     }
 
     /// <summary>
@@ -148,13 +150,23 @@ namespace WebAPI.Models
     /// </summary>
     public class JobOfferResponse
     {
+        public int JobOfferId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        public double Wage { get; set; }
+        public int Spaces { get; set; }
+        public DateTime Start { get; set; }
+        public DateTime End { get; set; }
 
         public JobOfferResponse(JobOffer job)
         {
+            JobOfferId = job.JobOfferId;
             Title = job.Title;
             Description = job.Description;
+            Wage = job.Wage;
+            Spaces = job.Spaces;
+            Start = job.Start;
+            End = job.End;
         }
     }
 }

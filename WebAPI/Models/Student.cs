@@ -26,6 +26,9 @@ namespace WebAPI.Models
 
         [Required]
         public DateTime? DateOfBirth { get; set; }
+
+        [Required]
+        public AddressRequest Address { get; set; }
     }
 
     /// <summary>

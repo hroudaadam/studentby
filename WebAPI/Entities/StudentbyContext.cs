@@ -19,5 +19,6 @@ namespace WebAPI.Entities
         public DbSet<JobApplication> JobApplications { get; set; }
         public DbSet<JobOffer> JobOffers { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Address> Addresses { get; set; }
     }
 }
