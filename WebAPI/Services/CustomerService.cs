@@ -27,7 +27,7 @@ namespace WebAPI.Services
 
         public async Task<CustomerResponse> CreateAsync(CustomerRequest model)
         {
-            User user = await _userService.CreateUserAsync(model.Email, "test", Role.Customer);
+            User user = await _userService.CreateUserAsync(model.Email, "test", UserRoles.Customer);
             Group group = await _context.Groups.SingleOrDefaultAsync(x => x.GroupId == model.GroupId);
 
             Customer customer = new Customer

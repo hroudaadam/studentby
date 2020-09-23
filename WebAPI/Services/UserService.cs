@@ -122,9 +122,9 @@ namespace WebAPI.Services
 
         public async Task<bool> EnsureOperatorAsync()
         {
-            if (!await _context.Users.AnyAsync(us => us.Role == Role.Operator))
+            if (!await _context.Users.AnyAsync(us => us.Role == UserRoles.Operator))
             {
-                User user = await CreateUserAsync("operator", "test", Role.Operator);
+                User user = await CreateUserAsync("operator", "test", UserRoles.Operator);
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
                 return true;

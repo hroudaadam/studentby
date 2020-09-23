@@ -54,7 +54,7 @@ namespace WebAPI.Services
 
         public async Task<StudentResponse> CreateAsync(StudentRequest model)
         {
-            User user = await _userService.CreateUserAsync(model.Email, model.Password, Role.StudentUnver);
+            User user = await _userService.CreateUserAsync(model.Email, model.Password, UserRoles.StudentUnver);
 
             Student student = new Student
             {
@@ -86,18 +86,18 @@ namespace WebAPI.Services
             }
 
             // aktivace studentského účtu
-            if (student.User.Role == Role.StudentUnver &&
-                model.Role == Role.Student)
+            if (student.User.Role == UserRoles.StudentUnver &&
+                model.Role == UserRoles.Student)
             {
                 // má ban??
-                student.User.Role = Role.Student;
+                student.User.Role = UserRoles.Student;
             }
             // deaktivace studentského účtu
-            else if (student.User.Role == Role.Student &&
-                model.Role == Role.StudentUnver)
+            else if (student.User.Role == UserRoles.Student &&
+                model.Role == UserRoles.StudentUnver)
             {
                 // má nějaké aktivity??
-                student.User.Role = Role.StudentUnver;
+                student.User.Role = UserRoles.StudentUnver;
             }
             else
             {

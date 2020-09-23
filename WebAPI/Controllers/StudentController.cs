@@ -27,7 +27,7 @@ namespace WebAPI.Controllers
         }
 
         // GET: api/students
-        [Authorize(Roles = Role.Operator)]
+        [Authorize(Roles = UserRoles.Operator)]
         [HttpGet]
         public async Task<ActionResult<StudentSimpleResponse>> GetAll()
         {
@@ -37,7 +37,7 @@ namespace WebAPI.Controllers
         }
 
         // GET: api/students/1
-        [Authorize(Roles = Role.Operator)]
+        [Authorize(Roles = UserRoles.Operator)]
         [HttpGet("{studentId}")]
         public async Task<ActionResult<StudentResponse>> Get([FromRoute] int studentId)
         {
@@ -60,7 +60,7 @@ namespace WebAPI.Controllers
         }
 
         // PUT: api/students/1
-        [Authorize(Roles = Role.Operator)]
+        [Authorize(Roles = UserRoles.Operator)]
         [HttpPut("{studentId}")]
         public async Task<IActionResult> Put(
             [FromRoute] int studentId,

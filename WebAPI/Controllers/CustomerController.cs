@@ -27,7 +27,7 @@ namespace WebAPI.Controllers
 
         // POST: api/customers
         [HttpPost]
-        [Authorize(Roles = Role.Operator)]
+        [Authorize(Roles = UserRoles.Operator)]
         public async Task<ActionResult<CustomerResponse>> Post([FromBody] CustomerRequest request)
         {
             var response = await _customerService.CreateAsync(request);

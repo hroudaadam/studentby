@@ -117,13 +117,13 @@ namespace WebAPI.Controllers
             int userId = int.Parse(HttpContext.User.Identity.Name);
             string userRole = await _userService.GetUserRole(userId);
 
-            if (userRole == Role.Student)
+            if (userRole == UserRoles.Student)
             {
                 var response = new TestDTO1();
                 return StatusCode(200, response);
             }
 
-            if (userRole == Role.Operator)
+            if (userRole == UserRoles.Operator)
             {
                 var response = new TestDTO2();
                 return StatusCode(200, response);

@@ -21,6 +21,9 @@ namespace WebAPI.Entities
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
 
+        public Address Address { get; set; }
+        public int AddressId { get; set; }
+
         public Group Group { get; set; }
         public int GroupId { get; set; }
 

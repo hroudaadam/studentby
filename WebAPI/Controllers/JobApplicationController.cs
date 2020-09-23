@@ -28,18 +28,18 @@ namespace WebAPI.Controllers
 
         // GET: api/job-applications
         [HttpGet]
-        [Authorize(Roles = Role.Student + "," + Role.Operator)]
+        [Authorize(Roles = UserRoles.Student + "," + UserRoles.Operator)]
         public async Task<ActionResult<IEnumerable<JobApplicationSimpleResponse>>> GetAll()
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
             string userRole = await _userService.GetUserRole(userId);
             IEnumerable<JobApplicationSimpleResponse> response;
 
-            if (userRole == Role.Student)
+            if (userRole == UserRoles.Student)
             {
                 response = await _jobApplicationService.GetListStudentAsync(userId);
             }
-            else if (userRole == Role.Operator)
+            else if (userRole == UserRoles.Operator)
             {
                 response = await _jobApplicationService.GetListOperatorAsync();
             }
@@ -53,18 +53,18 @@ namespace WebAPI.Controllers
 
         // GET: api/job-applications/1
         [HttpGet("{jobApplicationId}")]
-        [Authorize(Roles = Role.Student + "," + Role.Operator)]
+        [Authorize(Roles = UserRoles.Student + "," + UserRoles.Operator)]
         public async Task<ActionResult<IJobApplicationDetail>> Get([FromRoute] int jobApplicationId)
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
             string userRole = await _userService.GetUserRole(userId);
             IJobApplicationDetail response;
 
-            if (userRole == Role.Student)
+            if (userRole == UserRoles.Student)
             {
                 response = await _jobApplicationService.GetDetailStudentAsync(jobApplicationId, userId);
             }
-            else if (userRole == Role.Operator)
+            else if (userRole == UserRoles.Operator)
             {
                 response = await _jobApplicationService.GetDetailOperatorAsync(jobApplicationId);
             }
@@ -82,7 +82,7 @@ namespace WebAPI.Controllers
 
         // POST: api/job-applications
         [HttpPost]
-        [Authorize(Roles = Role.Student)]
+        [Authorize(Roles = UserRoles.Student)]
         public async Task<ActionResult<JobApplicationResponse>> Post([FromBody] JobApplicationRequest request)
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
@@ -93,7 +93,7 @@ namespace WebAPI.Controllers
 
         // PUT: api/job-applications/1
         [HttpPut("{jobApplicationId}")]
-        [Authorize(Roles = Role.Operator)]
+        [Authorize(Roles = UserRoles.Operator)]
         public async Task<IActionResult> Put(
             [FromRoute] int jobApplicationId,
             [FromBody] JobApplicationStateRequest request)

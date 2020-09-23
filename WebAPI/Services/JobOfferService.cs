@@ -110,7 +110,7 @@ namespace WebAPI.Services
 
             // přijaté přihlášky k nabídce
             var jobApplications = await _context.JobApplications
-                .Where(ja => (ja.JobOfferId == jobOffer.JobOfferId) && (ja.State == JobApplicationState.Approved))
+                .Where(ja => (ja.JobOfferId == jobOffer.JobOfferId) && (ja.State == JobApplicationStates.Approved))
                 .Include(ja => ja.Student)
                 .ToListAsync();
 
@@ -179,7 +179,7 @@ namespace WebAPI.Services
                 .Include(jo => jo.JobApplications)
                 .FirstOrDefaultAsync(jo => jo.JobOfferId == jobOfferId);
 
-            int occupied = jobOffer.JobApplications.Count(ja => ja.State == JobApplicationState.Approved);
+            int occupied = jobOffer.JobApplications.Count(ja => ja.State == JobApplicationStates.Approved);
             return jobOffer.Spaces - occupied;
         }
     }

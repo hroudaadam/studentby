@@ -77,7 +77,7 @@ namespace WebAPI.Services
             // vytvoření přihlášky
             JobApplication jobApplication = new JobApplication
             {
-                State = JobApplicationState.Pending,
+                State = JobApplicationStates.Pending,
                 Student = student,
                 JobOffer = jobOffer
             };
@@ -143,7 +143,7 @@ namespace WebAPI.Services
             }
 
             // kontrola, zda je přihláška nezpracovaná
-            if (jobApplication.State != JobApplicationState.Pending)
+            if (jobApplication.State != JobApplicationStates.Pending)
             {
                 throw new StudentbyException("Přihláška je již zpracovaná");
             }
@@ -165,7 +165,7 @@ namespace WebAPI.Services
         {
             // pouze nezpracované
             var jobApplications = await _context.JobApplications
-                                      .Where(ja => ja.State == JobApplicationState.Pending)   
+                                      .Where(ja => ja.State == JobApplicationStates.Pending)   
                                       .Include(ja => ja.JobOffer)
                                       .ToListAsync();
 
@@ -208,7 +208,7 @@ namespace WebAPI.Services
             }
 
             // kontrola, zda je přihláška nezpracovaná
-            if (jobApplication.State != JobApplicationState.Pending)
+            if (jobApplication.State != JobApplicationStates.Pending)
             {
                 throw new StudentbyException("Přihláška je již zpracovaná");
             }

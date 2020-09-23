@@ -49,4 +49,13 @@ namespace WebAPI.Models
             return output;
         }
     }
+
+    public class GroupWithIdRequest
+    {
+        [Required]
+        public int GroupId { get; set; }
+
+        [Required]
+        public string Name { get; set; }
+    }
 }

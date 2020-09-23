@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebAPI.Entities;
 using WebAPI.Models;
+using WebAPI.Helpers;
 
 namespace WebAPI.Services
 {
@@ -13,6 +14,7 @@ namespace WebAPI.Services
         Task<GroupResponse> CreateAsync(GroupRequest model);
         Task<IEnumerable<GroupResponse>> GetListAsync();
         Task<GroupDetailWithCustomersResponse> GetDetailAsync(int groupId);
+        Task<bool> EditAsync(GroupWithIdRequest model, int groupId);
     }
 
     public class GroupService: IGroupService
@@ -62,6 +64,26 @@ namespace WebAPI.Services
             await _context.SaveChangesAsync();
 
             return new GroupResponse(group);
+        }
+
+        public async Task<bool> EditAsync(GroupWithIdRequest model, int groupId)
+        {
+            if (groupId != model.GroupId) 
+            {
+                throw new StudentbyException("Neplatný požadavek");
+            }
+
+            var group = await _context.Groups.FirstOrDefaultAsync(gr => gr.GroupId == groupId);
+            if (group == null)
+            {
+                return false;
+            }
+
+            group.Name = model.Name;
+
+            await _context.SaveChangesAsync();
+
+            return true;
         }
     }
 
