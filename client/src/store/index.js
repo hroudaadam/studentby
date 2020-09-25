@@ -7,12 +7,13 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     baseApiUrl: 'https://localhost:5001/api',
-    roles: {
+    userRoles: {
       student: "Student",
+      studentUnver: "StudentUnver",
       customer: "Customer",
       operator: "Operator"
     },
-    jobApplicationState: {
+    jobApplicationStates: {
       pending: "Pending",
       approved: "Approved",
       denied: "Denied"

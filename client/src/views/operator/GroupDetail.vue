@@ -6,8 +6,7 @@
     <div v-if="!!group">
       <b-card no-body>
         <b-card-body>
-          <b-card-title>{{group.name
-            }}</b-card-title>
+          <b-card-title>{{group.name}}</b-card-title>
           <div class="mt-2">
             <b-list-group
               v-bind:key="customer.id"
@@ -20,7 +19,7 @@
           </div>
         </b-card-body>
         <b-card-body>
-          <b-button variant="primary" :to="{name: 'OperatorCustomerCreate', params:{groupId: id}}">Nový uživatel</b-button>
+          <b-button variant="primary" :to="{name: 'OperatorCustomerCreate', params:{groupId: groupId, groupName: group.name}}">Nový uživatel</b-button>
         </b-card-body>
       </b-card>
     </div>
@@ -36,7 +35,9 @@ import apiService from "../../helpers/apiService";
 
 export default {
   name: "OperatorGroupDetail",
-  props: ["id"],
+  props: {
+    groupId: Number
+  },
   components: {
     PageHeader
   },
@@ -49,7 +50,7 @@ export default {
   methods: {
     getGroup() {
       apiService
-        .get("/groups/" + this.id.toString())
+        .get("/groups/" + this.groupId.toString())
         .then((response) => {
           this.group = response;
         })

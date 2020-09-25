@@ -16,9 +16,7 @@
               <br />
             </p>
           </b-card-text>
-        </b-card-body>
 
-        <b-card-body>
           <b-button class="mr-2" variant="success" v-on:click="editJobApplication(true)">Přijmout</b-button>
           <b-button variant="danger" v-on:click="editJobApplication(false)">Odmítnout</b-button>
         </b-card-body>
@@ -66,7 +64,7 @@ export default {
     },
     editJobApplication(approve) {
       this.errorMsg = null;
-      var state = approve ? this.jobApplicationState.approved : this.jobApplicationState.denied;
+      var state = approve ? this.jobApplicationStates.approved : this.jobApplicationStates.denied;
       var body = {
         jobApplicationId: this.jobApplicationId,
         state: state
@@ -83,7 +81,7 @@ export default {
   },
   computed: {
     ...mapGetters("authentication", ["isOperatorLogged"]),
-    ...mapState(["jobApplicationState"]),
+    ...mapState(["jobApplicationStates"]),
     start: function () {
       return mixinService.dateToString(this.jobApplication.start);
     },

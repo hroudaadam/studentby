@@ -8,7 +8,7 @@
         <b-list-group-item
           v-bind:key="group.groupId"
           v-for="group in groups"
-          :to="{name: 'OperatorGroupDetail', params: {id: group.groupId}}"
+          :to="{name: 'OperatorGroupDetail', params: {groupId: group.groupId}}"
           class="flex-column align-items-start"
         >
           <div class="d-flex w-100 justify-content-between">

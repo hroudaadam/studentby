@@ -20,6 +20,7 @@ import OperatorGroupCreate from '../views/operator/GroupCreate';
 import OperatorGroupDetail from '../views/operator/GroupDetail';
 import OperatorCustomerCreate from '../views/operator/CustomerCreate';
 import OperatorStudents from '../views/operator/Students';
+import OperatorStudentDetail from '../views/operator/StudentDetail';
 
 Vue.use(VueRouter);
 
@@ -67,7 +68,7 @@ const routes = [
     component: CustomerJobOffers,
   },
   {
-    path: '/customer/job-offers/:id',
+    path: '/customer/job-offers/:groupId',
     name: 'CustomerJobOfferDetail',
     component: CustomerJobOfferDetail,
     props: true
@@ -105,7 +106,7 @@ const routes = [
     component: OperatorGroupCreate,
   },
   {
-    path: '/operator/customers/create',
+    path: '/operator/groups/:groupId/create-customer',
     name: 'OperatorCustomerCreate',
     component: OperatorCustomerCreate,
     props: true
@@ -114,6 +115,11 @@ const routes = [
     path: '/operator/students',
     name: 'OperatorStudents',
     component: OperatorStudents,
+  },
+  {
+    path: '/operator/students/:studentId',
+    name: 'OperatorStudentDetail',
+    component: OperatorStudentDetail,
     props: true
   }
 ]

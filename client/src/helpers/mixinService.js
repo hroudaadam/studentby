@@ -20,7 +20,7 @@ function dateOfBirthToString(isoDate) {
     var date = new Date(isoDate);
     var strDate =
         date.getDate() + '.' +
-        date.getMonth() + '.' +
+        (date.getMonth() + 1) + '.' +
         date.getFullYear() + ' ';
     return strDate;
 }

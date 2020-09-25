@@ -39,7 +39,7 @@ namespace WebAPI.Controllers
         // GET: api/students/1
         [Authorize(Roles = UserRoles.Operator)]
         [HttpGet("{studentId}")]
-        public async Task<ActionResult<StudentResponse>> Get([FromRoute] int studentId)
+        public async Task<ActionResult<StudentDetailResponse>> Get([FromRoute] int studentId)
         {
             var response = await _studentService.GetAsync(studentId);
             if (response == null)

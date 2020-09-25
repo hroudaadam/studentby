@@ -6,12 +6,13 @@
         <b-list-group-item
           v-bind:key="student.studentId"
           v-for="student in students"
-          :to="{name: 'OperatorStudentDetail', params: {id: student.studentId}}"
+          :to="{
+            name: 'OperatorStudentDetail',
+            params: { studentId: student.studentId },
+          }"
           class="flex-column align-items-start"
         >
-          <div class="d-flex w-100 justify-content-between">
-            <h5>{{student.firstName}}</h5>
-          </div>
+            {{ student.firstName }} {{ student.lastName }}
         </b-list-group-item>
       </b-list-group>
     </div>
@@ -19,25 +20,42 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import PageHeader from "@/components/PageHeader";
-import router from '@/router/index';
+import router from "@/router/index";
+import apiSevice from "../../helpers/apiService";
+
 export default {
-  name:'OperatorStudents',
+  name: "OperatorStudents",
   components: {
-    PageHeader
+    PageHeader,
   },
   data() {
     return {
-      students: null
-    }
+      students: null,
+      errorMsg: null
+    };
+  },
+  computed: {
+    ...mapGetters("authentication", ["isOperatorLogged"]),
   },
   methods: {
-    getStudents() {      
-    }
+    getStudents() {
+      this.errorMsg = null;
+      this.students = null;
+      apiSevice
+        .get("/students")
+        .then((response) => {
+          this.students = response;
+        })
+        .catch((error) => {
+          this.errorMsg = error.message;
+        });
+    },
   },
-  mounted () {
+  mounted() {
     if (!this.isOperatorLogged) {
-      router.push({name: 'Login'});
+      router.push({ name: "Login" });
     } else {
       this.getStudents();
     }

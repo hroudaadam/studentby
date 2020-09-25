@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using WebAPI.Entities;
+using WebAPI.Helpers;
 
 namespace WebAPI.Models
 {
@@ -49,6 +50,36 @@ namespace WebAPI.Models
             FirstName = student.FirstName;
             LastName = student.LastName;
             DateOfBirth = student.DateOfBirth;
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class StudentDetailResponse
+    {
+        public int StudentId { get; set; }
+        public string Email { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public AddressResponse Address { get; set; }
+        public bool Activated { get; set; }
+
+        public StudentDetailResponse(Student student)
+        {
+            StudentId = student.StudentId;
+            Email = student.User.Email;
+            FirstName = student.FirstName;
+            LastName = student.LastName;
+            DateOfBirth = student.DateOfBirth;
+            Address = MapAddress(student.Address);
+            Activated = student.User.Role == UserRoles.Student;
+        }
+
+        private AddressResponse MapAddress(Address address)
+        {
+            return new AddressResponse(address);
         }
     }
 

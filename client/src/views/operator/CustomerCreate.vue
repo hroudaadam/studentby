@@ -13,7 +13,7 @@
           <b-form-input id="input-1" v-model="lastName" type="text" placeholder="Příjmení"></b-form-input>
         </b-form-group>
         <b-form-group id="input-group-1" label="Skupina:" label-for="input-1">
-          <b-form-input readonly id="input-1" v-model="groupId" type="text" placeholder="Skupina "></b-form-input>
+          <b-form-input readonly id="input-1" v-model="groupName" type="text" placeholder="Skupina "></b-form-input>
         </b-form-group>
         <b-alert show variant="danger" v-if="!!this.errorMsg">{{this.errorMsg}}</b-alert>
         <b-button type="submit" v-on:click="createCustomer" variant="primary">Vytvořit</b-button>
@@ -42,7 +42,8 @@ export default {
     };
   },
   props: {
-    groupId: Number
+    groupId: Number,
+    groupName: String
   },
   methods: {
     createCustomer() {

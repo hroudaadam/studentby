@@ -65,16 +65,13 @@ export default {
         });
     },
     deleteJobOffer() {
-      this.errorMsg = null;
-
       apiService
         .del("/job-offers/" + this.id.toString())
         .then(() => {
           router.push({name: 'CustomerJobOffers'});
         })
         .catch((error) => {
-          this.errorMsg = error.message;
-          errorBox.new(this, this.errorMsg);
+          errorBox.new(this, error.message);
         });
     }
   },

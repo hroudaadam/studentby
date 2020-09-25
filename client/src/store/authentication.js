@@ -19,13 +19,13 @@ export default {
             return !!state.accessToken;
         },
         isStudentLogged(state){
-            return (!!state.accessToken && state.userRole === store.state.roles.student);
+            return (!!state.accessToken && state.userRole === store.state.userRoles.student);
         },
         isCustomerLogged(state){
-            return (!!state.accessToken && state.userRole === store.state.roles.customer);
+            return (!!state.accessToken && state.userRole === store.state.userRoles.customer);
         },
         isOperatorLogged(state){
-            return (!!state.accessToken && state.userRole === store.state.roles.operator);
+            return (!!state.accessToken && state.userRole === store.state.userRoles.operator);
         }
     },
     mutations: {
