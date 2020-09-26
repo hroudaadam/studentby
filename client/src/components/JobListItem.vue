@@ -1,13 +1,9 @@
 <template>
   <b-list-group-item :to="onClickLink" class="flex-column align-items-start">
     <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">{{job.title}}</h5>
+      <h5 class="mb-1">{{job.title}}</h5>      
       <small v-if="!!job.wage">{{job.wage}} Kč/h</small>
-      <div v-if="!!job.state">
-        <b-badge pill class="p-2" v-if="job.state === 'Pending'" variant="warning">Nevyřízeno</b-badge>
-        <b-badge pill class="p-2" v-if="job.state === 'Approved'" variant="success">Potvrzeno</b-badge>
-        <b-badge pill class="p-2" v-if="job.state === 'Denied'" variant="danger">Zamítnuto</b-badge>
-      </div>
+      <slot></slot>
     </div>
 
     <p class="mb-1">{{start}} - {{end}}</p>
@@ -22,7 +18,11 @@ import mixinService from "../helpers/mixinService";
 export default {
   name: "JobListItem",
   components: {},
-  props: ["job", "onClickLink"],
+  props: {
+    job: Object,
+    onClickLink: Object,
+    jobApplicationState: String
+  },
   computed: {
     start: function () {
       return mixinService.dateToString(this.job.start);

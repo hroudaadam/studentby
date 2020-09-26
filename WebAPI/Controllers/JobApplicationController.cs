@@ -29,11 +29,11 @@ namespace WebAPI.Controllers
         // GET: api/job-applications
         [HttpGet]
         [Authorize(Roles = UserRoles.Student + "," + UserRoles.Operator)]
-        public async Task<ActionResult<IEnumerable<JobApplicationSimpleResponse>>> GetAll()
+        public async Task<ActionResult<IEnumerable<JobApplicationSimpleRes>>> GetAll()
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
             string userRole = await _userService.GetUserRole(userId);
-            IEnumerable<JobApplicationSimpleResponse> response;
+            IEnumerable<JobApplicationSimpleRes> response;
 
             if (userRole == UserRoles.Student)
             {
@@ -80,10 +80,24 @@ namespace WebAPI.Controllers
             return StatusCode(200, response);
         }
 
+        // GET: api/job-applications/1/result
+        [HttpGet("{jobApplicationId}/result")]
+        [Authorize(Roles = UserRoles.Operator)]
+        public async Task<ActionResult<JobApplicationWithStudRes>> GetResult([FromRoute] int jobApplicationId)
+        {
+            var response = await _jobApplicationService.GetResultAsync(jobApplicationId);
+
+            if (response == null)
+            {
+                return StatusCode(404);
+            }
+            return StatusCode(200, response);
+        }
+
         // POST: api/job-applications
         [HttpPost]
         [Authorize(Roles = UserRoles.Student)]
-        public async Task<ActionResult<JobApplicationResponse>> Post([FromBody] JobApplicationRequest request)
+        public async Task<ActionResult<JobApplicationRes>> Post([FromBody] JobApplicationReq request)
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
 
@@ -96,10 +110,10 @@ namespace WebAPI.Controllers
         [Authorize(Roles = UserRoles.Operator)]
         public async Task<IActionResult> Put(
             [FromRoute] int jobApplicationId,
-            [FromBody] JobApplicationStateRequest request)
+            [FromBody] JobApplicationDetailReq request)
         {
-            bool response = await _jobApplicationService.EditStateAsync(jobApplicationId, request);
-            if (!response)
+            bool found = await _jobApplicationService.EditAsync(jobApplicationId, request);
+            if (!found)
             {
                 return StatusCode(404);
             }
@@ -111,11 +125,11 @@ namespace WebAPI.Controllers
         public async Task<ActionResult> Delete([FromRoute] int jobApplicationId)
         {
             bool found = await _jobApplicationService.DeleteAsync(jobApplicationId);
-            if (found)
+            if (!found)
             {
-                return StatusCode(204);
+                return StatusCode(404);
             }
-            return StatusCode(404);
+            return StatusCode(204);
         }
     }
 }

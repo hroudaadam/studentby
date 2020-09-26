@@ -11,10 +11,10 @@ namespace WebAPI.Services
 {
     public interface IGroupService
     {
-        Task<GroupResponse> CreateAsync(GroupRequest model);
-        Task<IEnumerable<GroupResponse>> GetListAsync();
-        Task<GroupDetailWithCustomersResponse> GetDetailAsync(int groupId);
-        Task<bool> EditAsync(GroupWithIdRequest model, int groupId);
+        Task<GroupRes> CreateAsync(GroupReq model);
+        Task<IEnumerable<GroupRes>> GetListAsync();
+        Task<GroupWithCustsRes> GetDetailAsync(int groupId);
+        Task<bool> EditAsync(GroupWithIdReq model, int groupId);
     }
 
     public class GroupService: IGroupService
@@ -26,20 +26,20 @@ namespace WebAPI.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<GroupResponse>> GetListAsync()
+        public async Task<IEnumerable<GroupRes>> GetListAsync()
         {
             var groups = await _context.Groups.ToListAsync();
 
-            var response = new List<GroupResponse>();
+            var response = new List<GroupRes>();
             foreach (var group in groups)
             {
-                response.Add(new GroupResponse(group));
+                response.Add(new GroupRes(group));
             }
 
             return response;
         }
 
-        public async Task<GroupDetailWithCustomersResponse> GetDetailAsync(int groupId)
+        public async Task<GroupWithCustsRes> GetDetailAsync(int groupId)
         {
             var group = await _context.Groups
                 .Include(gr => gr.Customers)
@@ -51,10 +51,10 @@ namespace WebAPI.Services
                 return null;
             }
 
-            return new GroupDetailWithCustomersResponse(group);
+            return new GroupWithCustsRes(group);
         }
 
-        public async Task<GroupResponse> CreateAsync(GroupRequest model)
+        public async Task<GroupRes> CreateAsync(GroupReq model)
         {
             var group = new Group
             {
@@ -63,10 +63,10 @@ namespace WebAPI.Services
             _context.Groups.Add(group);
             await _context.SaveChangesAsync();
 
-            return new GroupResponse(group);
+            return new GroupRes(group);
         }
 
-        public async Task<bool> EditAsync(GroupWithIdRequest model, int groupId)
+        public async Task<bool> EditAsync(GroupWithIdReq model, int groupId)
         {
             if (groupId != model.GroupId) 
             {

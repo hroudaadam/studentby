@@ -2,11 +2,7 @@
   <div class="JobInfo">
     <div class="d-flex w-100 justify-content-between">
       <b-card-title>{{job.title}}</b-card-title>
-      <div v-if="!!job.state">
-        <b-badge pill class="p-2" v-if="job.state === 'Pending'" variant="warning">Nevyřízeno</b-badge>
-        <b-badge pill class="p-2" v-if="job.state === 'Approved'" variant="success">Potvrzeno</b-badge>
-        <b-badge pill class="p-2" v-if="job.state === 'Denied'" variant="danger">Zamítnuto</b-badge>
-      </div>
+      <slot></slot>
     </div>
     <b-card-sub-title class="mb-2">{{start}} - {{end}}</b-card-sub-title>
 

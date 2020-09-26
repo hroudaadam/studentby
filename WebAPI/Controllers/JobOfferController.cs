@@ -28,12 +28,12 @@ namespace WebAPI.Controllers
 
         // GET: api/job-offers
         [HttpGet]
-        [Authorize(Roles = UserRoles.Student + "," + UserRoles.Customer)]
-        public async Task<ActionResult<IEnumerable<JobOfferSimpleResponse>>> GetList()
+        [Authorize(Roles = UserRoles.Student + "," + UserRoles.Customer + "," + UserRoles.Operator)]
+        public async Task<ActionResult<IEnumerable<JobOfferSimpleRes>>> GetList()
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
             string userRole = await _userService.GetUserRole(userId);
-            IEnumerable<JobOfferSimpleResponse> response;
+            IEnumerable<JobOfferSimpleRes> response;
 
             if (userRole == UserRoles.Student)
             {
@@ -43,17 +43,20 @@ namespace WebAPI.Controllers
             {
                 response = await _jobOfferService.GetListCustomerAsync(userId);
             }
+            else if (userRole == UserRoles.Operator)
+            {
+                response = await _jobOfferService.GetListOperatorAsync();
+            }
             else
             {
                 throw new Exception();
             }
-
             return StatusCode(200, response);
         }
 
         // GET: api/job-offers/1
         [HttpGet("{jobOfferId}")]
-        [Authorize(Roles = UserRoles.Student + "," + UserRoles.Customer)]
+        [Authorize(Roles = UserRoles.Student + "," + UserRoles.Customer + "," + UserRoles.Operator)]
         public async Task<ActionResult<IJobOfferDetail>> Get([FromRoute] int jobOfferId)
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
@@ -67,6 +70,10 @@ namespace WebAPI.Controllers
             else if (userRole == UserRoles.Customer)
             {
                 response = await _jobOfferService.GetDetailCustomerAsync(jobOfferId, userId);
+            }
+            else if (userRole == UserRoles.Operator)
+            {
+                response = await _jobOfferService.GetDetailOperatorAsync(jobOfferId);
             }
             else
             {
@@ -84,7 +91,7 @@ namespace WebAPI.Controllers
         // POST: api/job-offers
         [HttpPost]
         [Authorize(Roles = UserRoles.Customer)]
-        public async Task<ActionResult<JobOfferResponse>> Post([FromBody] JobOfferRequest request)
+        public async Task<ActionResult<JobOfferRes>> Post([FromBody] JobOfferReq request)
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
 

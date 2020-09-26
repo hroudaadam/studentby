@@ -18,7 +18,6 @@
             ></b-form-input>
           </b-form-group>
 
-          <b-alert show variant="danger" v-if="!!this.errorMsg">{{this.errorMsg}}</b-alert>
           <b-button
             block
             type="submit"
@@ -73,6 +72,3 @@ export default {
   },
 };
 </script>
-
-<style scoped></style>
-

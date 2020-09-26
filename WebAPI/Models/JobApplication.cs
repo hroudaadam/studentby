@@ -10,106 +10,38 @@ namespace WebAPI.Models
     public interface IJobApplicationDetail
     {
         int JobApplicationId { get; set; }
-        string Title { get; set; }
-        string Description { get; set; }
-
-        double Wage { get; set; }
-        int Spaces { get; set; }
-        int FreeSpaces { get; set; }
-
-        DateTime Start { get; set; }
-        DateTime End { get; set; }
-
-        string GroupName { get; set; }
         string State { get; set; }
     }
 
     /// <summary>
-    /// 
+    /// Request: JobApplication
     /// </summary>
-    public class JobApplicationSimpleResponse
-    {
-        public int JobApplicationId { get; set; }
-        public string Title { get; set; }
-
-        public DateTime Start { get; set; }
-        public DateTime End { get; set; }
-
-        public string State { get; set; }
-
-        public JobApplicationSimpleResponse(JobApplication jobApplication)
-        {
-            JobApplicationId = jobApplication.JobApplicationId;
-            Title = jobApplication.JobOffer.Title;
-            Start = jobApplication.JobOffer.Start;
-            End = jobApplication.JobOffer.End;
-            State = jobApplication.State;
-        }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public class JobApplicationDetailResponse: IJobApplicationDetail
-    {
-        public int JobApplicationId { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-
-        public double Wage { get; set; }
-        public int Spaces { get; set; }
-        public int FreeSpaces { get; set; }
-
-        public DateTime Start { get; set; }
-        public DateTime End { get; set; }
-
-        public string GroupName { get; set; }
-        public string State { get; set; }
-
-        public JobApplicationDetailResponse(JobApplication jobApplication, int freeSpaces)
-        {
-            JobApplicationId = jobApplication.JobApplicationId;
-            Title = jobApplication.JobOffer.Title;
-            Description = jobApplication.JobOffer.Description;
-            Wage = jobApplication.JobOffer.Wage;
-            Spaces = jobApplication.JobOffer.Spaces;
-            FreeSpaces = freeSpaces;
-            Start = jobApplication.JobOffer.Start;
-            End = jobApplication.JobOffer.End;
-            GroupName = jobApplication.JobOffer.Group.Name;
-            State = jobApplication.State;
-        }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public class JobApplicationStateRequest
-    {
-        [Required]
-        public int JobApplicationId { get; set; }
-        [Required]
-        public string State { get; set; }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public class JobApplicationRequest
+    public class JobApplicationReq
     {
         [Required]
         public int JobOfferId { get; set; }
     }
 
     /// <summary>
-    /// 
+    /// Requst: JobApplication detail
     /// </summary>
-    public class JobApplicationResponse
+    public class JobApplicationDetailReq
+    {
+        [Required]
+        public int JobApplicationId { get; set; }
+        [Required]
+        public string State { get; set; }
+    }    
+
+    /// <summary>
+    /// Response: JobApplication
+    /// </summary>
+    public class JobApplicationRes
     {
         public int JobApplicationId { get; set; }
         public string State { get; set; }
 
-        public JobApplicationResponse(JobApplication jobApplication)
+        public JobApplicationRes(JobApplication jobApplication)
         {
             JobApplicationId = jobApplication.JobApplicationId;
             State = jobApplication.State;
@@ -117,43 +49,89 @@ namespace WebAPI.Models
     }
 
     /// <summary>
-    /// 
+    /// Response: JobApplication simple
     /// </summary>
-    public class JobApplicationDetailWithStudentResponse: IJobApplicationDetail
+    public class JobApplicationSimpleRes
     {
         public int JobApplicationId { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-
-        public double Wage { get; set; }
-        public int Spaces { get; set; }
-        public int FreeSpaces { get; set; }
-
-        public DateTime Start { get; set; }
-        public DateTime End { get; set; }
-
-        public string GroupName { get; set; }
         public string State { get; set; }
+        public JobOfferSimpleRes JobOffer { get; set; }
 
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public DateTime DateOfBirth { get; set; }
-
-        public JobApplicationDetailWithStudentResponse(JobApplication jobApplication, int freeSpaces)
+        public JobApplicationSimpleRes(JobApplication jobApplication)
         {
             JobApplicationId = jobApplication.JobApplicationId;
-            Title = jobApplication.JobOffer.Title;
-            Description = jobApplication.JobOffer.Description;
-            Wage = jobApplication.JobOffer.Wage;
-            Spaces = jobApplication.JobOffer.Spaces;
-            FreeSpaces = freeSpaces;
-            Start = jobApplication.JobOffer.Start;
-            End = jobApplication.JobOffer.End;
-            GroupName = jobApplication.JobOffer.Group.Name;
             State = jobApplication.State;
-            FirstName = jobApplication.Student.FirstName;
-            LastName = jobApplication.Student.LastName;
-            DateOfBirth = jobApplication.Student.DateOfBirth;
+            JobOffer = new JobOfferSimpleRes(jobApplication.JobOffer);
+        }
+    }
+
+    /// <summary>
+    /// Response: JobApplication simple with Student
+    /// </summary>
+    public class JobApplicationSimpleWithStudRes
+    {
+        public int JobApplicationId { get; set; }
+        public string State { get; set; }
+        public StudentNameRes Student { get; set; }
+
+        public JobApplicationSimpleWithStudRes(JobApplication jobApplication)
+        {
+            JobApplicationId = jobApplication.JobApplicationId;
+            State = jobApplication.State;
+            Student = new StudentNameRes(jobApplication.Student);
+        }
+    }
+
+    /// <summary>
+    /// Response: JobApplication with JobOffer
+    /// </summary>
+    public class JobApplicationWithJoRes : IJobApplicationDetail
+    {
+        public int JobApplicationId { get; set; }
+        public string State { get; set; }
+        public JobOfferDetailRes JobOffer { get; set; }
+
+        public JobApplicationWithJoRes(JobApplication jobApplication, int freeSpaces)
+        {
+            JobApplicationId = jobApplication.JobApplicationId;
+            State = jobApplication.State;
+            JobOffer = new JobOfferDetailRes(jobApplication.JobOffer, freeSpaces);
+        }
+    }
+
+    /// <summary>
+    /// Response: JobApplication with JobOffer and Student
+    /// </summary>
+    public class JobApplicationWithJoAndStudRes : IJobApplicationDetail
+    {
+        public int JobApplicationId { get; set; }        
+        public string State { get; set; }
+        public JobOfferDetailRes JobOffer { get; set; }
+        public StudentDetailRes Student { get; set; }
+
+        public JobApplicationWithJoAndStudRes(JobApplication jobApplication, int freeSpaces)
+        {
+            JobApplicationId = jobApplication.JobApplicationId;
+            State = jobApplication.State;
+            JobOffer = new JobOfferDetailRes(jobApplication.JobOffer, freeSpaces);
+            Student = new StudentDetailRes(jobApplication.Student);
+        }
+    }
+
+    /// <summary>
+    /// Response: JobApplication with Student
+    /// </summary>
+    public class JobApplicationWithStudRes
+    {
+        public int JobApplicationId { get; set; }
+        public string State { get; set; }
+        public StudentDetailRes Student { get; set; }
+
+        public JobApplicationWithStudRes(JobApplication jobApplication)
+        {
+            JobApplicationId = jobApplication.JobApplicationId;
+            State = jobApplication.State;
+            Student = new StudentDetailRes(jobApplication.Student);
         }
     }
 }

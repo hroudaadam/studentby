@@ -7,9 +7,11 @@ namespace WebAPI.Helpers
 {
     public static class UserRoles
     {
-        public const string Operator = "Operator";
-        public const string StudentUnver = "StudentUnver";
-        public const string Student = "Student";
-        public const string Customer = "Customer";
+        public const string Operator = "operator";
+        public const string StudentUnver = "studentInact";
+        public const string Student = "student";
+        public const string Customer = "customer";
+
+
     }
 }

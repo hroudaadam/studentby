@@ -13,6 +13,8 @@ import CustomerJobOffers from '../views/customer/JobOffers';
 import CustomerJobOfferCreate from '../views/customer/JobOfferCreate'; 
 import CustomerJobOfferDetail from '../views/customer/JobOfferDetail'; 
 
+import OperatorJobOffers from '../views/operator/JobOffers';
+import OperatorJobOfferDetail from '../views/operator/JobOfferDetail'; 
 import OperatorJobApplications from '../views/operator/JobApplications';
 import OperatorJobApplicationDetail from '../views/operator/JobApplicationDetail';
 import OperatorGroups from '../views/operator/Groups';
@@ -21,6 +23,7 @@ import OperatorGroupDetail from '../views/operator/GroupDetail';
 import OperatorCustomerCreate from '../views/operator/CustomerCreate';
 import OperatorStudents from '../views/operator/Students';
 import OperatorStudentDetail from '../views/operator/StudentDetail';
+import OperatorJobApplicationResult from '../views/operator/JobApplicationResult'
 
 Vue.use(VueRouter);
 
@@ -95,7 +98,7 @@ const routes = [
     component: OperatorGroups,
   },
   {
-    path: '/operator/groups/:id',
+    path: '/operator/groups/:groupId',
     name: 'OperatorGroupDetail',
     component: OperatorGroupDetail,
     props: true
@@ -120,6 +123,23 @@ const routes = [
     path: '/operator/students/:studentId',
     name: 'OperatorStudentDetail',
     component: OperatorStudentDetail,
+    props: true
+  },
+  {
+    path: '/operator/job-offers',
+    name: 'OperatorJobOffers',
+    component: OperatorJobOffers,
+  },
+  {
+    path: '/operator/job-offers/:jobOfferId',
+    name: 'OperatorJobOfferDetail',
+    component: OperatorJobOfferDetail,
+    props: true
+  },
+  {
+    path: '/operator/job-offers/:jobOfferId/job-applications/:jobApplicationId',
+    name: 'OperatorJobApplicationResult',
+    component: OperatorJobApplicationResult,
     props: true
   }
 ]

@@ -10,8 +10,8 @@ using WebAPI.Entities;
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(StudentbyContext))]
-    [Migration("20200923191925_Create")]
-    partial class Create
+    [Migration("20200926195222_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

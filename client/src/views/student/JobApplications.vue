@@ -2,17 +2,22 @@
   <div class="StudentJobApplications">
     <PageHeader v-bind:title="'Přihlášky'"></PageHeader>
     <div v-if="!!jobApplications && jobApplications.length > 0">
-        <b-list-group>
-          <JobListItem
-          v-bind:key="jobApplication.jobApplicationId" 
+      <b-list-group>
+        <JobListItem
+          v-bind:key="jobApplication.jobApplicationId"
           v-for="jobApplication in jobApplications"
-            v-bind:job="jobApplication"
-            v-bind:onClickLink="{name: 'StudentJobApplicationDetail', params: {jobApplicationId: jobApplication.jobApplicationId}}"
-          ></JobListItem>
-        </b-list-group>
+          v-bind:job="jobApplication.jobOffer"
+          v-bind:jobApplicationState="jobApplication.state"
+          v-bind:onClickLink="{
+            name: 'StudentJobApplicationDetail',
+            params: { jobApplicationId: jobApplication.jobApplicationId },
+          }"
+        >
+          <JobApplicationState v-bind:jobApplicationState="jobApplication.state"></JobApplicationState>
+        </JobListItem>
+      </b-list-group>
     </div>
     <div v-else>Nemáte žádné přihlášky</div>
-    <b-alert show variant="danger" v-if="errorMsg" v-html="errorMsg"></b-alert>
   </div>
 </template>
 
@@ -22,22 +27,23 @@ import JobListItem from "../../components/JobListItem";
 import PageHeader from "../../components/PageHeader";
 import router from "../../router";
 import apiSevice from "../../helpers/apiService";
+import errorBox from "../../helpers/errorBox";
+import JobApplicationState from '../../components/JobApplicationState';
 
 export default {
   name: "StudentJobApplications",
   components: {
     JobListItem,
     PageHeader,
+    JobApplicationState
   },
   data() {
     return {
       jobApplications: null,
-      errorMsg: null,
     };
   },
   methods: {
     getApplications() {
-      this.errorMsg = null;
       this.jobApplications = null;
       apiSevice
         .get("/job-applications")
@@ -45,7 +51,7 @@ export default {
           this.jobApplications = response;
         })
         .catch((error) => {
-          this.errorMsg = error.message;
+          errorBox.new(this, error.message);
         });
     },
   },
@@ -54,7 +60,7 @@ export default {
   },
   mounted() {
     if (!this.isStudentLogged) {
-      router.push({name: 'Login'});
+      router.push({ name: "Login" });
     } else {
       this.getApplications();
     }

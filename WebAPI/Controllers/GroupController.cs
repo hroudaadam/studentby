@@ -27,7 +27,7 @@ namespace WebAPI.Controllers
         // GET: api/groups
         [HttpGet]
         [Authorize(Roles = UserRoles.Operator)]
-        public async Task<ActionResult<IEnumerable<GroupResponse>>> GetAll()
+        public async Task<ActionResult<IEnumerable<GroupRes>>> GetAll()
         {
             var response = await _groupService.GetListAsync();
             return StatusCode(200, response);
@@ -36,7 +36,7 @@ namespace WebAPI.Controllers
         // GET: api/groups/1
         [HttpGet("{groupId}")]
         [Authorize(Roles = UserRoles.Operator)]
-        public async Task<ActionResult<GroupDetailWithCustomersResponse>> Get([FromRoute] int groupId)
+        public async Task<ActionResult<GroupWithCustsRes>> Get([FromRoute] int groupId)
         {
             var response = await _groupService.GetDetailAsync(groupId);
             if (response == null)
@@ -49,7 +49,7 @@ namespace WebAPI.Controllers
         // POST: api/groups
         [HttpPost]
         [Authorize(Roles = UserRoles.Operator)]
-        public async Task<ActionResult<GroupResponse>> Post([FromBody] GroupRequest request)
+        public async Task<ActionResult<GroupRes>> Post([FromBody] GroupReq request)
         {
             var response = await _groupService.CreateAsync(request);
             return StatusCode(201, response);
@@ -58,7 +58,7 @@ namespace WebAPI.Controllers
         // PUT: api/groups/1
         [HttpPost("{groupId}")]
         [Authorize(Roles = UserRoles.Operator)]
-        public async Task<ActionResult<GroupResponse>> Put([FromBody] GroupWithIdRequest request, [FromRoute] int groupId)
+        public async Task<ActionResult<GroupRes>> Put([FromBody] GroupWithIdReq request, [FromRoute] int groupId)
         {
             var successful = await _groupService.EditAsync(request, groupId);
             if (successful)

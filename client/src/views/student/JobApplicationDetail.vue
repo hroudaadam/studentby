@@ -6,15 +6,15 @@
     <div v-if="!!this.jobApplication">
       <b-card no-body>
         <b-card-body>
-          <JobInfo v-bind:job="jobApplication"></JobInfo>
+          <JobInfo v-bind:job="jobApplication.jobOffer">
+            <JobApplicationState v-bind:jobApplicationState="jobApplication.state"></JobApplicationState>
+          </JobInfo>
         </b-card-body>
 
         <b-card-body>
           <b-button v-on:click="cancelJobApplication">Zrušit</b-button>
         </b-card-body>
       </b-card>
-
-      <b-alert show variant="danger" v-if="errorMsg" v-html="errorMsg"></b-alert>
     </div>
   </div>
 </template>
@@ -22,47 +22,47 @@
 <script>
 import PageHeader from '../../components/PageHeader';
 import JobInfo from '../../components/JobInfo';
+import JobApplicationState from '../../components/JobApplicationState';
 
 import { mapGetters } from "vuex";
 import router from "../../router";
 import apiService from "../../helpers/apiService";
 import mixinService from "../../helpers/mixinService";
+import errorBox from "../../helpers/errorBox";
 
 export default {
   name: "StudentJobApplicationDetail",
   props: ["jobApplicationId"],
   components: {
     PageHeader,
-    JobInfo
+    JobInfo,
+    JobApplicationState
   },
   data() {
     return {
       jobApplication: null,
-      errorMsg: null,
     };
   },
   methods: {
     getOfferDetail() {
       this.jobApplication = null;
-      this.errorMsg = null;
       apiService
         .get("/job-applications/" + this.jobApplicationId.toString())
         .then((response) => {
           this.jobApplication = response;
         })
         .catch((error) => {
-          this.errorMsg = error.message;
+          errorBox.new(error.message);
         });
     },    
     cancelJobApplication() {
-      this.errorMsg = null;
       apiService
         .del("/job-applications/" + this.jobApplicationId.toString())
         .then(() => {
           router.push({name: 'StudentJobApplications'});
         })
         .catch((error) => {
-          this.errorMsg = error.message;
+          errorBox.new(error.message);
         });
     },
   },

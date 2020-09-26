@@ -1,7 +1,6 @@
 <template>
-  <div name="CustomerJobOffers">
+  <div name="OperatorJobOffers">
     <PageHeader v-bind:title="'Nabídky'">
-      <b-button variant="primary" :to="{name: 'CustomerJobOfferCreate'}">Nový</b-button>
     </PageHeader>
     <div class="mt-2">
       <b-list-group>
@@ -9,7 +8,7 @@
           v-bind:key="jobOffer.jobOfferId"
           v-for="jobOffer in jobOffers"
           v-bind:job="jobOffer"
-          v-bind:onClickLink="{ name: 'CustomerJobOfferDetail', params: {id: jobOffer.jobOfferId}}"
+          v-bind:onClickLink="{ name: 'OperatorJobOfferDetail', params: {jobOfferId: jobOffer.jobOfferId}}"
         ></JobListItem>
       </b-list-group>
     </div>
@@ -22,9 +21,10 @@ import PageHeader from "../../components/PageHeader";
 import JobListItem from "../../components/JobListItem";
 import router from "../../router";
 import apiSevice from "../../helpers/apiService";
+import errorBox from "../../helpers/errorBox";
 
 export default {
-  name: "CustomerJobOffers",
+  name: "OperatorJobOffers",
   components: {
     JobListItem,
     PageHeader,
@@ -32,13 +32,11 @@ export default {
   data() {
     return {
       jobOffers: null,
-      errorMsg: null,
     };
   },
   methods: {
     getAllOffers() {
       this.jobOffers = null;
-      this.errorMsg = null;
 
       apiSevice
         .get("/job-offers")
@@ -46,15 +44,15 @@ export default {
           this.jobOffers = response;
         })
         .catch((error) => {
-          this.errorMsg = error.message;
+          errorBox.new(this, error.message);
         });
     },
   },
   computed: {
-    ...mapGetters("authentication", ["isCustomerLogged"]),
+    ...mapGetters("authentication", ["isOperatorLogged"]),
   },
   mounted() {
-    if (!this.isCustomerLogged) {
+    if (!this.isOperatorLogged) {
       router.push({ name: "Login" });
     } else {
       this.getAllOffers();

@@ -29,7 +29,7 @@ namespace WebAPI.Controllers
         // GET: api/students
         [Authorize(Roles = UserRoles.Operator)]
         [HttpGet]
-        public async Task<ActionResult<StudentSimpleResponse>> GetAll()
+        public async Task<ActionResult<StudentNameRes>> GetAll()
         {
             var response = await _studentService.GetListAsync();
             return StatusCode(200, response);
@@ -39,7 +39,7 @@ namespace WebAPI.Controllers
         // GET: api/students/1
         [Authorize(Roles = UserRoles.Operator)]
         [HttpGet("{studentId}")]
-        public async Task<ActionResult<StudentDetailResponse>> Get([FromRoute] int studentId)
+        public async Task<ActionResult<StudentWithActivRes>> Get([FromRoute] int studentId)
         {
             var response = await _studentService.GetAsync(studentId);
             if (response == null)
@@ -52,7 +52,7 @@ namespace WebAPI.Controllers
         // POST: api/students
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult<StudentResponse>> Post([FromBody] StudentRequest request)
+        public async Task<ActionResult<StudentRes>> Post([FromBody] StudentReq request)
         {
             var response = await _studentService.CreateAsync(request);
             return StatusCode(201, response);

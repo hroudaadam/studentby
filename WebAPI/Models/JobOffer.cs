@@ -16,118 +16,15 @@ namespace WebAPI.Models
 
         double Wage { get; set; }
         int Spaces { get; set; }
-        int FreeSpaces { get; set; }
 
         DateTime Start { get; set; }
         DateTime End { get; set; }
     }
 
     /// <summary>
-    /// 
+    /// Request: JobOffer
     /// </summary>
-    public class JobOfferDetailResponse: IJobOfferDetail
-    {
-        public int JobOfferId { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-
-        public double Wage { get; set; }
-        public int Spaces { get; set; }
-        public int FreeSpaces { get; set; }
-
-        public DateTime Start { get; set; }
-        public DateTime End { get; set; }
-
-        public string GroupName { get; set; }
-
-        public JobOfferDetailResponse(JobOffer job, int freeSpaces)
-        {
-            JobOfferId = job.JobOfferId;
-            Title = job.Title;
-            Description = job.Description;
-            Wage = job.Wage;
-            Spaces = job.Spaces;
-            FreeSpaces = freeSpaces;
-            Start = job.Start;
-            End = job.End;
-            GroupName = job.Group.Name;            
-        }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public class JobOfferDetailWithStudentsResponse: IJobOfferDetail
-    {
-        public int JobOfferId { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-
-        public double Wage { get; set; }
-        public int Spaces { get; set; }
-        public int FreeSpaces { get; set; }
-
-        public DateTime Start { get; set; }
-        public DateTime End { get; set; }
-
-        public ICollection<StudentSimpleResponse> Students { get; set; }
-
-        public JobOfferDetailWithStudentsResponse(JobOffer job, ICollection<JobApplication> jobApplications, int freeSpaces)
-        {
-            JobOfferId = job.JobOfferId;
-            Title = job.Title;
-            Description = job.Description;
-            Wage = job.Wage;
-            Spaces = job.Spaces;
-            FreeSpaces = freeSpaces;
-            Start = job.Start;
-            End = job.End;
-            Students = MapJobApplications(jobApplications);
-        }
-
-        private List<StudentSimpleResponse> MapJobApplications(ICollection<JobApplication> jobApplications)
-        {
-            var output = new List<StudentSimpleResponse>();
-
-            foreach (var jobApplication in jobApplications)
-            {
-                output.Add(new StudentSimpleResponse(jobApplication.Student));
-            }
-
-            return output;
-        }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public class JobOfferSimpleResponse
-    {
-        public int JobOfferId { get; set; }
-        public string Title { get; set; }
-
-        public double Wage { get; set; }
-        public int Spaces { get; set; }
-
-        public DateTime Start { get; set; }
-        public DateTime End { get; set; }
-
-
-        public JobOfferSimpleResponse(JobOffer job)
-        {
-            JobOfferId = job.JobOfferId;
-            Title = job.Title;
-            Wage = job.Wage;
-            Spaces = job.Spaces;
-            Start = job.Start;
-            End = job.End;
-        }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public class JobOfferRequest
+    public class JobOfferReq
     {
         [Required]
         public string Title { get; set; }
@@ -146,9 +43,9 @@ namespace WebAPI.Models
     }
 
     /// <summary>
-    /// 
+    /// Response: JobOffer
     /// </summary>
-    public class JobOfferResponse
+    public class JobOfferRes
     {
         public int JobOfferId { get; set; }
         public string Title { get; set; }
@@ -158,7 +55,7 @@ namespace WebAPI.Models
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
 
-        public JobOfferResponse(JobOffer job)
+        public JobOfferRes(JobOffer job)
         {
             JobOfferId = job.JobOfferId;
             Title = job.Title;
@@ -167,6 +64,99 @@ namespace WebAPI.Models
             Spaces = job.Spaces;
             Start = job.Start;
             End = job.End;
+        }
+    }
+
+    /// <summary>
+    /// Response: JobOffer detail
+    /// </summary>
+    public class JobOfferDetailRes: IJobOfferDetail
+    {
+        public int JobOfferId { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public double Wage { get; set; }
+        public int Spaces { get; set; }
+        public int FreeSpaces { get; set; }
+        public DateTime Start { get; set; }
+        public DateTime End { get; set; }
+        public GroupRes Group { get; set; }
+
+        public JobOfferDetailRes(JobOffer job, int freeSpaces)
+        {
+            JobOfferId = job.JobOfferId;
+            Title = job.Title;
+            Description = job.Description;
+            Wage = job.Wage;
+            Spaces = job.Spaces;
+            FreeSpaces = freeSpaces;
+            Start = job.Start;
+            End = job.End;
+            Group = new GroupRes(job.Group);            
+        }
+    }
+
+    /// <summary>
+    /// Response: JobOffer with JobApplications
+    /// </summary>
+    public class JobOfferWithJasRes : IJobOfferDetail
+    {
+        public int JobOfferId { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public double Wage { get; set; }
+        public int Spaces { get; set; }
+        public int FreeSpaces { get; set; }
+        public DateTime Start { get; set; }
+        public DateTime End { get; set; }
+        public ICollection<JobApplicationSimpleWithStudRes> JobApplications { get; set; }
+
+        public JobOfferWithJasRes(JobOffer job, ICollection<JobApplication> jobApplications, int freeSpaces)
+        {
+            JobOfferId = job.JobOfferId;
+            Title = job.Title;
+            Description = job.Description;
+            Wage = job.Wage;
+            Spaces = job.Spaces;
+            FreeSpaces = freeSpaces;
+            Start = job.Start;
+            End = job.End;
+            JobApplications = MapJobApplications(jobApplications);
+        }
+
+        private List<JobApplicationSimpleWithStudRes> MapJobApplications(ICollection<JobApplication> jobApplications)
+        {
+            var output = new List<JobApplicationSimpleWithStudRes>();
+
+            foreach (var jobApplication in jobApplications)
+            {
+                output.Add(new JobApplicationSimpleWithStudRes(jobApplication));
+            }
+
+            return output;
+        }
+    }
+
+    /// <summary>
+    /// Response: JobOffer simple
+    /// </summary>
+    public class JobOfferSimpleRes
+    {
+        public int JobOfferId { get; set; }
+        public string Title { get; set; }
+        public double Wage { get; set; }
+        public int Spaces { get; set; }
+        public DateTime Start { get; set; }
+        public DateTime End { get; set; }
+
+        public JobOfferSimpleRes(JobOffer jobOffer)
+        {
+            JobOfferId = jobOffer.JobOfferId;
+            Title = jobOffer.Title;
+            Wage = jobOffer.Wage;
+            Spaces = jobOffer.Spaces;
+            Start = jobOffer.Start;
+            End = jobOffer.End;
         }
     }
 }

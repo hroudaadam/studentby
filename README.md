@@ -16,6 +16,10 @@
 - samotnou logiku dělá pouze services
 - nelze upravovat nabídku - složitá BL
     - mohou pouze zrušit
+- pro potvrzení práce využít jobApplication
+    - přibylo by: počet hodin a stavy (attended, unattended)
+    - PROČ NE?
+        - komplikovanost úpravy
 ## Analýza - pohled studenta
 - registrace
     - BE

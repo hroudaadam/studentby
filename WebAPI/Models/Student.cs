@@ -9,9 +9,9 @@ using WebAPI.Helpers;
 namespace WebAPI.Models
 {
     /// <summary>
-    /// 
+    /// Request: Student
     /// </summary>
-    public class StudentRequest
+    public class StudentReq
     {
         [Required]
         public string Email { get; set; }
@@ -35,18 +35,28 @@ namespace WebAPI.Models
     /// <summary>
     /// 
     /// </summary>
-    public class StudentResponse
+    public class StudentRoleRequest
+    {
+        [Required]
+        public int StudentId { get; set; }
+
+        [Required]
+        public string Role { get; set; }
+    }
+
+    /// <summary>
+    /// Response: Student
+    /// </summary>
+    public class StudentRes
     {
         public int StudentId { get; set; }
-        public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
 
-        public StudentResponse(Student student)
+        public StudentRes(Student student)
         {
             StudentId = student.StudentId;
-            Email = student.User.Email;
             FirstName = student.FirstName;
             LastName = student.LastName;
             DateOfBirth = student.DateOfBirth;
@@ -54,9 +64,9 @@ namespace WebAPI.Models
     }
 
     /// <summary>
-    /// 
+    /// Response: Student with activated
     /// </summary>
-    public class StudentDetailResponse
+    public class StudentWithActivRes
     {
         public int StudentId { get; set; }
         public string Email { get; set; }
@@ -66,49 +76,55 @@ namespace WebAPI.Models
         public AddressResponse Address { get; set; }
         public bool Activated { get; set; }
 
-        public StudentDetailResponse(Student student)
+        public StudentWithActivRes(Student student)
         {
             StudentId = student.StudentId;
             Email = student.User.Email;
             FirstName = student.FirstName;
             LastName = student.LastName;
             DateOfBirth = student.DateOfBirth;
-            Address = MapAddress(student.Address);
+            Address = new AddressResponse(student.Address);
             Activated = student.User.Role == UserRoles.Student;
-        }
-
-        private AddressResponse MapAddress(Address address)
-        {
-            return new AddressResponse(address);
         }
     }
 
     /// <summary>
-    /// 
+    /// Response: Student detail
     /// </summary>
-    public class StudentSimpleResponse
+    public class StudentDetailRes
+    {
+        public int StudentId { get; set; }
+        public string Email { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public AddressResponse Address { get; set; }
+
+        public StudentDetailRes(Student student)
+        {
+            StudentId = student.StudentId;
+            Email = student.User.Email;
+            FirstName = student.FirstName;
+            LastName = student.LastName;
+            DateOfBirth = student.DateOfBirth;
+            Address = new AddressResponse(student.Address);
+        }
+    }
+
+    /// <summary>
+    /// Response: Student name
+    /// </summary>
+    public class StudentNameRes
     {
         public int StudentId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
-        public StudentSimpleResponse(Student student)
+        public StudentNameRes(Student student)
         {
             StudentId = student.StudentId;
             FirstName = student.FirstName;
             LastName = student.LastName;
         }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public class StudentRoleRequest
-    {
-        [Required]
-        public int StudentId { get; set; }
-
-        [Required]
-        public string Role { get; set; }
     }
 }

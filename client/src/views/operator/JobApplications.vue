@@ -7,14 +7,15 @@
           <JobListItem
             v-bind:key="jobApplication.jobApplicationId" 
             v-for="jobApplication in jobApplications"
-            v-bind:job="jobApplication"
+            v-bind:job="jobApplication.jobOffer"
             v-bind:onClickLink="{name: 'OperatorJobApplicationDetail', params: {jobApplicationId: jobApplication.jobApplicationId}}"
-          ></JobListItem>
+          >
+            <JobApplicationState v-bind:jobApplicationState="jobApplication.state"></JobApplicationState>
+          </JobListItem>
         </b-list-group>
       </div>
     </div>
     <div v-else>Nemáte žádné přihlášky</div>
-    <b-alert show variant="danger" v-if="errorMsg" v-html="errorMsg"></b-alert>
   </div>
 </template>
 
@@ -24,22 +25,23 @@ import JobListItem from "../../components/JobListItem";
 import PageHeader from "../../components/PageHeader";
 import router from "../../router";
 import apiSevice from "../../helpers/apiService";
+import errorBox from "../../helpers/errorBox";
+import JobApplicationState from '../../components/JobApplicationState';
 
 export default {
   name: "OperatorJobApplications",
   components: {
     JobListItem,
     PageHeader,
+    JobApplicationState
   },
   data() {
     return {
       jobApplications: null,
-      errorMsg: null,
     };
   },
   methods: {
     getApplications() {
-      this.errorMsg = null;
       this.jobApplications = null;
       apiSevice
         .get("/job-applications")
@@ -47,7 +49,7 @@ export default {
           this.jobApplications = response;
         })
         .catch((error) => {
-          this.errorMsg = error.message;
+          errorBox.new(error.message);
         });
     },
   },

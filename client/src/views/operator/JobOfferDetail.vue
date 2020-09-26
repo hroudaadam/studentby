@@ -1,13 +1,22 @@
 <template>
-  <div class="CustomerJobOfferDetail">
+  <div class="OperatorJobOfferDetail">
     <PageHeader v-bind:title="'Nabídky'">
-      <b-button variant="primary" :to="{name: 'CustomerJobOffers'}">Zpět</b-button>
+      <b-button variant="primary" :to="{name: 'OperatorJobOffers'}">Zpět</b-button>
     </PageHeader>
     <div v-if="!!jobOffer">
       <b-card no-body>
         <b-card-body>
           <JobInfo v-bind:job="jobOffer"></JobInfo>
-          <b-button v-on:click="deleteJobOffer">Smazat</b-button>
+          <b-card-text v-if="!!jobOffer.jobApplications && jobOffer.jobApplications.length > 0">
+            <b>Studenti</b>
+            <div class="mt-2">
+              <b-list-group v-bind:key="jobApplication.jobApplicationId" v-for="jobApplication in jobOffer.jobApplications">
+                <b-list-group-item class="d-flex justify-content-between align-items-center" :to="{name: 'OperatorJobApplicationResult', params: {jobApplicationId: jobApplication.jobApplicationId, jobOfferId: jobOfferId}}">
+                  {{jobApplication.student.firstName}} {{jobApplication.student.lastName}}
+                </b-list-group-item>
+              </b-list-group>
+            </div>
+          </b-card-text>
         </b-card-body>
       </b-card>
     </div>
@@ -24,8 +33,10 @@ import apiService from "../../helpers/apiService";
 import errorBox from '../../helpers/errorBox';
 
 export default {
-  name: "CustomerJobOfferDetail",
-  props: ["id"],
+  name: "OperatorJobOfferDetail",
+  props: {
+      jobOfferId: Number
+  },
   components: {
     PageHeader,
     JobInfo,
@@ -38,31 +49,22 @@ export default {
   methods: {
     getOfferDetail() {
       this.jobOffer = null;
+
       apiService
-        .get("/job-offers/" + this.id.toString())
+        .get("/job-offers/" + this.jobOfferId.toString())
         .then((response) => {
           this.jobOffer = response;
         })
         .catch((error) => {
           errorBox.new(this, error.message);          
         });
-    },
-    deleteJobOffer() {
-      apiService
-        .del("/job-offers/" + this.id.toString())
-        .then(() => {
-          router.push({name: 'CustomerJobOffers'});
-        })
-        .catch((error) => {
-          errorBox.new(this, error.message);
-        });
     }
   },
   computed: {
-    ...mapGetters("authentication", ["isCustomerLogged"]),
+    ...mapGetters("authentication", ["isOperatorLogged"]),
   },
   mounted() {
-    if (!this.isCustomerLogged) {
+    if (!this.isOperatorLogged) {
       router.push({ name: "Login" });
     } else {
       this.getOfferDetail();

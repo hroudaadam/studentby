@@ -7,31 +7,52 @@ using WebAPI.Entities;
 
 namespace WebAPI.Models
 {
-    public class GroupRequest
+    /// <summary>
+    /// Request: Group
+    /// </summary>
+    public class GroupReq
     {
         [Required]
         public string Name { get; set; }
     }
 
-    public class GroupResponse
+    /// <summary>
+    /// Request: Group with Id
+    /// </summary>
+    public class GroupWithIdReq
+    {
+        [Required]
+        public int GroupId { get; set; }
+
+        [Required]
+        public string Name { get; set; }
+    }
+
+    /// <summary>
+    /// Response: Group
+    /// </summary>
+    public class GroupRes
     {
         public int GroupId { get; set; }
         public string Name { get; set; }
 
-        public GroupResponse(Group group)
+        public GroupRes(Group group)
         {
             GroupId = group.GroupId;
             Name = group.Name;
         }
     }
 
-    public class GroupDetailWithCustomersResponse
+    /// <summary>
+    /// Response: Group with Customers
+    /// </summary>
+    public class GroupWithCustsRes
     {
         public int GroupId { get; set; }
         public string Name { get; set; }
         public ICollection<CustomerSimpleResponse> Customers { get; set; }
 
-        public GroupDetailWithCustomersResponse(Group group)
+        public GroupWithCustsRes(Group group)
         {
             GroupId = group.GroupId;
             Name = group.Name;
@@ -50,12 +71,4 @@ namespace WebAPI.Models
         }
     }
 
-    public class GroupWithIdRequest
-    {
-        [Required]
-        public int GroupId { get; set; }
-
-        [Required]
-        public string Name { get; set; }
-    }
 }

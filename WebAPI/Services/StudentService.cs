@@ -12,10 +12,10 @@ namespace WebAPI.Services
 {
     public interface IStudentService
     {
-        Task<StudentResponse> CreateAsync(StudentRequest model);
+        Task<StudentRes> CreateAsync(StudentReq model);
         Task<bool> ChangeRoleAsync(int studentId, StudentRoleRequest model);
-        Task<IEnumerable<StudentSimpleResponse>> GetListAsync();
-        Task<StudentDetailResponse> GetAsync(int studentId);
+        Task<IEnumerable<StudentNameRes>> GetListAsync();
+        Task<StudentWithActivRes> GetAsync(int studentId);
     }
 
     public class StudentService : IStudentService
@@ -31,18 +31,18 @@ namespace WebAPI.Services
             _addressService = addressService;
         }
 
-        public async Task<IEnumerable<StudentSimpleResponse>> GetListAsync()
+        public async Task<IEnumerable<StudentNameRes>> GetListAsync()
         {
             var students = await _context.Students.ToListAsync();
-            List<StudentSimpleResponse> output = new List<StudentSimpleResponse>();
+            List<StudentNameRes> output = new List<StudentNameRes>();
             foreach (var student in students)
             {
-                output.Add(new StudentSimpleResponse(student));
+                output.Add(new StudentNameRes(student));
             }
             return output;
         }
 
-        public async Task<StudentDetailResponse> GetAsync(int studentId)
+        public async Task<StudentWithActivRes> GetAsync(int studentId)
         {
             var student = await _context.Students
                 .Include(st => st.User)
@@ -52,10 +52,10 @@ namespace WebAPI.Services
             {
                 return null;
             }
-            return new StudentDetailResponse(student);
+            return new StudentWithActivRes(student);
         }
 
-        public async Task<StudentResponse> CreateAsync(StudentRequest model)
+        public async Task<StudentRes> CreateAsync(StudentReq model)
         {
             User user = await _userService.CreateUserAsync(model.Email, model.Password, UserRoles.StudentUnver);
             Address address = _addressService.Create(model.Address);
@@ -72,7 +72,7 @@ namespace WebAPI.Services
             _context.Students.Add(student);
             await _context.SaveChangesAsync();
 
-            return new StudentResponse(student);
+            return new StudentRes(student);
         }
 
         public async Task<bool> ChangeRoleAsync(int studentId, StudentRoleRequest model)

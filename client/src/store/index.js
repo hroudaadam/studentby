@@ -2,21 +2,23 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import authentication from './authentication';
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     baseApiUrl: 'https://localhost:5001/api',
     userRoles: {
-      student: "Student",
-      studentUnver: "StudentUnver",
-      customer: "Customer",
-      operator: "Operator"
+      student: "student",
+      studentInact: "studentInact",
+      customer: "customer",
+      operator: "operator"
     },
     jobApplicationStates: {
-      pending: "Pending",
-      approved: "Approved",
-      denied: "Denied"
+      pending: "pending",
+      approved: "approved",
+      denied: "denied",
+      attended: "attended",
+      absent: "absent"
     }
   },
   mutations: {
