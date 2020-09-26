@@ -1,6 +1,10 @@
 <template>
   <div name="OperatorCustomerCreate">
-    <PageHeader v-bind:title="'Uživatelé'"></PageHeader>
+    <PageHeader v-bind:title="'Uživatelé'">
+      <b-button variant="primary" :to="{name: 'OperatorGroupDetail', params: {groupId: this.groupId}}"
+        >Zpět</b-button
+      >
+    </PageHeader>
     <b-card>
       <b-form @submit.prevent>
         <b-form-group id="input-group-1" label="Email:" label-for="input-1">
@@ -27,6 +31,7 @@ import { mapGetters } from "vuex";
 import router from "../../router";
 import apiSevice from "../../helpers/apiService";
 import PageHeader from "../../components/PageHeader";
+import errorBox from "../../helpers/errorBox";
 
 export default {
   name: "OperatorCustomerCreate",
@@ -35,7 +40,6 @@ export default {
   },
   data() {
     return {
-      errorMsg: null,
       email: null,
       firstName: null,
       lastName: null,
@@ -47,7 +51,6 @@ export default {
   },
   methods: {
     createCustomer() {
-      this.errorMsg = null;
       /* var body = {
         email: this.email,
         firstName: this.firstName,
@@ -57,10 +60,10 @@ export default {
       apiSevice
         .post("/customers", this.body)
         .then(() => {
-          router.push({name: 'OperatorGroupDetail', params: {id: this.groupId}})
+          router.push({name: 'OperatorGroupDetail', params: {groupId: this.groupId}})
         })
         .catch((error) => {
-          this.errorMsg = error.message;
+          errorBox.new(this, error.message);
         });
     },
   },

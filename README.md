@@ -39,18 +39,26 @@
 - úprava účtu
 ## Analýza - pohled operatora
 - login
+- vytvoření skupiny
+    - BE
+        - další informace (info, adresa, typ, kontakt)
+- přidání účtu ke skupině
+    - BE
+        - generace hesla - poslání mailem
 - aktivace studenta
 - přijetí/zamítnutí přihlášky
 - zapsání práce studenta (hodiny, stav)
 - deaktivace studenta
-- vytvoření skupiny
-- přidání účtu ke skupině
+    - BE
+        - zrušení přihlášek
 - úprava skupiny
 - deaktivace zákazníka
 ## Analýza - pohled zákazníka
 - login
 - vytvoření nabídky
 - zrušení nabídky
+    - BE
+        - strike - pokud jsou přihlášky
 - prohlížení nabídek skupiny
 - prohlížení účtu
 - prohlížení skupiny

@@ -40,6 +40,7 @@
 import { mapMutations } from "vuex";
 import apiSevice from "../helpers/apiService";
 import router from "../router";
+import errorBox from "../helpers/errorBox";
 
 export default {
   name: "Login",
@@ -48,14 +49,12 @@ export default {
     return {
       email: null,
       password: null,
-      errorMsg: null,
     };
   },
   computed: {},
   methods: {
     ...mapMutations("authentication", ["setAccessToken", "setUserRole"]),
     login() {
-      this.errorMsg = null;
       var body = {
         email: this.email,
         password: this.password,
@@ -68,7 +67,7 @@ export default {
           router.push({name: 'Home'});
         })
         .catch((error) => {
-          this.errorMsg = error.message;
+          errorBox.new(this, error.message);
         });
     },
   },
