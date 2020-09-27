@@ -33,9 +33,9 @@ namespace WebAPI.Models
     }
 
     /// <summary>
-    /// 
+    /// Request: Student with role
     /// </summary>
-    public class StudentRoleRequest
+    public class StudentWithRoleReq
     {
         [Required]
         public int StudentId { get; set; }

@@ -50,7 +50,7 @@ namespace WebAPI.Models
     {
         public int GroupId { get; set; }
         public string Name { get; set; }
-        public ICollection<CustomerSimpleResponse> Customers { get; set; }
+        public ICollection<CustomerRes> Customers { get; set; }
 
         public GroupWithCustsRes(Group group)
         {
@@ -59,13 +59,13 @@ namespace WebAPI.Models
             Customers = MapCustomers(group.Customers);
         }
 
-        private List<CustomerSimpleResponse> MapCustomers(ICollection<Customer> customers)
+        private List<CustomerRes> MapCustomers(ICollection<Customer> customers)
         {
-            var output = new List<CustomerSimpleResponse>();
+            var output = new List<CustomerRes>();
 
             foreach (var customer in customers)
             {
-                output.Add(new CustomerSimpleResponse(customer));
+                output.Add(new CustomerRes(customer));
             }
             return output;
         }

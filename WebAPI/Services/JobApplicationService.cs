@@ -64,7 +64,6 @@ namespace WebAPI.Services
             }
             return result;
         }
-
         public async Task<JobApplicationWithJoRes> GetDetailStudentAsync(int jobApplicationId, int userId)
         {
             var jobApplication = await _context.JobApplications
@@ -120,7 +119,6 @@ namespace WebAPI.Services
             }
             return new JobApplicationWithStudRes(jobApplication);
         }
-
         public async Task<JobApplicationRes> CreateAsync(JobApplicationReq model, int userId)
         {
             // kontrola existence nabídky

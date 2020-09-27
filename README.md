@@ -1,8 +1,6 @@
 # Studentby
 ## TODO - Prio
-- úprava JobApplication
 ## TODO - Backlog
-- promyslet datamodel po vykonání práce (počet hodin,...)
 - SMTP
 - filtery a sorty pro endpointy
 - UNIT testy

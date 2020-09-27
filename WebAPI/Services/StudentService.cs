@@ -13,7 +13,7 @@ namespace WebAPI.Services
     public interface IStudentService
     {
         Task<StudentRes> CreateAsync(StudentReq model);
-        Task<bool> ChangeRoleAsync(int studentId, StudentRoleRequest model);
+        Task<bool> ChangeRoleAsync(int studentId, StudentWithRoleReq model);
         Task<IEnumerable<StudentNameRes>> GetListAsync();
         Task<StudentWithActivRes> GetAsync(int studentId);
     }
@@ -75,7 +75,7 @@ namespace WebAPI.Services
             return new StudentRes(student);
         }
 
-        public async Task<bool> ChangeRoleAsync(int studentId, StudentRoleRequest model)
+        public async Task<bool> ChangeRoleAsync(int studentId, StudentWithRoleReq model)
         {
             if (studentId != model.StudentId)
             {

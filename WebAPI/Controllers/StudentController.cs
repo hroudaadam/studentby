@@ -64,7 +64,7 @@ namespace WebAPI.Controllers
         [HttpPut("{studentId}")]
         public async Task<IActionResult> Put(
             [FromRoute] int studentId,
-            [FromBody] StudentRoleRequest request)
+            [FromBody] StudentWithRoleReq request)
         {
             bool response = await _studentService.ChangeRoleAsync(studentId, request);
             if (!response)

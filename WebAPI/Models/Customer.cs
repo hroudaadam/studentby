@@ -8,9 +8,9 @@ using WebAPI.Entities;
 namespace WebAPI.Models
 {
     /// <summary>
-    /// 
+    /// Request: Customer
     /// </summary>
-    public class CustomerRequest
+    public class CustomerReq
     {
         [Required]
         public string Email { get; set; }
@@ -26,33 +26,39 @@ namespace WebAPI.Models
     }
 
     /// <summary>
-    /// 
+    /// Response: Customer 
     /// </summary>
-    public class CustomerResponse
-    {
-        public string Email { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-
-        public CustomerResponse(Customer customer)
-        {
-            Email = customer.User.Email;
-            FirstName = customer.FirstName;
-            LastName = customer.LastName;
-        }
-    }
-
-    public class CustomerSimpleResponse
+    public class CustomerRes
     {
         public int CustomerId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
-        public CustomerSimpleResponse(Customer customer)
+        public CustomerRes(Customer customer)
         {
             CustomerId = customer.CustomerId;
             FirstName = customer.FirstName;
             LastName = customer.LastName;
+        }
+    }
+
+    /// <summary>
+    /// Response: Customer detail
+    /// </summary>
+    public class CustomerDetailRes
+    {
+        public int CustomerId { get; set; }
+        public string Email { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public GroupRes Group { get; set; }
+
+        public CustomerDetailRes(Customer customer)
+        {
+            CustomerId = customer.CustomerId;
+            FirstName = customer.FirstName;
+            LastName = customer.LastName;
+            Email = customer.User.Email;
         }
     }
 }

@@ -16,19 +16,17 @@ namespace WebAPI.Controllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
-        private readonly IJobOfferService _jobOfferService;
         private readonly ICustomerService _customerService;
 
-        public CustomerController(IJobOfferService jobOfferService, ICustomerService customerService)
+        public CustomerController(ICustomerService customerService)
         {
-            _jobOfferService = jobOfferService;
             _customerService = customerService;
         }
 
         // POST: api/customers
         [HttpPost]
         [Authorize(Roles = UserRoles.Operator)]
-        public async Task<ActionResult<CustomerResponse>> Post([FromBody] CustomerRequest request)
+        public async Task<ActionResult<CustomerRes>> Post([FromBody] CustomerReq request)
         {
             var response = await _customerService.CreateAsync(request);
             return StatusCode(201, response);
