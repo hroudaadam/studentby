@@ -73,7 +73,7 @@ namespace WebAPI.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public AddressResponse Address { get; set; }
+        public AddressRes Address { get; set; }
         public bool Activated { get; set; }
 
         public StudentWithActivRes(Student student)
@@ -83,7 +83,7 @@ namespace WebAPI.Models
             FirstName = student.FirstName;
             LastName = student.LastName;
             DateOfBirth = student.DateOfBirth;
-            Address = new AddressResponse(student.Address);
+            Address = new AddressRes(student.Address);
             Activated = student.User.Role == UserRoles.Student;
         }
     }
@@ -98,7 +98,7 @@ namespace WebAPI.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public AddressResponse Address { get; set; }
+        public AddressRes Address { get; set; }
 
         public StudentDetailRes(Student student)
         {
@@ -107,7 +107,7 @@ namespace WebAPI.Models
             FirstName = student.FirstName;
             LastName = student.LastName;
             DateOfBirth = student.DateOfBirth;
-            Address = new AddressResponse(student.Address);
+            Address = new AddressRes(student.Address);
         }
     }
 

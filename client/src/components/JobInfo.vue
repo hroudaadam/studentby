@@ -1,25 +1,50 @@
 <template>
   <div class="JobInfo">
     <div class="d-flex w-100 justify-content-between">
-      <b-card-title>{{job.title}}</b-card-title>
+      <h5>{{job.title}}</h5>
       <slot></slot>
     </div>
-    <b-card-sub-title class="mb-2">{{start}} - {{end}}</b-card-sub-title>
 
-    <b-card-text>
-      <b class="mb-2">Základní informace</b>
-      <p>
-        Odměna: {{job.wage}} Kč/h
-        <br />
-        Volná místa: {{job.freeSpaces}} z {{job.spaces}}
-        <br />
-      </p>
-    </b-card-text>
-
-    <b-card-text>
-      <b class="mb-2">Podrobnosti</b>
-      <p>{{job.description}}</p>
-    </b-card-text>
+    <b-row>
+      <b-col cols="3" lg="2">
+        <label>Adresa:</label>
+      </b-col>
+      <b-col cols="9" lg="10">
+        <p>{{address}}</p>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col cols="3" lg="2">
+        <label>Termín:</label>
+      </b-col>
+      <b-col cols="9" lg="10">
+        <p>{{start}} - {{end}}</p>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col cols="3" lg="2">
+        <label>Odměna:</label>
+      </b-col>
+      <b-col cols="9" lg="10">
+        <p>{{job.wage}} Kč</p>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col cols="3" lg="2">
+        <label>Volná místa:</label>
+      </b-col>
+      <b-col cols="9" lg="10">
+        <p>{{job.freeSpaces}} z {{job.spaces}}</p>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col cols="12" lg="2">
+        <label>Podrobnosti:</label>
+      </b-col>
+      <b-col cols="12" lg="10">
+        <p>{{job.description}}</p>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
@@ -36,6 +61,9 @@ export default {
     },
     end: function () {
       return mixinService.dateToString(this.job.end);
+    },
+    address: function () {
+      return mixinService.addressToString(this.job.address);
     },
   },
 };

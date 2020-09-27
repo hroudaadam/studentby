@@ -9,10 +9,8 @@
           <JobInfo v-bind:job="jobApplication.jobOffer">
             <JobApplicationState v-bind:jobApplicationState="jobApplication.state"></JobApplicationState>
           </JobInfo>
-        </b-card-body>
-
-        <b-card-body>
-          <b-button v-on:click="cancelJobApplication">Zrušit</b-button>
+          <hr/>
+          <b-button v-on:click="cancelJobApplication" size="sm">Zrušit</b-button>
         </b-card-body>
       </b-card>
     </div>

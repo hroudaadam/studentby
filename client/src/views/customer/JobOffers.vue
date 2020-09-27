@@ -9,7 +9,7 @@
           v-bind:key="jobOffer.jobOfferId"
           v-for="jobOffer in jobOffers"
           v-bind:job="jobOffer"
-          v-bind:onClickLink="{ name: 'CustomerJobOfferDetail', params: {id: jobOffer.jobOfferId}}"
+          v-bind:onClickLink="{ name: 'CustomerJobOfferDetail', params: {jobOfferId: jobOffer.jobOfferId}}"
         ></JobListItem>
       </b-list-group>
     </div>

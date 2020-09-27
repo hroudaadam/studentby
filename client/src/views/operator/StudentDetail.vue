@@ -8,17 +8,12 @@
     <div v-if="!!this.student">
       <b-card no-body>
         <b-card-body>
-          <b-card-text>
-            <b class="mb-2">Informace</b>
-            <p>
-              Jméno: {{ student.firstName }} {{ student.lastName }} <br/>
-              Datum narození: {{ dateOfBirth }} <br/>
-              Adresa: město <br />
-            </p>
-          </b-card-text>
+            <div class="mb-2"><h5>Údaje</h5></div>
+            <StudentInfo v-bind:student="student"></StudentInfo>
 
-          <b-button v-if="student.activated" variant="danger" v-on:click="editStudent(false)">Deaktivovat</b-button>
-          <b-button v-else variant="success" v-on:click="editStudent(true)">Aktivovat</b-button>
+          <hr/>
+          <b-button v-if="student.activated" variant="danger" v-on:click="editStudent(false)" size="sm">Deaktivovat</b-button>
+          <b-button v-else variant="success" v-on:click="editStudent(true)" size="sm">Aktivovat</b-button>
 
         </b-card-body>
       </b-card>
@@ -28,6 +23,7 @@
 
 <script>
 import PageHeader from "../../components/PageHeader";
+import StudentInfo from '../../components/StudentInfo';
 import errorBox from '../../helpers/errorBox';
 import apiService from "../../helpers/apiService";
 import mixinService from "../../helpers/mixinService";
@@ -38,6 +34,7 @@ export default {
   name: "OperatorStudentDetail",
   components: {
     PageHeader,
+    StudentInfo
   },
   props: {
     studentId: Number,
@@ -61,7 +58,7 @@ export default {
         });
     },
     editStudent(activate) {
-      var role = activate ? this.userRoles.student : this.userRoles.studentUnver;
+      var role = activate ? this.userRoles.student : this.userRoles.studentInact;
       var body = {
         studentId: this.studentId,
         role: role
@@ -81,10 +78,12 @@ export default {
   computed: {
     ...mapGetters("authentication", ["isOperatorLogged"]),
     ...mapState(["userRoles"]),
-
     dateOfBirth: function () {
       return mixinService.dateOfBirthToString(this.student.dateOfBirth);
-    }
+    },
+    address: function () {
+      return mixinService.addressToString(this.student.address);
+    },
   },
   mounted() {
     if (!this.isOperatorLogged) {

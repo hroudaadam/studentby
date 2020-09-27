@@ -19,14 +19,14 @@ namespace WebAPI.Models
         public string Number { get; set; }
     }
 
-    public class AddressResponse
+    public class AddressRes
     {
         public string Country { get; set; }
         public string City { get; set; }
         public string Street { get; set; }
         public string Number { get; set; }
 
-        public AddressResponse(Address address)
+        public AddressRes(Address address)
         {
             Country = address.Country;
             City = address.City;

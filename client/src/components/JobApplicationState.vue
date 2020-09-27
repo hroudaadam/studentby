@@ -1,7 +1,30 @@
 <template>
   <div class="JobApplicationState">
     <div>
-      <div v-if="!attendence">
+      <div v-if="!!attendance">
+        <b-badge
+          pill
+          class="p-2"
+          v-if="jobApplicationState === jobApplicationStates.approved"
+          variant="warning"
+          >Nevyřízeno</b-badge
+        >
+        <b-badge
+          pill
+          class="p-2"
+          v-if="jobApplicationState === jobApplicationStates.attended"
+          variant="success"
+          >Účast</b-badge
+        >
+        <b-badge
+          pill
+          class="p-2"
+          v-if="jobApplicationState === jobApplicationStates.absent"
+          variant="danger"
+          >Absence</b-badge
+        >
+      </div>
+      <div v-else>
         <b-badge
           pill
           class="p-2"
@@ -38,29 +61,6 @@
           >Absence</b-badge
         >
       </div>
-      <div v-else>
-        <b-badge
-          pill
-          class="p-2"
-          v-if="jobApplicationState === jobApplicationStates.approved"
-          variant="warning"
-          >Nevyřízeno</b-badge
-        >
-        <b-badge
-          pill
-          class="p-2"
-          v-if="jobApplicationState === jobApplicationStates.attended"
-          variant="success"
-          >Účast</b-badge
-        >
-        <b-badge
-          pill
-          class="p-2"
-          v-if="jobApplicationState === jobApplicationStates.absent"
-          variant="danger"
-          >Absence</b-badge
-        >
-      </div>
     </div>
   </div>
 </template>
@@ -73,7 +73,7 @@ export default {
   components: {},
   props: {
     jobApplicationState: String,
-    attendace: Boolean,
+    attendance: Boolean,
   },
   data() {
     return {};

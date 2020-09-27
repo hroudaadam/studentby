@@ -1,37 +1,54 @@
 <template>
   <div class="Login">
-    <b-card no-body class="mx-auto text-center" style="width: 380px">
-      <b-card-body>
-        <b-card-title>Přihlášení</b-card-title>
-        <b-form @submit.prevent>
-          <b-form-group id="input-group-1">
-            <b-form-input id="input-1" required placeholder="Email" v-model="email"></b-form-input>
-          </b-form-group>
+    <b-row>
+      <b-col cols="0" lg="4"></b-col>
+      <b-col cols="12" lg="4">
+        <b-card no-body class="mx-auto text-center">
+          <b-card-body>
+            <b-card-title>Přihlášení</b-card-title>
+            <b-form @submit.prevent>
+              <b-form-group id="input-group-1">
+                <b-form-input
+                  id="input-1"
+                  required
+                  placeholder="Email"
+                  v-model="email"
+                ></b-form-input>
+              </b-form-group>
 
-          <b-form-group id="input-group-2">
-            <b-form-input
-              id="input-2"
-              type="password"
-              required
-              placeholder="Heslo"
-              v-model="password"
-            ></b-form-input>
-          </b-form-group>
+              <b-form-group id="input-group-2">
+                <b-form-input
+                  id="input-2"
+                  type="password"
+                  required
+                  placeholder="Heslo"
+                  v-model="password"
+                ></b-form-input>
+              </b-form-group>
 
-          <b-button
-            block
-            type="submit"
-            variant="primary"
-            class="mb-2"
-            v-on:click="this.login"
-          >Přihlásit</b-button>
-          <b-button block variant class="mb-2" :to="{name: 'StudentRegister'}">Vytvořit nový účet</b-button>
+              <b-button
+                block
+                type="submit"
+                variant="primary"
+                class="mb-2"
+                v-on:click="this.login"
+                >Přihlásit</b-button
+              >
+              <b-button
+                block
+                variant
+                class="mb-2"
+                :to="{ name: 'StudentRegister' }"
+                >Vytvořit nový účet</b-button
+              >
 
-          <b-link :to="{name: 'Home'}">Zapomněli jste heslo?</b-link>
-        </b-form>
-        
-      </b-card-body>
-    </b-card>
+              <b-link :to="{ name: 'Home' }">Zapomněli jste heslo?</b-link>
+            </b-form>
+          </b-card-body>
+        </b-card>
+      </b-col>
+      <b-col cols="0" lg="4"></b-col>
+    </b-row>
   </div>
 </template>
 
@@ -63,7 +80,7 @@ export default {
         .then((response) => {
           this.setAccessToken(response.token);
           this.setUserRole(response.role);
-          router.push({name: 'Home'});
+          router.push({ name: "Home" });
         })
         .catch((error) => {
           errorBox.new(this, error.message);

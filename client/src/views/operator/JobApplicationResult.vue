@@ -13,17 +13,22 @@
     <div v-if="!!this.jobApplication">
       <b-card no-body>
         <b-card-body>
-          <b-card-text>
-            <b class="mb-2">Student</b>
-            <p>
-              Jméno: {{ jobApplication.student.firstName }}
-              {{ jobApplication.student.lastName }} <br />Datum narození:
-              {{ dateOfBirth }} <br />Adresa: město
-              <br />
-            </p>
-            <b-button variant="success" class="mr-2" size="sm" v-on:click="editJobApplication(true)">Účast</b-button>
-            <b-button variant="danger" size="sm" v-on:click="editJobApplication(false)">Absence</b-button>
-          </b-card-text>
+          <div class="mb-2"><h5>Údaje</h5></div>
+          <StudentInfo v-bind:student="jobApplication.student"></StudentInfo>
+          <hr />
+          <b-button
+            variant="success"
+            class="mr-2"
+            size="sm"
+            v-on:click="editJobApplication(true)"
+            >Účast</b-button
+          >
+          <b-button
+            variant="danger"
+            size="sm"
+            v-on:click="editJobApplication(false)"
+            >Absence</b-button
+          >
         </b-card-body>
       </b-card>
     </div>
@@ -32,6 +37,7 @@
 
 <script>
 import PageHeader from "../../components/PageHeader";
+import StudentInfo from "../../components/StudentInfo";
 
 import { mapGetters, mapState } from "vuex";
 import router from "../../router";
@@ -47,6 +53,7 @@ export default {
   },
   components: {
     PageHeader,
+    StudentInfo,
   },
   data() {
     return {

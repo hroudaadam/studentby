@@ -2,13 +2,15 @@
   <b-list-group-item :to="onClickLink" class="flex-column align-items-start">
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1">{{job.title}}</h5>      
-      <small v-if="!!job.wage">{{job.wage}} Kč/h</small>
       <slot></slot>
     </div>
 
     <p class="mb-1">{{start}} - {{end}}</p>
 
-    <small>město</small>
+    <div class="d-flex w-100 justify-content-between">
+      <p class="mb-1">adresa</p>    
+      <small v-if="!!job.wage">{{job.wage}} Kč/h</small>
+    </div>
   </b-list-group-item>
 </template>
 

@@ -68,8 +68,8 @@ namespace WebAPI.Services
         public async Task<JobApplicationWithJoRes> GetDetailStudentAsync(int jobApplicationId, int userId)
         {
             var jobApplication = await _context.JobApplications
-                .Include(ja => ja.JobOffer)
-                    .ThenInclude(jo => jo.Group)
+                .Include(ja => ja.JobOffer).ThenInclude(jo => jo.Group)
+                .Include(ja => ja.JobOffer).ThenInclude(jo => jo.Address)
                 .FirstOrDefaultAsync(ja => ja.JobApplicationId == jobApplicationId);
             
             // kontrola existence přihlášky
@@ -96,6 +96,7 @@ namespace WebAPI.Services
                 .Include(ja => ja.Student).ThenInclude(st => st.User)
                 .Include(ja => ja.Student).ThenInclude(st => st.Address)
                 .Include(ja => ja.JobOffer).ThenInclude(jo => jo.Group)
+                .Include(ja => ja.JobOffer).ThenInclude(jo => jo.Address)
                 .FirstOrDefaultAsync(ja => ja.JobApplicationId == jobApplicationId);
 
             if (jobApplication == null)

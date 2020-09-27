@@ -7,7 +7,8 @@
       <b-card no-body>
         <b-card-body>
           <JobInfo v-bind:job="jobOffer"></JobInfo>
-          <b-button v-on:click="deleteJobOffer">Smazat</b-button>
+          <hr/>
+          <b-button v-on:click="deleteJobOffer" size="sm">Smazat</b-button>
         </b-card-body>
       </b-card>
     </div>
@@ -25,7 +26,9 @@ import errorBox from '../../helpers/errorBox';
 
 export default {
   name: "CustomerJobOfferDetail",
-  props: ["id"],
+  props: {
+    jobOfferId: Number
+  },
   components: {
     PageHeader,
     JobInfo,
@@ -39,7 +42,7 @@ export default {
     getOfferDetail() {
       this.jobOffer = null;
       apiService
-        .get("/job-offers/" + this.id.toString())
+        .get("/job-offers/" + this.jobOfferId.toString())
         .then((response) => {
           this.jobOffer = response;
         })
@@ -49,7 +52,7 @@ export default {
     },
     deleteJobOffer() {
       apiService
-        .del("/job-offers/" + this.id.toString())
+        .del("/job-offers/" + this.jobOfferId.toString())
         .then(() => {
           router.push({name: 'CustomerJobOffers'});
         })

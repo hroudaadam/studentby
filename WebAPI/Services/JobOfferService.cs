@@ -91,6 +91,7 @@ namespace WebAPI.Services
         public async Task<JobOfferDetailRes> GetDetailStudentAsync(int jobOfferId)
         {
             var jobOffer = await _context.JobOffers
+                .Include(jo => jo.Address)
                 .Include(jo => jo.Group)
                 .FirstOrDefaultAsync(jo => jo.JobOfferId == jobOfferId);
 
@@ -111,6 +112,7 @@ namespace WebAPI.Services
                 .FirstOrDefaultAsync(us => us.UserId == userId);
 
             var jobOffer = await _context.JobOffers
+                .Include(jo => jo.Address)
                 .Include(jo => jo.Group)
                 .FirstOrDefaultAsync(jo => jo.JobOfferId == jobOfferId);
 
@@ -133,6 +135,8 @@ namespace WebAPI.Services
         public async Task<JobOfferWithJasRes> GetDetailOperatorAsync(int jobOfferId)
         {
             var jobOffer = await _context.JobOffers
+                .Include(jo => jo.Address)
+                .Include(jo => jo.Group)
                 .FirstOrDefaultAsync(jo => jo.JobOfferId == jobOfferId);
 
             // kontrola, zda nabídka existuje

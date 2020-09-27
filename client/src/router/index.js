@@ -71,7 +71,7 @@ const routes = [
     component: CustomerJobOffers,
   },
   {
-    path: '/customer/job-offers/:groupId',
+    path: '/customer/job-offers/:jobOfferId',
     name: 'CustomerJobOfferDetail',
     component: CustomerJobOfferDetail,
     props: true

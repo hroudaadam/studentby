@@ -19,15 +19,22 @@ function dateToIsoString(date, time) {
 function dateOfBirthToString(isoDate) {
     var date = new Date(isoDate);
     var strDate =
-        date.getDate() + '.' +
-        (date.getMonth() + 1) + '.' +
+        date.getDate() + '. ' +
+        (date.getMonth() + 1) + '. ' +
         date.getFullYear() + ' ';
     return strDate;
+}
+
+function addressToString(address) {
+    var output = address.city + ', ' + address.street + ' ' +
+        address.number;
+    return output;
 }
 
 
 export default {
     dateToString,
     dateToIsoString,
-    dateOfBirthToString
+    dateOfBirthToString,
+    addressToString
 }
