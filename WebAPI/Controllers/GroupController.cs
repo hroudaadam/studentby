@@ -13,6 +13,9 @@ using WebAPI.Services;
 
 namespace WebAPI.Controllers
 {
+    /// <summary>
+    /// Controller for Group
+    /// </summary>
     [Route("api/groups")]
     [ApiController]
     public class GroupController : ControllerBase
@@ -60,8 +63,8 @@ namespace WebAPI.Controllers
         [Authorize(Roles = UserRoles.Operator)]
         public async Task<ActionResult<GroupRes>> Put([FromBody] GroupWithIdReq request, [FromRoute] int groupId)
         {
-            var successful = await _groupService.EditAsync(request, groupId);
-            if (successful)
+            bool found = await _groupService.EditAsync(request, groupId);
+            if (found)
             {
                 return StatusCode(204);
             }

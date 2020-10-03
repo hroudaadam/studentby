@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Entities
 {
+    /// <summary>
+    /// JobOffer - entity
+    /// </summary>
     [Table("JobOffer")]
     public class JobOffer
     {

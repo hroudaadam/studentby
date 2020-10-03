@@ -43,7 +43,8 @@ export default {
     };
   },
   methods: {
-    getApplications() {
+    // get job applications
+    getJobApplications() {
       this.jobApplications = null;
       apiSevice
         .get("/job-applications")
@@ -56,13 +57,13 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("authentication", ["isStudentLogged"]),
+    ...mapGetters(["isStudentLogged"]),
   },
   mounted() {
     if (!this.isStudentLogged) {
       router.push({ name: "Login" });
     } else {
-      this.getApplications();
+      this.getJobApplications();
     }
   },
 };

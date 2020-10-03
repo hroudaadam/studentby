@@ -4,7 +4,6 @@
     <b-container class="mt-4">
       <router-view></router-view>
     </b-container>
-    
   </div>
 </template>
 
@@ -17,7 +16,6 @@ export default {
   components: {
     AppBar,
   },
-
   data: () => ({}),
 };
 </script>

@@ -10,7 +10,7 @@
             <JobApplicationState v-bind:jobApplicationState="jobApplication.state"></JobApplicationState>
           </JobInfo>
           <hr/>
-          <b-button v-on:click="cancelJobApplication" size="sm">Zrušit</b-button>
+          <b-button v-on:click="deleteJobApplication()" size="sm">Zrušit</b-button>
         </b-card-body>
       </b-card>
     </div>
@@ -42,7 +42,8 @@ export default {
     };
   },
   methods: {
-    getOfferDetail() {
+    // get job offer
+    getJobOffer() {
       this.jobApplication = null;
       apiService
         .get("/job-applications/" + this.jobApplicationId.toString())
@@ -53,7 +54,8 @@ export default {
           errorBox.new(error.message);
         });
     },    
-    cancelJobApplication() {
+    // delete job application
+    deleteJobApplication() {
       apiService
         .del("/job-applications/" + this.jobApplicationId.toString())
         .then(() => {
@@ -65,7 +67,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("authentication", ["isStudentLogged"]),
+    ...mapGetters(["isStudentLogged"]),
     start: function () {
       return mixinService.dateToString(this.jobApplication.start);
     },
@@ -77,7 +79,7 @@ export default {
     if (!this.isStudentLogged) {
       router.push({name: 'Login'});
     } else {
-      this.getOfferDetail();
+      this.getJobOffer();
     }
   },
 };

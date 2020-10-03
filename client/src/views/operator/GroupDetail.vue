@@ -42,6 +42,7 @@ import PageHeader from "../../components/PageHeader";
 import { mapGetters } from "vuex";
 import router from "../../router";
 import apiService from "../../helpers/apiService";
+import errorBox from "../../helpers/errorBox";
 
 export default {
   name: "OperatorGroupDetail",
@@ -54,10 +55,10 @@ export default {
   data() {
     return {
       group: null,
-      errorMsg: null,
     };
   },
   methods: {
+    // get group
     getGroup() {
       apiService
         .get("/groups/" + this.groupId.toString())
@@ -65,12 +66,12 @@ export default {
           this.group = response;
         })
         .catch((error) => {
-          this.errorMsg = error.message;
+          errorBox.new(this, error.message);
         });
     },
   },
   computed: {
-    ...mapGetters("authentication", ["isOperatorLogged"]),
+    ...mapGetters(["isOperatorLogged"]),
   },
   mounted() {
     if (!this.isOperatorLogged) {

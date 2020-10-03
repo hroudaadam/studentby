@@ -115,7 +115,7 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<ITestDTO>> TryAdam()
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
-            string userRole = await _userService.GetUserRole(userId);
+            string userRole = await _userService.GetRole(userId);
 
             if (userRole == UserRoles.Student)
             {

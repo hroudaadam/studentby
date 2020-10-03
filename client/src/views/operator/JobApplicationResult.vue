@@ -61,9 +61,9 @@ export default {
     };
   },
   methods: {
+    // get job application
     getJobApplication() {
       this.jobApplication = null;
-
       apiService
         .get(
           "/job-applications/" + this.jobApplicationId.toString() + "/result"
@@ -75,6 +75,7 @@ export default {
           errorBox.new(this, error.message);
         });
     },
+    // edit job application
     editJobApplication(attended) {
       var state = attended
         ? this.jobApplicationStates.attended
@@ -83,8 +84,6 @@ export default {
         jobApplicationId: this.jobApplicationId,
         state: state,
       };
-      console.log(body);
-
       apiService
         .put("/job-applications/" + this.jobApplicationId.toString(), body)
         .then(() => {
@@ -99,7 +98,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("authentication", ["isOperatorLogged"]),
+    ...mapGetters(["isOperatorLogged"]),
     ...mapState(["jobApplicationStates"]),
     dateOfBirth: function () {
       return mixinService.dateOfBirthToString(

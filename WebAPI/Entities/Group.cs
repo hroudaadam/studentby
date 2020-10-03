@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Entities
 {
+    /// <summary>
+    /// Group - entity
+    /// </summary>
     [Table("Group")]
     public class Group
     {

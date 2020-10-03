@@ -45,9 +45,9 @@ export default {
     };
   },
   methods: {
+    // get student
     getStudent() {
       this.student = null;
-
       apiService
         .get("/students/" + this.studentId.toString())
         .then((response) => {
@@ -57,17 +57,16 @@ export default {
           errorBox.new(this, error.message);
         });
     },
+    // edit student
     editStudent(activate) {
       var role = activate ? this.userRoles.student : this.userRoles.studentInact;
       var body = {
         studentId: this.studentId,
         role: role
       };
-
       apiService
         .put("/students/" + this.studentId.toString(), body)
         .then(() => {
-          console.log("Aktivováno");
           this.getStudent();
         })
         .catch((error) => {
@@ -76,7 +75,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("authentication", ["isOperatorLogged"]),
+    ...mapGetters(["isOperatorLogged"]),
     ...mapState(["userRoles"]),
     dateOfBirth: function () {
       return mixinService.dateOfBirthToString(this.student.dateOfBirth);

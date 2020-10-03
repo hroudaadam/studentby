@@ -23,7 +23,7 @@ import OperatorGroupDetail from '../views/operator/GroupDetail';
 import OperatorCustomerCreate from '../views/operator/CustomerCreate';
 import OperatorStudents from '../views/operator/Students';
 import OperatorStudentDetail from '../views/operator/StudentDetail';
-import OperatorJobApplicationResult from '../views/operator/JobApplicationResult'
+import OperatorJobApplicationResult from '../views/operator/JobApplicationResult';
 
 Vue.use(VueRouter);
 
@@ -142,11 +142,11 @@ const routes = [
     component: OperatorJobApplicationResult,
     props: true
   }
-]
+];
 
 const router = new VueRouter({
   mode: 'history',
   routes
-})
+});
 
-export default router
+export default router;

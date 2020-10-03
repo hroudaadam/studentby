@@ -13,6 +13,9 @@ using WebAPI.Services;
 
 namespace WebAPI.Controllers
 {
+    /// <summary>
+    /// Controller for JobOffer
+    /// </summary>
     [Route("api/job-offers")]
     [ApiController]
     public class JobOfferController : ControllerBase
@@ -32,7 +35,7 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<IEnumerable<JobOfferSimpleRes>>> GetList()
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
-            string userRole = await _userService.GetUserRole(userId);
+            string userRole = await _userService.GetRole(userId);
             IEnumerable<JobOfferSimpleRes> response;
 
             if (userRole == UserRoles.Student)
@@ -60,7 +63,7 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<IJobOfferDetail>> Get([FromRoute] int jobOfferId)
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
-            string userRole = await _userService.GetUserRole(userId);
+            string userRole = await _userService.GetRole(userId);
             IJobOfferDetail response;
 
             if (userRole == UserRoles.Student)
@@ -106,8 +109,8 @@ namespace WebAPI.Controllers
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
 
-            bool deleted = await _jobOfferService.DeleteAsync(jobOfferId, userId);
-            if (deleted)
+            bool found = await _jobOfferService.DeleteAsync(jobOfferId, userId);
+            if (found)
             {
                 return StatusCode(204);
             }

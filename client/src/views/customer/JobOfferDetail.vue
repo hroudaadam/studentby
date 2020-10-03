@@ -39,7 +39,8 @@ export default {
     };
   },
   methods: {
-    getOfferDetail() {
+    // get job offer
+    getJobOffer() {
       this.jobOffer = null;
       apiService
         .get("/job-offers/" + this.jobOfferId.toString())
@@ -50,6 +51,7 @@ export default {
           errorBox.new(this, error.message);          
         });
     },
+    // delete JobOffer
     deleteJobOffer() {
       apiService
         .del("/job-offers/" + this.jobOfferId.toString())
@@ -62,13 +64,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters("authentication", ["isCustomerLogged"]),
+    ...mapGetters(["isCustomerLogged"]),
   },
   mounted() {
     if (!this.isCustomerLogged) {
       router.push({ name: "Login" });
     } else {
-      this.getOfferDetail();
+      this.getJobOffer();
     }
   },
 };

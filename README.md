@@ -1,23 +1,17 @@
 # Studentby
 ## TODO - Prio
+- komentáře, dokumentace
+- validace DTO
+- finiš endpointů
 ## TODO - Backlog
+- BE - logger
+- UNIT testy
 - SMTP
 - filtery a sorty pro endpointy
-- UNIT testy
-- BE - logger
 - BE - anti POST spamming
 - UI načítání
-## Brainstrom
-- rozdělení controllerů podle rolí, aby bylo umožněno pro různé role různé DTO na requestu
-    - NEE!! DTO na requestu nikdy není jiné
-    - pro DTO na response využít Interface
-- samotnou logiku dělá pouze services
-- nelze upravovat nabídku - složitá BL
-    - mohou pouze zrušit
-- pro potvrzení práce využít jobApplication
-    - přibylo by: počet hodin a stavy (attended, unattended)
-    - PROČ NE?
-        - komplikovanost úpravy
+- najít práce a zdroje
+
 ## Analýza - pohled studenta
 - registrace
     - BE
@@ -65,6 +59,21 @@
 - prohlížení účtu
 - prohlížení skupiny
 - úprava účtu
+
+## Rešerše, teorie, atd
+- načtení jen části obsahu, ať je to rychlé (stránkování)
+- CORS
+- ukladani dat v DB v UTC formatu
+- JWT, refresh
+- project strucutre
+- async
+## Zdroje
+- REST API design rulebook - kniha (obsazená)
+- Modern API design with ASP.NET Core 2 (mám)
+- C# 8.0 and .NET Core 3.0 - Modern Cross-Platform Development (ebook)
+- Mastering ASP.NET Web API (ebook)
+- Building RESTful Web Services with .NET Core (ebook)
+
 ## Možné dodělávky
 - promyslet finance pro zákazníka (balíčky - počet nabídek/míst na měsíc)
 - promyslet hodnocení
@@ -72,4 +81,17 @@
     - nenastoupení na práci
     - pozdní zrušení přihlášky
     - celkové bodování studenta i skupiny
-
+## Nápady
+- We stand by by STUDENTBY
+- Things you can buy thanks to STUDENTBY
+## Brainstrom
+- rozdělení controllerů podle rolí, aby bylo umožněno pro různé role různé DTO na requestu
+    - NEE!! DTO na requestu nikdy není jiné
+    - pro DTO na response využít Interface
+- samotnou logiku dělá pouze services
+- nelze upravovat nabídku - složitá BL
+    - mohou pouze zrušit
+- pro potvrzení práce využít jobApplication
+    - přibylo by: počet hodin a stavy (attended, unattended)
+    - PROČ NE?
+        - komplikovanost úpravy

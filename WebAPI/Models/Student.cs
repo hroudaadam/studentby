@@ -29,7 +29,7 @@ namespace WebAPI.Models
         public DateTime? DateOfBirth { get; set; }
 
         [Required]
-        public AddressRequest Address { get; set; }
+        public AddressReq Address { get; set; }
     }
 
     /// <summary>
@@ -64,7 +64,7 @@ namespace WebAPI.Models
     }
 
     /// <summary>
-    /// Response: Student with activated
+    /// Response: Student with activated property
     /// </summary>
     public class StudentWithActivRes
     {

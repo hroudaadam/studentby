@@ -9,19 +9,30 @@ using WebAPI.Helpers;
 
 namespace WebAPI.Controllers
 {
+    /// <summary>
+    /// Controller for global error handler
+    /// </summary>
     [ApiController]
     public class ErrorController : ControllerBase
     {
+        /// <summary>
+        /// Global error handler
+        /// </summary>
+        /// <returns>
+        /// In case of server error - HTTP Response 500; In case of logic error - HTTP Response 400
+        /// </returns>
         [Route("/error")]
         public ActionResult<string> Error()
         {
             var exception = HttpContext.Features.Get<IExceptionHandlerFeature>().Error;
 
+            // if logic error
             if (exception is StudentbyException)
             {
                 return StatusCode(400, exception.Message);
             }
 
+            // if server error
             return StatusCode(500, "Objevila se chyba");
         }
     }

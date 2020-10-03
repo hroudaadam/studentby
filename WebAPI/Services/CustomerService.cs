@@ -14,6 +14,9 @@ namespace WebAPI.Services
         Task<CustomerRes> CreateAsync(CustomerReq model);
     }
 
+    /// <summary>
+    /// Service for Customer operations
+    /// </summary>
     public class CustomerService: ICustomerService
     {
         private readonly StudentbyContext _context;
@@ -25,11 +28,26 @@ namespace WebAPI.Services
             _userService = userService;
         }
 
+        /// <summary>
+        /// Create new Customer
+        /// </summary>
+        /// <param name="model">Customer DTO</param>
+        /// <returns>Customer DTO</returns>
         public async Task<CustomerRes> CreateAsync(CustomerReq model)
         {
-            User user = await _userService.CreateUserAsync(model.Email, "test", UserRoles.Customer);
+            // !!! autogen password
+            string password = "text";
+            // create user
+            User user = await _userService.CreateAsync(model.Email, password, UserRoles.Customer);
             Group group = await _context.Groups.SingleOrDefaultAsync(x => x.GroupId == model.GroupId);
 
+            // group not found
+            if (group == null)
+            {
+                throw new StudentbyException("Skupina neexistuje");
+            }
+
+            // create customer
             Customer customer = new Customer
             {
                 FirstName = model.FirstName,
@@ -39,7 +57,6 @@ namespace WebAPI.Services
             };
             _context.Customers.Add(customer);
             await _context.SaveChangesAsync();
-
             return new CustomerRes(customer);
         }
     }

@@ -8,6 +8,9 @@ using WebAPI.Models;
 
 namespace WebAPI.Models
 {
+    /// <summary>
+    /// Interface for JobOfferDetail detail
+    /// </summary>
     public interface IJobOfferDetail
     {
         int JobOfferId { get; set; }
@@ -38,7 +41,7 @@ namespace WebAPI.Models
         [Required]
         public DateTime End { get; set; }
         [Required]
-        public AddressRequest Address { get; set; }
+        public AddressReq Address { get; set; }
     }
 
     /// <summary>

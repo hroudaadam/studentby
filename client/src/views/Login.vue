@@ -12,7 +12,7 @@
                   id="input-1"
                   required
                   placeholder="Email"
-                  v-model="email"
+                  v-model="formData.email"
                 ></b-form-input>
               </b-form-group>
 
@@ -22,7 +22,7 @@
                   type="password"
                   required
                   placeholder="Heslo"
-                  v-model="password"
+                  v-model="formData.password"
                 ></b-form-input>
               </b-form-group>
 
@@ -31,7 +31,7 @@
                 type="submit"
                 variant="primary"
                 class="mb-2"
-                v-on:click="this.login"
+                v-on:click="login()"
                 >Přihlásit</b-button
               >
               <b-button
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapActions } from "vuex";
 import apiSevice from "../helpers/apiService";
 import router from "../router";
 import errorBox from "../helpers/errorBox";
@@ -63,23 +63,22 @@ export default {
   components: {},
   data() {
     return {
-      email: null,
-      password: null,
+      formData: {
+        email: null,
+        password: null
+      }      
     };
   },
   computed: {},
   methods: {
-    ...mapMutations("authentication", ["setAccessToken", "setUserRole"]),
+    ...mapActions(["loginStore"]),
+    // login
     login() {
-      var body = {
-        email: this.email,
-        password: this.password,
-      };
       apiSevice
-        .post("/login", body)
+        .post("/login", this.formData)
         .then((response) => {
-          this.setAccessToken(response.token);
-          this.setUserRole(response.role);
+          // store login
+          this.loginStore(response);
           router.push({ name: "Home" });
         })
         .catch((error) => {

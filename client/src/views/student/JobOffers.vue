@@ -11,7 +11,6 @@
         ></JobListItem>
       </b-list-group>
     </div>
-    <b-alert show variant="danger" v-if="errorMsg" v-html="errorMsg"></b-alert>
   </div>
 </template>
 
@@ -21,6 +20,7 @@ import { mapGetters } from "vuex";
 import JobListItem from "../../components/JobListItem";
 import PageHeader from "../../components/PageHeader";
 import router from "../../router";
+import errorBox from "../../helpers/errorBox";
 
 export default {
   name: "StudentJobOffers",
@@ -30,13 +30,12 @@ export default {
   },
   data() {
     return {
-      jobOffers: null,
-      errorMsg: null,
+      jobOffers: null
     };
   },
   methods: {
-    getOffers() {
-      this.errorMsg = null;
+    // get job offers
+    getJobOffers() {
       this.jobOffers = null;
       apiService
         .get("/job-offers")
@@ -44,18 +43,18 @@ export default {
           this.jobOffers = response;
         })
         .catch((error) => {
-          this.errorMsg = error.message;
+          errorBox.new(this, error.message);
         });
     },
   },
   computed: {
-    ...mapGetters("authentication", ["isStudentLogged"]),
+    ...mapGetters(["isStudentLogged"]),
   },
   mounted() {
     if (!this.isStudentLogged) {
       router.push({name: 'Login'});
     } else {
-      this.getOffers();
+      this.getJobOffers();
     }
   },
 };

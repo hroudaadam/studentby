@@ -14,22 +14,23 @@ using WebAPI.Services;
 
 namespace WebAPI.Controllers
 {
+    /// <summary>
+    /// Global controller
+    /// </summary>
     [ApiController]
     [Route("api")]
     public class MainController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly ICustomerService _customerService;
 
-        public MainController(IUserService userService, ICustomerService customerService)
+        public MainController(IUserService userService)
         {
             _userService = userService;
-            _customerService = customerService;
         }
 
         // POST: api/login
         [HttpPost("login")]
-        public async Task<ActionResult<AuthenticateResponse>> Login(AuthenticateRequest request)
+        public async Task<ActionResult<UserRes>> Login(UserReq request)
         {
             var response = await _userService.AuthenticateAsync(request);
             return StatusCode(200, response);

@@ -35,7 +35,8 @@ export default {
     };
   },
   methods: {
-    getAllOffers() {
+    // get job offers
+    getJobOffers() {
       this.jobOffers = null;
 
       apiSevice
@@ -49,13 +50,13 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("authentication", ["isOperatorLogged"]),
+    ...mapGetters(["isOperatorLogged"]),
   },
   mounted() {
     if (!this.isOperatorLogged) {
       router.push({ name: "Login" });
     } else {
-      this.getAllOffers();
+      this.getJobOffers();
     }
   },
 };

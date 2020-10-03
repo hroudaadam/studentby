@@ -7,6 +7,9 @@ using WebAPI.Entities;
 
 namespace WebAPI.Models
 {
+    /// <summary>
+    /// Interface for JobApplication detail
+    /// </summary>
     public interface IJobApplicationDetail
     {
         int JobApplicationId { get; set; }

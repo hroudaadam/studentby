@@ -6,7 +6,6 @@
         <b-form-group id="input-group-1" label="Název:" label-for="input-1">
           <b-form-input id="input-1" v-model="name" type="text" placeholder="Název"></b-form-input>
         </b-form-group>
-        <b-alert show variant="danger" v-if="!!this.errorMsg">{{this.errorMsg}}</b-alert>
         <b-button type="submit" v-on:click="createGroup" variant="primary">Vytvořit</b-button>
       </b-form>
     </b-card>
@@ -18,6 +17,7 @@ import { mapGetters } from "vuex";
 import router from "../../router";
 import apiSevice from "../../helpers/apiService";
 import PageHeader from "../../components/PageHeader";
+import errorBox from "../../helpers/errorBox";
 
 export default {
   name: "OperatorGroupCreate",
@@ -25,29 +25,27 @@ export default {
     PageHeader
   },
   data() {
-    return {
-      errorMsg: null,
-      name: null
+    return {    
+      formData: {
+        name: null,
+      }
     };
   },
   methods: {
+    // create group
     createGroup() {
-      this.errorMsg = null;
-      var body = {
-        name: this.name,
-      };
       apiSevice
-        .post("/groups", body)
+        .post("/groups", this.formData)
         .then(() => {
           router.push({name: 'OperatorGroups'})
         })
         .catch((error) => {
-          this.errorMsg = error.message;
+          errorBox.new(this, error.message);
         });
     },
   },
   computed: {
-    ...mapGetters("authentication", ["isOperatorLogged"]),
+    ...mapGetters(["isOperatorLogged"]),
   },
   mounted() {
     if (!this.isOperatorLogged) {

@@ -13,6 +13,9 @@ using WebAPI.Services;
 
 namespace WebAPI.Controllers
 {
+    /// <summary>
+    /// Controller for JobApplication
+    /// </summary>
     [Route("api/job-applications")]
     [ApiController]
     public class JobApplicationController : ControllerBase
@@ -32,7 +35,7 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<IEnumerable<JobApplicationSimpleRes>>> GetAll()
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
-            string userRole = await _userService.GetUserRole(userId);
+            string userRole = await _userService.GetRole(userId);
             IEnumerable<JobApplicationSimpleRes> response;
 
             if (userRole == UserRoles.Student)
@@ -57,7 +60,7 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<IJobApplicationDetail>> Get([FromRoute] int jobApplicationId)
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
-            string userRole = await _userService.GetUserRole(userId);
+            string userRole = await _userService.GetRole(userId);
             IJobApplicationDetail response;
 
             if (userRole == UserRoles.Student)

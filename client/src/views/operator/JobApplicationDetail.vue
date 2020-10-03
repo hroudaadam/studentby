@@ -65,7 +65,8 @@ export default {
     };
   },
   methods: {
-    getOfferDetail() {
+    // get job application
+    getJobApplication() {
       this.jobApplication = null;
       apiService
         .get("/job-applications/" + this.jobApplicationId.toString())
@@ -74,8 +75,9 @@ export default {
         })
         .catch((error) => {
           errorBox.new(this, error.message);
-        });
+        });        
     },
+    // edit job application
     editJobApplication(approve) {
       var state = approve
         ? this.jobApplicationStates.approved
@@ -95,7 +97,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("authentication", ["isOperatorLogged"]),
+    ...mapGetters(["isOperatorLogged"]),
     ...mapState(["jobApplicationStates"]),
     start: function () {
       return mixinService.dateToString(this.jobApplication.joboffer.start);
@@ -116,7 +118,7 @@ export default {
     if (!this.isOperatorLogged) {
       router.push({ name: "Login" });
     } else {
-      this.getOfferDetail();
+      this.getJobApplication();
     }
   },
 };

@@ -13,11 +13,14 @@ namespace WebAPI.Services
     public interface IStudentService
     {
         Task<StudentRes> CreateAsync(StudentReq model);
-        Task<bool> ChangeRoleAsync(int studentId, StudentWithRoleReq model);
+        Task<bool> EditOperatorAsync(int studentId, StudentWithRoleReq model);
         Task<IEnumerable<StudentNameRes>> GetListAsync();
-        Task<StudentWithActivRes> GetAsync(int studentId);
+        Task<StudentWithActivRes> GetDetailAsync(int studentId);
     }
 
+    /// <summary>
+    /// Service for Student operations
+    /// </summary>
     public class StudentService : IStudentService
     {
         private readonly StudentbyContext _context;
@@ -31,6 +34,10 @@ namespace WebAPI.Services
             _addressService = addressService;
         }
 
+        /// <summary>
+        /// Get list of Students
+        /// </summary>
+        /// <returns>List of Student DTOs</returns>
         public async Task<IEnumerable<StudentNameRes>> GetListAsync()
         {
             var students = await _context.Students.ToListAsync();
@@ -42,7 +49,12 @@ namespace WebAPI.Services
             return output;
         }
 
-        public async Task<StudentWithActivRes> GetAsync(int studentId)
+        /// <summary>
+        /// Get detail of Student
+        /// </summary>
+        /// <param name="studentId">Student ID</param>
+        /// <returns>Student DTO</returns>
+        public async Task<StudentWithActivRes> GetDetailAsync(int studentId)
         {
             var student = await _context.Students
                 .Include(st => st.User)
@@ -55,11 +67,19 @@ namespace WebAPI.Services
             return new StudentWithActivRes(student);
         }
 
+        /// <summary>
+        /// Create Student
+        /// </summary>
+        /// <param name="model">Student DTO</param>
+        /// <returns>Student DTO</returns>
         public async Task<StudentRes> CreateAsync(StudentReq model)
         {
-            User user = await _userService.CreateUserAsync(model.Email, model.Password, UserRoles.StudentUnver);
+            // create user
+            User user = await _userService.CreateAsync(model.Email, model.Password, UserRoles.StudentInact);
+            // create address
             Address address = _addressService.Create(model.Address);
 
+            // create student
             Student student = new Student
             {
                 FirstName = model.FirstName,
@@ -68,15 +88,20 @@ namespace WebAPI.Services
                 User = user,
                 Address = address
             };
-
             _context.Students.Add(student);
             await _context.SaveChangesAsync();
-
             return new StudentRes(student);
         }
 
-        public async Task<bool> ChangeRoleAsync(int studentId, StudentWithRoleReq model)
+        /// <summary>
+        /// Edit Student (as Operator)
+        /// </summary>
+        /// <param name="studentId">Student ID</param>
+        /// <param name="model">Student DTO</param>
+        /// <returns>Bool if Student was found</returns>
+        public async Task<bool> EditOperatorAsync(int studentId, StudentWithRoleReq model)
         {
+            // route id and model id differs
             if (studentId != model.StudentId)
             {
                 throw new StudentbyException("Neplatný požadavek");
@@ -85,25 +110,27 @@ namespace WebAPI.Services
             var student = await _context.Students
                 .Include(st => st.User)
                 .FirstOrDefaultAsync(st => st.StudentId == studentId);
+            // student not found
             if (student == null)
             {
                 return false;
             }
 
-            // aktivace studentského účtu
-            if (student.User.Role == UserRoles.StudentUnver &&
+            // student activation
+            if (student.User.Role == UserRoles.StudentInact &&
                 model.Role == UserRoles.Student)
             {
-                // má ban??
+                // !!! if banned
                 student.User.Role = UserRoles.Student;
             }
-            // deaktivace studentského účtu
+            // student deactivation
             else if (student.User.Role == UserRoles.Student &&
-                model.Role == UserRoles.StudentUnver)
+                model.Role == UserRoles.StudentInact)
             {
-                // má nějaké aktivity??
-                student.User.Role = UserRoles.StudentUnver;
+                // !!! has activities
+                student.User.Role = UserRoles.StudentInact;
             }
+            // invalid role transation
             else
             {
                 throw new StudentbyException("Neplatný požadavek");

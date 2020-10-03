@@ -19,11 +19,14 @@ namespace WebAPI.Services
     public interface IUserService
     {
         Task<bool> EnsureOperatorAsync();
-        Task<AuthenticateResponse> AuthenticateAsync(AuthenticateRequest model);
-        Task<User> CreateUserAsync(string email, string password, string role);
-        Task<string> GetUserRole(int userId);
+        Task<UserRes> AuthenticateAsync(UserReq model);
+        Task<User> CreateAsync(string email, string password, string role);
+        Task<string> GetRole(int userId);
     }
 
+    /// <summary>
+    /// Service for User operations
+    /// </summary>
     public class UserService : IUserService
     {
         private readonly StudentbyContext _context;
@@ -35,17 +38,27 @@ namespace WebAPI.Services
             _appSettings = appSettings.Value;
         }
 
-        public async Task<User> CreateUserAsync(string email, string password, string role)
+        /// <summary>
+        /// Create User
+        /// </summary>
+        /// <param name="email">Email</param>
+        /// <param name="password">Password</param>
+        /// <param name="role">User role</param>
+        /// <returns>User entity</returns>
+        public async Task<User> CreateAsync(string email, string password, string role)
         {
             bool userExists = await _context.Users.AnyAsync(x => x.Email == email);
+            // user already exists (email not unique)
             if (userExists)
             {
                 throw new StudentbyException("Uživatel již existuje");
             }
 
+            // hash password
             byte[] hash, salt;
             HashPassword(password, out hash, out salt);
 
+            // create user
             var newUser = new User
             {
                 Email = email,
@@ -56,6 +69,12 @@ namespace WebAPI.Services
             return newUser;
         }
 
+        /// <summary>
+        /// Hash password
+        /// </summary>
+        /// <param name="password">Password</param>
+        /// <param name="hash">Hash</param>
+        /// <param name="salt">Salt</param>
         private void HashPassword(string password, out byte[] hash, out byte[] salt)
         {
             using (var hmac = new System.Security.Cryptography.HMACSHA256())
@@ -65,25 +84,39 @@ namespace WebAPI.Services
             }
         }
 
-        public async Task<AuthenticateResponse> AuthenticateAsync(AuthenticateRequest model)
+        /// <summary>
+        /// Authenticate User
+        /// </summary>
+        /// <param name="model">User DTO</param>
+        /// <returns>User DTO</returns>
+        public async Task<UserRes> AuthenticateAsync(UserReq model)
         {
             var user = await _context.Users.SingleOrDefaultAsync(x => x.Email == model.Email);
 
+            // user not found
             if (user == null)
             {
                 throw new StudentbyException("Špatný email nebo heslo");
             }
 
+            // invalid password
             if (!VerifyPassword(model.Password, user.PasswordHash, user.PasswordSalt))
             {
                 throw new StudentbyException("Špatný email nebo heslo");
             }
 
-            string token = GenerateJwtToken(user);
-
-            return new AuthenticateResponse(user, token);
+            // generate token
+            string token = GenerateJwt(user);
+            return new UserRes(user, token);
         }
 
+        /// <summary>
+        /// Verify password
+        /// </summary>
+        /// <param name="password">Password</param>
+        /// <param name="dbHash">Hash from DB</param>
+        /// <param name="dbSalt">Salt from DB</param>
+        /// <returns>Bool if password matches</returns>
         private bool VerifyPassword(string password, byte[] dbHash, byte[] dbSalt)
         {
             using (var hmac = new System.Security.Cryptography.HMACSHA256(dbSalt))
@@ -100,7 +133,12 @@ namespace WebAPI.Services
             return true;
         }
 
-        private string GenerateJwtToken(User user)
+        /// <summary>
+        /// Generate JWT
+        /// </summary>
+        /// <param name="user">User entity</param>
+        /// <returns>JWT</returns>
+        private string GenerateJwt(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
@@ -118,13 +156,27 @@ namespace WebAPI.Services
             return tokenHandler.WriteToken(token);
         }
 
-        /* ------------------------------------------------------------ */
+        /// <summary>
+        /// Get User role
+        /// </summary>
+        /// <param name="userId">User ID</param>
+        /// <returns>User role</returns>
+        public async Task<string> GetRole(int userId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(us => us.UserId == userId);
+            return user.Role;
+        }
 
+        // change concept
+        /// <summary>
+        /// Create operator (ensure)
+        /// </summary>
+        /// <returns>Bool if operator was created</returns>
         public async Task<bool> EnsureOperatorAsync()
         {
             if (!await _context.Users.AnyAsync(us => us.Role == UserRoles.Operator))
             {
-                User user = await CreateUserAsync("operator", "test", UserRoles.Operator);
+                User user = await CreateAsync("operator", "test", UserRoles.Operator);
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
                 return true;
@@ -132,11 +184,6 @@ namespace WebAPI.Services
             return false;            
         }  
         
-        public async Task<string> GetUserRole(int userId)
-        {
-            var user = await _context.Users.FirstOrDefaultAsync(us => us.UserId == userId);
-            return user.Role;
-        }
         
     }
 }

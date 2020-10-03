@@ -25,7 +25,7 @@
               <b-icon icon="person-fill"></b-icon>
             </template>
             <b-dropdown-item href="#">Profil</b-dropdown-item>
-            <b-dropdown-item v-on:click="logout">Odhlásit</b-dropdown-item>
+            <b-dropdown-item v-on:click="logoutStore()">Odhlásit</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
@@ -40,7 +40,7 @@ export default {
   name: "AppBar",
   components: {},
   computed: {
-    ...mapGetters("authentication", [
+    ...mapGetters([
       "isUserLogged",
       "isStudentLogged",
       "isCustomerLogged",
@@ -48,7 +48,7 @@ export default {
     ]),
   },
   methods: {
-    ...mapActions("authentication", ["logout"]),
+    ...mapActions(["logoutStore"]),
   },
 };
 </script>

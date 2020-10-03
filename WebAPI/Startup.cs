@@ -32,7 +32,7 @@ namespace WebAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // CORS
+            // CORS - configuration
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(
@@ -48,30 +48,30 @@ namespace WebAPI
             });
 
 
-            // DataBase
+            // DB context configuration
             services.AddDbContext<StudentbyContext>(options =>
             {
                 string connectionString = Configuration.GetConnectionString("DefaultConnection");
                 options.UseSqlServer(connectionString);
             });
 
-            // controllers
+            // controllers configuration
             services.AddControllers()
                 .AddNewtonsoftJson(options =>
                 {
-                    // serialization to UTC date format
+                    // JSON serialization to UTC date format
                     options.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
                 })
                 .ConfigureApiBehaviorOptions(options =>
                 {
-                    // DTO validation errors
+                    // DTO validation errors - custom response
                     options.InvalidModelStateResponseFactory = cont =>
                     {
                         var errors = string.Join(", ", cont.ModelState.Values.Where(v => v.Errors.Count > 0)
                           .SelectMany(v => v.Errors)
                           .Select(v => v.ErrorMessage));
 
-                        // global error handler
+                        // return 400 HTTP resposne
                         throw new StudentbyException(errors);
                     };
                 });
@@ -80,7 +80,7 @@ namespace WebAPI
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
 
-            // JWT
+            // JWT authentication configuration
             var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
 
@@ -98,7 +98,8 @@ namespace WebAPI
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(key),
                         ValidateIssuer = false,
-                        ValidateAudience = false
+                        ValidateAudience = false,
+                        ClockSkew = TimeSpan.Zero   
                     };
                 });
 
@@ -112,23 +113,20 @@ namespace WebAPI
             services.AddScoped<IAddressService, AddressService>();
         }
 
-
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+            // use custom error handler in production enviroment
             else
             {
                 app.UseExceptionHandler("/error");
             }
 
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
+            app.UseHttpsRedirection();            
             app.UseCors();
-
             app.UseRouting();
 
             app.UseAuthentication();

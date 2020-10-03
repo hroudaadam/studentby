@@ -8,7 +8,10 @@ using WebAPI.Entities;
 
 namespace WebAPI.Models
 {
-    public class AuthenticateRequest
+    /// <summary>
+    /// Request: User
+    /// </summary>
+    public class UserReq
     {
         [Required]
         public string Email { get; set; }
@@ -17,13 +20,16 @@ namespace WebAPI.Models
         public string Password { get; set; }
     }
 
-    public class AuthenticateResponse
+    /// <summary>
+    /// Response: User
+    /// </summary>
+    public class UserRes
     {
         public string Email { get; set; }
         public string Role { get; set; }
         public string Token { get; set; }
 
-        public AuthenticateResponse(User user, string token)
+        public UserRes(User user, string token)
         {
             Email = user.Email;
             Token = token;

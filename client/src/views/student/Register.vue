@@ -78,9 +78,6 @@
             ></b-form-datepicker>
           </b-form-group>
 
-          <b-alert show variant="danger" v-if="!!this.errorMsg">{{
-            this.errorMsg
-          }}</b-alert>
           <b-button
             block
             type="submit"
@@ -99,6 +96,7 @@
 // import { mapState, mapMutations, mapActions } from "vuex";
 import apiService from "@/helpers/apiService";
 import router from "@/router/index";
+import errorBox from "../../helpers/errorBox";
 
 export default {
   name: "StudentRegister",
@@ -117,21 +115,20 @@ export default {
           number: null
         },
         dateOfBirth: null,
-      },
-      errorMsg: null,
+      }
     };
   },
   computed: {},
   methods: {
+    // register
     register() {
-      this.errorMsg = null;
       apiService
         .post("/students", this.formData)
         .then(() => {
           router.push({ name: "Login" });
         })
         .catch((error) => {
-          this.errorMsg = error.message;
+          errorBox.new(this, error.message);
         });
     },
   },

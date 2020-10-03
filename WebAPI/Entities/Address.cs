@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Entities
 {
+    /// <summary>
+    /// Address - entity
+    /// </summary>
     [Table("Address")]
     public class Address
     {

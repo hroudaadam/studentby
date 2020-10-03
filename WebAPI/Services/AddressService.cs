@@ -9,9 +9,12 @@ namespace WebAPI.Services
 {
     public interface IAddressService
     {
-        Address Create(AddressRequest model);
+        Address Create(AddressReq model);
     }
 
+    /// <summary>
+    /// Service for Address operations
+    /// </summary>
     public class AddressService: IAddressService
     {
         private readonly StudentbyContext _context;
@@ -21,7 +24,13 @@ namespace WebAPI.Services
             _context = context;
         }
 
-        public Address Create(AddressRequest model)
+        // !!! replace with autoMapper 
+        /// <summary>
+        /// Create Address
+        /// </summary>
+        /// <param name="model">Address DTO</param>
+        /// <returns>Address entity</returns>
+        public Address Create(AddressReq model)
         {
             var address = new Address
             {

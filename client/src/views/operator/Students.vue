@@ -24,6 +24,7 @@ import { mapGetters } from "vuex";
 import PageHeader from "@/components/PageHeader";
 import router from "@/router/index";
 import apiSevice from "../../helpers/apiService";
+import errorBox from "../../helpers/errorBox";
 
 export default {
   name: "OperatorStudents",
@@ -37,11 +38,11 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("authentication", ["isOperatorLogged"]),
+    ...mapGetters(["isOperatorLogged"]),
   },
   methods: {
+    // get students
     getStudents() {
-      this.errorMsg = null;
       this.students = null;
       apiSevice
         .get("/students")
@@ -49,7 +50,7 @@ export default {
           this.students = response;
         })
         .catch((error) => {
-          this.errorMsg = error.message;
+          errorBox.new(this, error.message);
         });
     },
   },

@@ -13,8 +13,6 @@
           <b-button v-on:click="createJobApplication()" variant="primary">Přihlásit se</b-button>
         </b-card-body>
       </b-card>
-
-      <b-alert show variant="danger" v-if="errorMsg" v-html="errorMsg"></b-alert>
     </div>
   </div>
 </template>
@@ -27,6 +25,7 @@ import { mapGetters } from "vuex";
 import router from "../../router";
 import apiService from "../../helpers/apiService";
 import mixinService from "../../helpers/mixinService";
+import errorBox from "../../helpers/errorBox";
 
 export default {
   name: "StudentJobOfferDetail",
@@ -38,24 +37,23 @@ export default {
   data() {
     return {
       jobOffer: null,
-      errorMsg: null,
     };
   },
   methods: {
-    getOfferDetail() {
+    // get job offer
+    getJobOffer() {
       this.jobOffer = null;
-      this.errorMsg = null;
       apiService
         .get("/job-offers/" + this.jobOfferId.toString())
         .then((response) => {
           this.jobOffer = response;
         })
         .catch((error) => {
-          this.errorMsg = error.message;
+          errorBox.new(this, error.message);
         });
     },
+    // create job application
     createJobApplication() {
-      this.errorMsg = null;
       var body = { jobOfferId: this.jobOfferId };
 
       apiService
@@ -64,12 +62,12 @@ export default {
           router.push({ name: "StudentJobApplications" });
         })
         .catch((error) => {
-          this.errorMsg = error.message;
+          errorBox.new(this, error.message);
         });
     },
   },
   computed: {
-    ...mapGetters("authentication", ["isStudentLogged"]),
+    ...mapGetters(["isStudentLogged"]),
     start: function () {
       return mixinService.dateToString(this.jobOffer.start);
     },
@@ -81,7 +79,7 @@ export default {
     if (!this.isStudentLogged) {
       router.push({name: 'Login'});
     } else {
-      this.getOfferDetail();
+      this.getJobOffer();
     }
   },
 };

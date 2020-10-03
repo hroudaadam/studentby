@@ -17,6 +17,9 @@ namespace WebAPI.Services
         Task<bool> EditAsync(GroupWithIdReq model, int groupId);
     }
 
+    /// <summary>
+    /// Service for Group operations
+    /// </summary>
     public class GroupService: IGroupService
     {
         private readonly StudentbyContext _context;
@@ -26,6 +29,10 @@ namespace WebAPI.Services
             _context = context;
         }
 
+        /// <summary>
+        /// Get list of Groups
+        /// </summary>
+        /// <returns>List of Group DTOs</returns>
         public async Task<IEnumerable<GroupRes>> GetListAsync()
         {
             var groups = await _context.Groups.ToListAsync();
@@ -39,6 +46,11 @@ namespace WebAPI.Services
             return response;
         }
 
+        /// <summary>
+        /// Get detail of Group
+        /// </summary>
+        /// <param name="groupId">Group ID</param>
+        /// <returns>Group DTO</returns>
         public async Task<GroupWithCustsRes> GetDetailAsync(int groupId)
         {
             var group = await _context.Groups
@@ -46,6 +58,7 @@ namespace WebAPI.Services
                     .ThenInclude(cu => cu.User)
                 .FirstOrDefaultAsync(gr => gr.GroupId == groupId);
 
+            // group not found - 404
             if (group == null)
             {
                 return null;
@@ -54,6 +67,11 @@ namespace WebAPI.Services
             return new GroupWithCustsRes(group);
         }
 
+        /// <summary>
+        /// Create Group
+        /// </summary>
+        /// <param name="model">Group DTO</param>
+        /// <returns>Group DTO</returns>
         public async Task<GroupRes> CreateAsync(GroupReq model)
         {
             var group = new Group
@@ -66,23 +84,30 @@ namespace WebAPI.Services
             return new GroupRes(group);
         }
 
+        /// <summary>
+        /// Edit Group
+        /// </summary>
+        /// <param name="model">Group DTO</param>
+        /// <param name="groupId">Group ID</param>
+        /// <returns>Bool if Group was found</returns>
         public async Task<bool> EditAsync(GroupWithIdReq model, int groupId)
         {
+            // route id and model id differs
             if (groupId != model.GroupId) 
             {
                 throw new StudentbyException("Neplatný požadavek");
             }
 
             var group = await _context.Groups.FirstOrDefaultAsync(gr => gr.GroupId == groupId);
+            // group not found - 404
             if (group == null)
             {
                 return false;
             }
 
+            // edit group
             group.Name = model.Name;
-
             await _context.SaveChangesAsync();
-
             return true;
         }
     }

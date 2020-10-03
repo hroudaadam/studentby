@@ -7,7 +7,10 @@ using WebAPI.Entities;
 
 namespace WebAPI.Models
 {
-    public class AddressRequest
+    /// <summary>
+    /// Request: Address 
+    /// </summary>
+    public class AddressReq
     {
         [Required]
         public string Country { get; set; }
@@ -19,6 +22,9 @@ namespace WebAPI.Models
         public string Number { get; set; }
     }
 
+    /// <summary>
+    /// Response: Address
+    /// </summary>
     public class AddressRes
     {
         public string Country { get; set; }

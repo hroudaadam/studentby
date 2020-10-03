@@ -1,4 +1,4 @@
-import store from '../store';
+import store from '../store/index';
 
 async function get(specUrl) {
     return httpRequest('GET', specUrl);
@@ -16,6 +16,7 @@ async function put(specUrl, body) {
     return httpRequest('PUT', specUrl, body);
 }
 
+// general HTTP request
 async function httpRequest(method, specUrl, body=null)
 {
     var stringBody = null;
@@ -28,7 +29,7 @@ async function httpRequest(method, specUrl, body=null)
         mode: "cors",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer " + store.state.authentication.accessToken
+            "Authorization": "Bearer " + store.state.accessToken
         },
         body: stringBody,
     })
@@ -39,8 +40,15 @@ async function httpRequest(method, specUrl, body=null)
     if (response.status == 200 || response.status == 201 ) {
         return response.json();
     }
-    if (response.status == 204) {
+    else if (response.status == 204) {
         return response.text();
+    }
+    else if (response.status == 401) {
+        store.dispatch('logoutStore');
+        throw new Error("Neautorizovaný požadavek");
+    }
+    else if (response.status == 403) {
+        throw new Error("Nedostatečná oprávnění");
     }
     else {
         var errorMsg = await response.text();

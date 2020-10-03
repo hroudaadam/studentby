@@ -13,6 +13,9 @@ using WebAPI.Services;
 
 namespace WebAPI.Controllers
 {
+    /// <summary>
+    /// Controller for Student
+    /// </summary>
     [Route("api/students")]
     [ApiController]
     public class StudentController : ControllerBase
@@ -41,7 +44,7 @@ namespace WebAPI.Controllers
         [HttpGet("{studentId}")]
         public async Task<ActionResult<StudentWithActivRes>> Get([FromRoute] int studentId)
         {
-            var response = await _studentService.GetAsync(studentId);
+            var response = await _studentService.GetDetailAsync(studentId);
             if (response == null)
             {
                 return StatusCode(404);                
@@ -66,8 +69,8 @@ namespace WebAPI.Controllers
             [FromRoute] int studentId,
             [FromBody] StudentWithRoleReq request)
         {
-            bool response = await _studentService.ChangeRoleAsync(studentId, request);
-            if (!response)
+            bool found = await _studentService.EditOperatorAsync(studentId, request);
+            if (!found)
             {
                 return StatusCode(404);
             }

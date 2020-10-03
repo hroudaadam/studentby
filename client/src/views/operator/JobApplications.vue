@@ -41,7 +41,8 @@ export default {
     };
   },
   methods: {
-    getApplications() {
+    // get job applications
+    getJobApplications() {
       this.jobApplications = null;
       apiSevice
         .get("/job-applications")
@@ -54,13 +55,13 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("authentication", ["isOperatorLogged"]),
+    ...mapGetters(["isOperatorLogged"]),
   },
   mounted() {
     if (!this.isOperatorLogged) {
       router.push({name: 'Login'});
     } else {
-      this.getApplications();
+      this.getJobApplications();
     }
   },
 };

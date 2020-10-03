@@ -18,7 +18,6 @@
       </b-list-group>
     </div>
     <div v-else>Není tu nic</div>
-    <b-alert show variant="danger" v-if="errorMsg" v-html="errorMsg"></b-alert>
   </div>
 </template>
 
@@ -27,6 +26,7 @@ import { mapGetters } from "vuex";
 import PageHeader from "../../components/PageHeader";
 import router from "../../router";
 import apiSevice from "../../helpers/apiService";
+import errorBox from "../../helpers/errorBox";
 
 export default {
   name: "OperatorGroups",
@@ -36,12 +36,11 @@ export default {
   data() {
     return {
       groups: null,
-      errorMsg: null,
     };
   },
   methods: {
+    // get groups
     getGroups() {
-      this.errorMsg = null;
       this.groups = null;
       apiSevice
         .get("/groups")
@@ -49,12 +48,12 @@ export default {
           this.groups = response;
         })
         .catch((error) => {
-          this.errorMsg = error.message;
+          errorBox.new(this, error.message);
         });
     },
   },
   computed: {
-    ...mapGetters("authentication", ["isOperatorLogged"]),
+    ...mapGetters(["isOperatorLogged"]),
   },
   mounted() {
     if (!this.isOperatorLogged) {

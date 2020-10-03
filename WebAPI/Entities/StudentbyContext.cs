@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Entities
 {
+    /// <summary>
+    /// DB context for Entity Framework
+    /// </summary>
     public class StudentbyContext : DbContext
     {
         public StudentbyContext(DbContextOptions<StudentbyContext> options)

@@ -12,6 +12,9 @@ using WebAPI.Services;
 
 namespace WebAPI.Controllers
 {
+    /// <summary>
+    /// Controller for Customer
+    /// </summary>
     [Route("api/customers")]
     [ApiController]
     public class CustomerController : ControllerBase

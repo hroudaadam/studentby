@@ -93,7 +93,7 @@
           ></b-form-textarea>
         </b-form-group>
 
-        <b-button type="submit" v-on:click="createOffer" variant="primary"
+        <b-button type="submit" v-on:click="createJobOffer()" variant="primary"
           >Vytvořit</b-button
         >
       </b-form>
@@ -139,16 +139,9 @@ export default {
     };
   },
   methods: {
-    createOffer() {
-/*       var body = {
-        title: this.title,
-        description: this.description,
-        wage: this.wage,
-        spaces: this.spaces,
-        start: mixinService.dateToIsoString(this.startDate, this.startTime),
-        end: mixinService.dateToIsoString(this.endDate, this.endTime),
-      }; */
-
+    // create job offer
+    createJobOffer() {
+      // date format
       this.formData.start = mixinService.dateToIsoString(this.formData.start.date, this.formData.start.time);
       this.formData.end = mixinService.dateToIsoString(this.formData.end.date, this.formData.end.time);
 
@@ -163,7 +156,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("authentication", ["isCustomerLogged"]),
+    ...mapGetters(["isCustomerLogged"]),
   },
   mounted() {
     if (!this.isCustomerLogged) {

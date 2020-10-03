@@ -36,7 +36,8 @@ export default {
     };
   },
   methods: {
-    getAllOffers() {
+    // get job offers
+    getJobOffers() {
       this.jobOffers = null;
       this.errorMsg = null;
 
@@ -51,13 +52,13 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("authentication", ["isCustomerLogged"]),
+    ...mapGetters(["isCustomerLogged"]),
   },
   mounted() {
     if (!this.isCustomerLogged) {
       router.push({ name: "Login" });
     } else {
-      this.getAllOffers();
+      this.getJobOffers();
     }
   },
 };
