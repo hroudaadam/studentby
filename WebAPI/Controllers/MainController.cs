@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using WebAPI.Helpers;
 using WebAPI.Models;
 using WebAPI.Services;
@@ -22,10 +23,12 @@ namespace WebAPI.Controllers
     public class MainController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly ILogger<MainController> _logger;
 
-        public MainController(IUserService userService)
+        public MainController(IUserService userService, ILogger<MainController> logger)
         {
             _userService = userService;
+            _logger = logger;
         }
 
         // POST: api/login
@@ -51,6 +54,9 @@ namespace WebAPI.Controllers
         [HttpGet("test")]
         public ActionResult Test()
         {
+            //var ctx = ControllerContext.HttpContext.Request.
+            //_logger.LogInformation("HTTP GET /api/test");
+           
             int i = new Random().Next(2);
             if (i == 0)
             {

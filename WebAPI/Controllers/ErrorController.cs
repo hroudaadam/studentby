@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using WebAPI.Helpers;
 
 namespace WebAPI.Controllers
@@ -15,6 +16,12 @@ namespace WebAPI.Controllers
     [ApiController]
     public class ErrorController : ControllerBase
     {
+        private readonly ILogger<ErrorController> _logger;
+        public ErrorController(ILogger<ErrorController> logger)
+        {
+            _logger = logger;
+        }
+
         /// <summary>
         /// Global error handler
         /// </summary>
@@ -25,15 +32,21 @@ namespace WebAPI.Controllers
         public ActionResult<string> Error()
         {
             var exception = HttpContext.Features.Get<IExceptionHandlerFeature>().Error;
+            //_logger.LogError(exception.Message);
 
             // if logic error
             if (exception is StudentbyException)
             {
                 return StatusCode(400, exception.Message);
             }
-
             // if server error
-            return StatusCode(500, "Objevila se chyba");
+            else
+            {
+                
+                return StatusCode(500, "Objevila se chyba");
+            }
+
+            
         }
     }
 }

@@ -25,7 +25,7 @@
       </b-card>
 
       <b-card
-        title="Nabízející"
+        title="Firma"
         img-src="https://picsum.photos/300/300/?image=1"
         img-alt="Image"
         img-top

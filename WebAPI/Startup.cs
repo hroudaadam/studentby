@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using WebAPI.Entities;
 using WebAPI.Helpers;
 using WebAPI.Services;
@@ -115,6 +116,8 @@ namespace WebAPI
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseLogging();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -122,20 +125,20 @@ namespace WebAPI
             // use custom error handler in production enviroment
             else
             {
-                app.UseExceptionHandler("/error");
+                app.UseErrorHandler();
             }
-
-            app.UseHttpsRedirection();            
             app.UseCors();
+            //app.UseHttpsRedirection();            
+                                 
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });
+            });            
         }
     }
 }

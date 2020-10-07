@@ -1,10 +1,8 @@
 # Studentby
 ## TODO - Prio
-- komentáře, dokumentace
+- dokumentace
 - validace DTO
-- finiš endpointů
 ## TODO - Backlog
-- BE - logger
 - UNIT testy
 - SMTP
 - filtery a sorty pro endpointy
@@ -81,6 +79,8 @@
     - nenastoupení na práci
     - pozdní zrušení přihlášky
     - celkové bodování studenta i skupiny
+- open API
+
 ## Nápady
 - We stand by by STUDENTBY
 - Things you can buy thanks to STUDENTBY

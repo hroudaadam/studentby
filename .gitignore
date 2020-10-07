@@ -3,3 +3,4 @@ client/node_modules
 client/package-lock.json
 ~$analýza.xlsx
 .vs
+WebAPI/logs
