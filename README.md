@@ -4,6 +4,7 @@
 
 ## TODO - Backlog
 - filtery a sorty pro endpointy
+- auto mapping
 - UI načítání
 - SMTP
 - najít práce a zdroje
@@ -16,14 +17,26 @@
     - přidat refresh token
 ### Student
 - **registrace**
-    - zajistit, že je registrován unikátní email
+    - zajistit, že je registrován unikátní email (možná už dělá EF core)
 - **prohlížení nabídek**
+    - skrýt již naplněné
     - přidat stránkování, třídění a filtry
+    - ✔ skýt minulé
+    - ✔ skrýt již přihlášené
 - **přihlášení k nabídce**
+    - pokud je na nabídce ještě volné místo
+    - pokud již nezačala
+    - ✔ pokud se nekryje s jinou přihláškou
+    - ✔ pokud se na ni student již nepřihlásil
 - **zrušení přihlášky**
+    - ✔ pokud je nezpracovaná (pending)
+    - ? pokud je přijatá, tak pouze za strike
 - **prohlížení odměn**
+    - ! vymyslet koncept
 - **prohlížení účtu**
+    - ! vymyslet koncept
 - **úprava účtu**
+    - ! vymyslet koncept
 
 ### Operátor
 - **vytvoření skupiny**

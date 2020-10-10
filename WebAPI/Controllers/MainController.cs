@@ -16,7 +16,7 @@ using WebAPI.Services;
 namespace WebAPI.Controllers
 {
     /// <summary>
-    /// Global controller
+    /// Main controller
     /// </summary>
     [ApiController]
     [Route("api")]
@@ -53,10 +53,7 @@ namespace WebAPI.Controllers
         // GET: api/test
         [HttpGet("test")]
         public ActionResult Test()
-        {
-            //var ctx = ControllerContext.HttpContext.Request.
-            //_logger.LogInformation("HTTP GET /api/test");
-           
+        {          
             int i = new Random().Next(2);
             if (i == 0)
             {

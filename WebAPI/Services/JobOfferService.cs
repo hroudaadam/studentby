@@ -54,12 +54,10 @@ namespace WebAPI.Services
                 .ToListAsync();
 
             List<JobOfferSimpleRes> result = new List<JobOfferSimpleRes>();
-
             foreach (var jobOffer in jobOffers)
             {
                 result.Add(new JobOfferSimpleRes(jobOffer));
             }
-
             return result;
         }
 

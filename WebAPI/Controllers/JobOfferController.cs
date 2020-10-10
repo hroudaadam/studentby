@@ -52,7 +52,7 @@ namespace WebAPI.Controllers
             }
             else
             {
-                throw new Exception();
+                throw new Exception("Nevalidní role");
             }
             return StatusCode(200, response);
         }

@@ -232,14 +232,6 @@ namespace WebAPI.Services
                 throw new StudentbyException("Přihláška je již zpracovaná");
             }
 
-            // check if job offer has already started
-            bool hasJobStarted = jobApplication.JobOffer.Start.Date <=
-                DateTime.Today.ToUniversalTime();
-            if (hasJobStarted)
-            {
-                throw new StudentbyException("Práce již započala");
-            }
-
             // delete job application
             _context.JobApplications.Remove(jobApplication);
             await _context.SaveChangesAsync();
