@@ -41,8 +41,9 @@ namespace WebAPI.Helpers
                 httpContext.Response.ContentType = "text/plain";
                 await httpContext.Response.WriteAsync(ex.Message);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 httpContext.Response.StatusCode = 500;
                 httpContext.Response.ContentType = "text/plain";
                 await httpContext.Response.WriteAsync("Objevila se chyba na straně serveru");

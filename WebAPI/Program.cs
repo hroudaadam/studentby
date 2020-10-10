@@ -25,7 +25,7 @@ namespace WebAPI
                 .CreateLogger();
 
             var host = CreateHostBuilder(args).Build();
-            Log.Information("Host created.");
+            Log.Information("Host created");
             host.Run();
         }
 

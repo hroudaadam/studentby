@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using WebAPI.Entities;
 using WebAPI.Helpers;
@@ -68,13 +69,13 @@ namespace WebAPI
                     // DTO validation errors - custom response
                     options.InvalidModelStateResponseFactory = cont =>
                     {
-                        var errors = string.Join(", ", cont.ModelState.Values.Where(v => v.Errors.Count > 0)
-                          .SelectMany(v => v.Errors)
-                          .Select(v => v.ErrorMessage));
+                        //var errors = string.Join(", ", cont.ModelState.Values.Where(v => v.Errors.Count > 0)
+                        //  .SelectMany(v => v.Errors)
+                        //  .Select(v => v.ErrorMessage));
 
-                        // return 400 HTTP resposne
-                        throw new StudentbyException(errors);
+                        throw new StudentbyException("Nastala chyba pøi validaci požadavku");
                     };
+
                 });
 
             // AppSettings
@@ -100,7 +101,7 @@ namespace WebAPI
                         IssuerSigningKey = new SymmetricSecurityKey(key),
                         ValidateIssuer = false,
                         ValidateAudience = false,
-                        ClockSkew = TimeSpan.Zero   
+                        ClockSkew = TimeSpan.Zero
                     };
                 });
 
@@ -112,10 +113,14 @@ namespace WebAPI
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IGroupService, GroupService>();
             services.AddScoped<IAddressService, AddressService>();
+
+            // Swagger
+            services.AddSwaggerGen();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseHttpsRedirection();
             app.UseLogging();
 
             if (env.IsDevelopment())
@@ -128,17 +133,24 @@ namespace WebAPI
                 app.UseErrorHandler();
             }
             app.UseCors();
-            //app.UseHttpsRedirection();            
-                                 
+
+            // Swagger config
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Studentby API");
+                c.RoutePrefix = string.Empty;
+            });
+
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
-            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });            
+            });
         }
     }
 }
