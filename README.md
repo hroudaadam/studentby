@@ -10,14 +10,14 @@
 - najít práce a zdroje
 - validace DTO
 - testing (unit, integration)
-
+-------------------------------------------
 ## Procesy
 ### Ostatní
 - **login**
     - přidat refresh token
 ### Student
 - **registrace**
-    - zajistit, že je registrován unikátní email (možná už dělá EF core)
+    - unikátní email (možná už dělá EF)
 - **prohlížení nabídek**
     - skrýt již naplněné
     - přidat stránkování, třídění a filtry
@@ -30,20 +30,24 @@
     - ✔ pokud se na ni student již nepřihlásil
 - **zrušení přihlášky**
     - ✔ pokud je nezpracovaná (pending)
-    - ? pokud je přijatá, tak pouze za strike
+    - pokud je přijatá, tak pouze za strike
 - **prohlížení odměn**
-    - ! vymyslet koncept
+    - vymyslet koncept
 - **prohlížení účtu**
-    - ! vymyslet koncept
+    - vymyslet koncept
 - **úprava účtu**
-    - ! vymyslet koncept
+    - vymyslet koncept
 
 ### Operátor
 - **vytvoření skupiny**
-    - další informace o skupině (info, adresa, typ, kontakt)
+    - unikátní název (možná dělá EF)
+    - přidat další informace o skupině (info, adresa, typ, kontakt)
 - **přidání účtu ke skupině**
     - generace dočasného hesla - poslání mailem
+    - unikátní email (možná dělá EF)
 - **aktivace studenta**
+    - pokud nemá ban ?
+    - pokud je deaktivovaný
 - **přijetí/zamítnutí přihlášky**
 - **zapsání práce studenta (hodiny, stav)**
 - **deaktivace studenta**
