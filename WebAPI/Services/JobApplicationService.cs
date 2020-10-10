@@ -20,6 +20,7 @@ namespace WebAPI.Services
         Task<JobApplicationWithJoAndStudRes> GetDetailOperatorAsync(int jobApplicationId);
         Task<bool> EditAsync(int jobApplicationId, JobApplicationDetailReq model);
         Task<JobApplicationWithStudRes> GetResultAsync(int jobApplicationId);
+        Task CancelAllActiveAsync(int studentId);
     }
 
     /// <summary>
@@ -176,7 +177,17 @@ namespace WebAPI.Services
                 .FirstOrDefaultAsync();
 
             // check if job offer start date is in future
-            // ...
+            if (jobOffer.Start <= DateTime.UtcNow)
+            {
+                throw new StudentbyException("Nabídka již započala");
+            }
+
+            // check if job offer is not full yet
+            int freeSpaces = await _jobOfferService.GetFreeSpacesAsync(jobOffer.JobOfferId);
+            if (freeSpaces <= 0)
+            {
+                throw new StudentbyException("Nejsou žádná volná místa");
+            }
 
             // check if job application for this job offer already exists
             bool applicationExists = await _context.JobApplications.AnyAsync((ja) =>  
@@ -252,13 +263,17 @@ namespace WebAPI.Services
                 throw new StudentbyException("Neplatný požadavek");
             }
 
-            var jobApplication = await _context.JobApplications.FirstAsync(ja => ja.JobApplicationId == jobApplicationId);
+            var jobApplication = await _context.JobApplications
+                .Include(ja => ja.JobOffer)
+                .FirstAsync(ja => ja.JobApplicationId == jobApplicationId);
+
             // job application not found
             if (jobApplication == null)
             {
                 return false;
             }
 
+            // !!! refactor -> method
             // check if the transition between states is valid
             bool toPenErr = model.State == JobApplicationStates.Pending;
             bool toAppErr = (model.State == JobApplicationStates.Approved) &&
@@ -277,10 +292,51 @@ namespace WebAPI.Services
                 throw new StudentbyException("Nevalidní přechod mezi stavy přihlášky");
             }
 
+            // when approving/denying application
+            if (model.State == JobApplicationStates.Approved || model.State == JobApplicationStates.Denied)
+            {
+                // check if job offer has aleready begun
+                if (jobApplication.JobOffer.Start >= DateTime.UtcNow)
+                {
+                    throw new StudentbyException("Brigáda již započala");
+                }
+            }
+            // when setting absent/attended state
+            else if (model.State == JobApplicationStates.Absent || model.State == JobApplicationStates.Attended)
+            {
+                // check if job offer has already ended
+                if (jobApplication.JobOffer.End > DateTime.UtcNow)
+                {
+                    throw new StudentbyException("Brigáda ještě neskončila");
+                }
+                // when setting absent
+                if (model.State == JobApplicationStates.Absent)
+                {
+                    // !!! incerement strike counter and check for ban
+                }
+            }
+
             // edit job application
             jobApplication.State = model.State; 
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        /// <summary>
+        /// Cancel all active applications for student (pending, approved)
+        /// </summary>
+        /// <param name="studentId">Student ID</param>
+        public async Task CancelAllActiveAsync(int studentId)
+        {
+            var jobApplications = await _context.JobApplications
+                .Where(ja => ja.StudentId == studentId)
+                // cancel only active job applications (pending or approved)
+                .Where(ja => (ja.State == JobApplicationStates.Pending) || (ja.State == JobApplicationStates.Approved))
+                .ToListAsync();
+            foreach (var jobApplication in jobApplications)
+            {
+                jobApplication.State = JobApplicationStates.Denied;
+            }
         }
     }
 }

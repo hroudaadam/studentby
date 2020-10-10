@@ -1,8 +1,7 @@
 # Studentby
-
-## TODO - Prio
-
-## TODO - Backlog
+## Úkoly
+- vlastní JWT middleware a refresh toke??
+- striky a bany
 - filtery a sorty pro endpointy
 - auto mapping
 - UI načítání
@@ -10,60 +9,66 @@
 - najít práce a zdroje
 - validace DTO
 - testing (unit, integration)
--------------------------------------------
+---------------------------------------------------------
 ## Procesy
 ### Ostatní
 - **login**
-    - přidat refresh token
+    - 🐌 přidat refresh token
 ### Student
 - **registrace**
-    - unikátní email (možná už dělá EF)
+    - ❗ unikátní email (možná už dělá EF)
 - **prohlížení nabídek**
-    - skrýt již naplněné
-    - přidat stránkování, třídění a filtry
     - ✔ skýt minulé
     - ✔ skrýt již přihlášené
 - **přihlášení k nabídce**
-    - pokud je na nabídce ještě volné místo
-    - pokud již nezačala
+    - ✔ pokud je na nabídce ještě volné místo
+    - ✔ pokud již nezačala
     - ✔ pokud se nekryje s jinou přihláškou
     - ✔ pokud se na ni student již nepřihlásil
 - **zrušení přihlášky**
     - ✔ pokud je nezpracovaná (pending)
-    - pokud je přijatá, tak pouze za strike
+    - ❗ pokud je přijatá, tak pouze za strike
 - **prohlížení odměn**
-    - vymyslet koncept
+    - 🐌 vymyslet koncept
 - **prohlížení účtu**
-    - vymyslet koncept
+    - 🐌 vymyslet koncept
 - **úprava účtu**
-    - vymyslet koncept
-
+    - 🐌 vymyslet koncept
 ### Operátor
 - **vytvoření skupiny**
-    - unikátní název (možná dělá EF)
-    - přidat další informace o skupině (info, adresa, typ, kontakt)
+    - ❗ unikátní název (možná dělá EF)
+    - 🐌 přidat další informace o skupině (info, adresa, typ, kontakt)
 - **přidání účtu ke skupině**
-    - generace dočasného hesla - poslání mailem
-    - unikátní email (možná dělá EF)
+    - 🐌 generace dočasného hesla - poslání mailem
+    - ❗ unikátní email (možná dělá EF)
 - **aktivace studenta**
-    - pokud nemá ban ?
-    - pokud je deaktivovaný
+    - 🐌 pokud nemá ban
+    - ✔ pokud je deaktivovaný
 - **přijetí/zamítnutí přihlášky**
-- **zapsání práce studenta (hodiny, stav)**
+    - ✔ pokud je nezpracovaná (pending)
+    - ✔ pokud nabídka již nezačala
+- **zapsání práce studenta**
+    - ✔ pokud je validní přechod stavu přihlášky
+    - ✔ pokud práce již skončila
 - **deaktivace studenta**
-    - zrušení přihlášek
+    - ✔ zrušení přijatých a nezpracovaných přihlášek -> zamítnuto
 - **úprava skupiny**
+    - 🐌 vymyslet koncept
 - **deaktivace zákazníka**
-
+    - 🐌 vymyslet koncept
 ### Zákazník
 - **vytvoření nabídky**
+    - 🐌 min. 3 dny do budoucna -> DTO
+    - 🐌 max. 3 měsíce do budoucna -> DTO
 - **zrušení nabídky**
-    - strike - pokud jsou přihlášky
-- **prohlížení nabídek skupiny**
+    - ❗ strike - pokud jsou přijaté přihlášky
 - **prohlížení účtu**
+    - 🐌 vymyslet koncept
 - **prohlížení skupiny**
+    - 🐌 vymyslet koncept
 - **úprava účtu**
-
+    - 🐌 vymyslet koncept
+---------------------------------------------------------
 ## Rešerše, teorie, atd
 - načtení jen části obsahu, ať je to rychlé (stránkování)
 - CORS
@@ -86,19 +91,27 @@
     - nenastoupení na práci
     - pozdní zrušení přihlášky
     - celkové bodování studenta i skupiny
+- scheduler
+    - upozornění na nezpracované příhlášky (app i att)
+    - platby -> jobApplication state = paid
 
 ## Nápady
 - We stand by by STUDENTBY
 - Things you can buy thanks to STUDENTBY
 
 ## Brainstrom
-- rozdělení controllerů podle rolí, aby bylo umožněno pro různé role různé DTO na requestu
+- ✔ rozdělení controllerů podle rolí, aby bylo umožněno pro různé role různé DTO na requestu
     - NEE!! DTO na requestu nikdy není jiné
     - pro DTO na response využít Interface
-- samotnou logiku dělá pouze services
-- nelze upravovat nabídku - složitá BL
+- ✔ samotnou logiku dělá pouze services
+- ✔ nelze upravovat nabídku - složitá BL
     - mohou pouze zrušit
-- pro potvrzení práce využít jobApplication
+- ✔ pro potvrzení práce využít jobApplication
     - přibylo by: počet hodin a stavy (attended, unattended)
     - PROČ NE?
         - komplikovanost úpravy
+- ❓ vystavovat nový endpoint jen pro o trochu větší DTO ?
+    - JobApplicationService - GetResult vs. GetDetailOperator
+- ❓ související logika v /entities?
+    - např. jobOffer free space nebo nechat v _jobOfferService
+    - spíš v service -> entity by musela mít přístup k dbContext

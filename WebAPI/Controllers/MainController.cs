@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -61,6 +62,20 @@ namespace WebAPI.Controllers
                 
             }
             return StatusCode(200, new { name="Adam", surname="Hrouda" });
+        }
+
+        // GET: api/seed-db
+        [HttpGet("seed-db")]
+        public ActionResult SeedDB()
+        {
+            return Ok("Test");
+        }
+
+        // GET: api/clear-db
+        [HttpGet("seed-db")]
+        public ActionResult ClearDB()
+        {
+            return Ok("Test");
         }
     }
 }

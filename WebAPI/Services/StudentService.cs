@@ -26,12 +26,14 @@ namespace WebAPI.Services
         private readonly StudentbyContext _context;
         private readonly IUserService _userService;
         private readonly IAddressService _addressService;
+        private readonly IJobApplicationService _jobApplicationService;
 
-        public StudentService(StudentbyContext context, IUserService userService, IAddressService addressService)
+        public StudentService(StudentbyContext context, IUserService userService, IAddressService addressService, IJobApplicationService jobApplicationService)
         {
             _context = context;
             _userService = userService;
             _addressService = addressService;
+            _jobApplicationService = jobApplicationService;
         }
 
         /// <summary>
@@ -102,6 +104,7 @@ namespace WebAPI.Services
         public async Task<bool> EditOperatorAsync(int studentId, StudentWithRoleReq model)
         {
             // route id and model id differs
+            // !!! refactor -> method
             if (studentId != model.StudentId)
             {
                 throw new StudentbyException("Neplatný požadavek");
@@ -127,13 +130,13 @@ namespace WebAPI.Services
             else if (student.User.Role == UserRoles.Student &&
                 model.Role == UserRoles.StudentInact)
             {
-                // !!! has activities
+                await _jobApplicationService.CancelAllActiveAsync(studentId);
                 student.User.Role = UserRoles.StudentInact;
             }
             // invalid role transation
             else
             {
-                throw new StudentbyException("Neplatný požadavek");
+                throw new StudentbyException("Neplatná změna role");
             }
 
             await _context.SaveChangesAsync();

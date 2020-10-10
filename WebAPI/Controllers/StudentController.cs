@@ -47,7 +47,7 @@ namespace WebAPI.Controllers
             var response = await _studentService.GetDetailAsync(studentId);
             if (response == null)
             {
-                return StatusCode(404);                
+                return StatusCode(404);
             }
             return StatusCode(200, response);
         }

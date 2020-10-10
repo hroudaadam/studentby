@@ -12,7 +12,7 @@ namespace WebAPI.Services
 {
     public interface IJobOfferService
     {
-        Task<IEnumerable<JobOfferSimpleRes>> GetListStudentAsync(int userId);        
+        Task<IEnumerable<JobOfferSimpleRes>> GetListStudentAsync(int userId);
         Task<IEnumerable<JobOfferSimpleRes>> GetListCustomerAsync(int userId);
         Task<IEnumerable<JobOfferSimpleRes>> GetListOperatorAsync();
         Task<JobOfferRes> CreateAsync(JobOfferReq model, int userId);
@@ -47,8 +47,10 @@ namespace WebAPI.Services
             var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
 
             var jobOffers = await _context.JobOffers
-                .Where(jo => jo.Start.Date > DateTime.UtcNow.Date)
+                // hide job offers that have already started
+                .Where(jo => jo.Start > DateTime.UtcNow)
                 .Include(jo => jo.JobApplications)
+                // hide job offers that already have application from current student
                 .Where(jo => jo.JobApplications
                     .All(ja => ja.StudentId != user.StudentId))
                 .ToListAsync();
@@ -187,12 +189,12 @@ namespace WebAPI.Services
             return new JobOfferWithJasRes(jobOffer, jobApplications, freeSpaces);
         }
 
-       /// <summary>
-       /// Create JobOffer
-       /// </summary>
-       /// <param name="model">JobOffer DTO</param>
-       /// <param name="userId">User ID</param>
-       /// <returns>JobOffer DTO</returns>
+        /// <summary>
+        /// Create JobOffer
+        /// </summary>
+        /// <param name="model">JobOffer DTO</param>
+        /// <param name="userId">User ID</param>
+        /// <returns>JobOffer DTO</returns>
         public async Task<JobOfferRes> CreateAsync(JobOfferReq model, int userId)
         {
             User user = await _context.Users
@@ -257,7 +259,7 @@ namespace WebAPI.Services
             await _context.SaveChangesAsync();
             return true;
         }
-        
+
         /// <summary>
         /// Get count of JobOffer free spaces
         /// </summary>
