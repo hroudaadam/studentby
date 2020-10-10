@@ -14,6 +14,8 @@ namespace WebAPI.Entities
     {
         public int GroupId { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
+        public int Strikes { get; set; }
 
         public ICollection<Customer> Customers { get; set; }
         public ICollection<JobOffer> JobOffers { get; set; }

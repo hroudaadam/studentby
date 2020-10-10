@@ -93,10 +93,8 @@
 </template>
 
 <script>
-// import { mapState, mapMutations, mapActions } from "vuex";
 import apiService from "@/helpers/apiService";
 import router from "@/router/index";
-import errorBox from "../../helpers/errorBox";
 
 export default {
   name: "StudentRegister",
@@ -128,7 +126,7 @@ export default {
           router.push({ name: "Login" });
         })
         .catch((error) => {
-          errorBox.new(this, error.message);
+          console.error(error.message);
         });
     },
   },

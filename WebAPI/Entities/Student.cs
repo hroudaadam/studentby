@@ -21,6 +21,8 @@ namespace WebAPI.Entities
         public Address Address { get; set; }
         public int? AddressId { get; set; }
 
+        public int Strikes { get; set; }
+
         public User User { get; set; }
         public ICollection<JobApplication> JobApplications { get; set; }
     }

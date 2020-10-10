@@ -26,11 +26,11 @@
 </template>
 
 <script>
+import PageHeader from "../../components/PageHeader";
+
 import { mapGetters } from "vuex";
 import router from "../../router";
 import apiSevice from "../../helpers/apiService";
-import PageHeader from "../../components/PageHeader";
-import errorBox from "../../helpers/errorBox";
 
 export default {
   name: "OperatorCustomerCreate",
@@ -60,7 +60,7 @@ export default {
           router.push({name: 'OperatorGroupDetail', params: {groupId: this.groupId}})
         })
         .catch((error) => {
-          errorBox.new(this, error.message);
+          console.error(error.message);
         });
     },
   },

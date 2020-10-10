@@ -56,7 +56,6 @@
 import { mapActions } from "vuex";
 import apiSevice from "../helpers/apiService";
 import router from "../router";
-import errorBox from "../helpers/errorBox";
 
 export default {
   name: "Login",
@@ -82,7 +81,7 @@ export default {
           router.push({ name: "Home" });
         })
         .catch((error) => {
-          errorBox.new(this, error.message);
+          console.error(error.message);
         });
     },
   },

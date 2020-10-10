@@ -113,6 +113,7 @@ namespace WebAPI
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IGroupService, GroupService>();
             services.AddScoped<IAddressService, AddressService>();
+            services.AddScoped<ITestService, TestService>();
 
             // Swagger
             services.AddSwaggerGen();

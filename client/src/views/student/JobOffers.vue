@@ -15,12 +15,12 @@
 </template>
 
 <script>
-import apiService from "../../helpers/apiService";
-import { mapGetters } from "vuex";
 import JobListItem from "../../components/JobListItem";
 import PageHeader from "../../components/PageHeader";
+
+import apiService from "../../helpers/apiService";
+import { mapGetters } from "vuex";
 import router from "../../router";
-import errorBox from "../../helpers/errorBox";
 
 export default {
   name: "StudentJobOffers",
@@ -43,7 +43,7 @@ export default {
           this.jobOffers = response;
         })
         .catch((error) => {
-          errorBox.new(this, error.message);
+          console.error(error.message);
         });
     },
   },

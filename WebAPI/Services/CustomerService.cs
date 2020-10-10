@@ -36,7 +36,7 @@ namespace WebAPI.Services
         public async Task<CustomerRes> CreateAsync(CustomerReq model)
         {
             // !!! autogen password
-            string password = "text";
+            string password = "test";
             // create user
             User user = await _userService.CreateAsync(model.Email, password, UserRoles.Customer);
             Group group = await _context.Groups.SingleOrDefaultAsync(x => x.GroupId == model.GroupId);

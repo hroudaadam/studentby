@@ -5,7 +5,7 @@
       <slot></slot>
     </div>
 
-    <p class="mb-1">{{start}} - {{end}}</p>
+    <p class="mb-1">{{timerange}}</p>
 
     <div class="d-flex w-100 justify-content-between">
       <p class="mb-1">adresa</p>    
@@ -26,12 +26,9 @@ export default {
     jobApplicationState: String
   },
   computed: {
-    start: function () {
-      return mixinService.dateToString(this.job.start);
-    },
-    end: function () {
-      return mixinService.dateToString(this.job.end);
-    },
+    timerange: function () {
+      return mixinService.getJobTimeRangeString(this.job.start, this.job.end);
+    }
   },
 };
 </script>

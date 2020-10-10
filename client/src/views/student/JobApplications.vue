@@ -22,13 +22,13 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import JobListItem from "../../components/JobListItem";
+import JobApplicationState from '../../components/JobApplicationState';
 import PageHeader from "../../components/PageHeader";
+import JobListItem from "../../components/JobListItem";
+
+import { mapGetters } from "vuex";
 import router from "../../router";
 import apiSevice from "../../helpers/apiService";
-import errorBox from "../../helpers/errorBox";
-import JobApplicationState from '../../components/JobApplicationState';
 
 export default {
   name: "StudentJobApplications",
@@ -52,7 +52,7 @@ export default {
           this.jobApplications = response;
         })
         .catch((error) => {
-          errorBox.new(this, error.message);
+          console.error(error.message);
         });
     },
   },

@@ -20,13 +20,13 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import JobListItem from "../../components/JobListItem";
 import PageHeader from "../../components/PageHeader";
+import JobApplicationState from '../../components/JobApplicationState';
+
+import { mapGetters } from "vuex";
 import router from "../../router";
 import apiSevice from "../../helpers/apiService";
-import errorBox from "../../helpers/errorBox";
-import JobApplicationState from '../../components/JobApplicationState';
 
 export default {
   name: "OperatorJobApplications",
@@ -50,7 +50,7 @@ export default {
           this.jobApplications = response;
         })
         .catch((error) => {
-          errorBox.new(error.message);
+          console.error(error.message);
         });
     },
   },

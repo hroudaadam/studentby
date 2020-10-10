@@ -25,11 +25,13 @@ namespace WebAPI.Controllers
     {
         private readonly IUserService _userService;
         private readonly ILogger<MainController> _logger;
+        private readonly ITestService _testService;
 
-        public MainController(IUserService userService, ILogger<MainController> logger)
+        public MainController(IUserService userService, ILogger<MainController> logger, ITestService testService)
         {
             _userService = userService;
             _logger = logger;
+            _testService = testService;
         }
 
         // POST: api/login
@@ -66,15 +68,17 @@ namespace WebAPI.Controllers
 
         // GET: api/seed-db
         [HttpGet("seed-db")]
-        public ActionResult SeedDB()
+        public async Task<ActionResult> SeedDBAsync()
         {
+            await _testService.SeedDbAsync();
             return Ok("Test");
         }
 
         // GET: api/clear-db
-        [HttpGet("seed-db")]
-        public ActionResult ClearDB()
+        [HttpGet("clear-db")]
+        public async Task<ActionResult> ClearDBAsync()
         {
+            await _testService.ClearDbAsync();
             return Ok("Test");
         }
     }

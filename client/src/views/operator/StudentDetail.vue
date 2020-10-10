@@ -24,9 +24,8 @@
 <script>
 import PageHeader from "../../components/PageHeader";
 import StudentInfo from '../../components/StudentInfo';
-import errorBox from '../../helpers/errorBox';
+
 import apiService from "../../helpers/apiService";
-import mixinService from "../../helpers/mixinService";
 import router from "../../router";
 import { mapGetters, mapState } from "vuex";
 
@@ -54,7 +53,7 @@ export default {
           this.student = response;
         })
         .catch((error) => {
-          errorBox.new(this, error.message);
+          console.error(error.message);
         });
     },
     // edit student
@@ -70,19 +69,13 @@ export default {
           this.getStudent();
         })
         .catch((error) => {
-          errorBox.new(this, error.message);
+          console.error(error.message);
         });
     },
   },
   computed: {
     ...mapGetters(["isOperatorLogged"]),
     ...mapState(["userRoles"]),
-    dateOfBirth: function () {
-      return mixinService.dateOfBirthToString(this.student.dateOfBirth);
-    },
-    address: function () {
-      return mixinService.addressToString(this.student.address);
-    },
   },
   mounted() {
     if (!this.isOperatorLogged) {

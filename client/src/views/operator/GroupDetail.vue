@@ -42,7 +42,6 @@ import PageHeader from "../../components/PageHeader";
 import { mapGetters } from "vuex";
 import router from "../../router";
 import apiService from "../../helpers/apiService";
-import errorBox from "../../helpers/errorBox";
 
 export default {
   name: "OperatorGroupDetail",
@@ -66,7 +65,7 @@ export default {
           this.group = response;
         })
         .catch((error) => {
-          errorBox.new(this, error.message);
+          console.error(error.message);
         });
     },
   },

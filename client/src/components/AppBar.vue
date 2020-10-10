@@ -1,11 +1,12 @@
 <template>
   <div class="AppBar">
-    <b-navbar toggleable="md" type="dark" variant="primary">
+    <b-navbar toggleable="md" type="dark" variant="primary" fixed="top">
       <b-navbar-brand :to="{ name: 'Home' }">
         Studentby
-        <span v-if="isStudentLogged" class="test">student</span>
-        <span v-if="isOperatorLogged" class="test">operátor</span>
-        <span v-if="isCustomerLogged" class="test">firma</span>
+        <!-- <span v-if="isStudentLogged" class="role-desc">student</span>
+        <span v-if="isStudentInactLogged" class="role-desc">student - neaktivní</span>
+        <span v-if="isOperatorLogged" class="role-desc">operátor</span>
+        <span v-if="isCustomerLogged" class="role-desc">firma</span> -->
       </b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -76,6 +77,7 @@ export default {
       "isStudentLogged",
       "isCustomerLogged",
       "isOperatorLogged",
+      "isStudentInactLogged"
     ]),
   },
   methods: {
@@ -85,11 +87,11 @@ export default {
 </script>
 
 <style scoped>
-.test {
+.role-desc {
   position: absolute;
   left: 20px;
-  top: 35px;
-  font-size: 0.6em;
+  top: 38px;
+  font-size: 0.5em;
   color: #c8d6f3;
 }
 </style>

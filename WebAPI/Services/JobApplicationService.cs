@@ -296,7 +296,7 @@ namespace WebAPI.Services
             if (model.State == JobApplicationStates.Approved || model.State == JobApplicationStates.Denied)
             {
                 // check if job offer has aleready begun
-                if (jobApplication.JobOffer.Start >= DateTime.UtcNow)
+                if (jobApplication.JobOffer.Start <= DateTime.UtcNow)
                 {
                     throw new StudentbyException("Brigáda již započala");
                 }

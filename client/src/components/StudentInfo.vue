@@ -45,10 +45,10 @@ export default {
   },
   computed: {
     address: function () {
-      return mixinService.addressToString(this.student.address);
+      return mixinService.getAddressString(this.student.address);
     },
     dateOfBirth: function () {
-      return mixinService.dateOfBirthToString(this.student.dateOfBirth);
+      return mixinService.getDateOfBirthString(this.student.dateOfBirth);
     },
   },
 };

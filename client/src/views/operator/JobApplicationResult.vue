@@ -42,8 +42,6 @@ import StudentInfo from "../../components/StudentInfo";
 import { mapGetters, mapState } from "vuex";
 import router from "../../router";
 import apiService from "../../helpers/apiService";
-import mixinService from "../../helpers/mixinService";
-import errorBox from "../../helpers/errorBox";
 
 export default {
   name: "OperatorJobApplicationResult",
@@ -72,7 +70,7 @@ export default {
           this.jobApplication = response;
         })
         .catch((error) => {
-          errorBox.new(this, error.message);
+          console.error(error.message);
         });
     },
     // edit job application
@@ -93,18 +91,13 @@ export default {
           });
         })
         .catch((error) => {
-          errorBox.new(this, error.message);
+          console.error(error.message);
         });
     },
   },
   computed: {
     ...mapGetters(["isOperatorLogged"]),
     ...mapState(["jobApplicationStates"]),
-    dateOfBirth: function () {
-      return mixinService.dateOfBirthToString(
-        this.jobApplication.student.dateOfBirth
-      );
-    },
   },
   mounted() {
     if (!this.isOperatorLogged) {

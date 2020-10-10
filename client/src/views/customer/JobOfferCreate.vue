@@ -102,12 +102,12 @@
 </template>
 
 <script>
+import PageHeader from "../../components/PageHeader";
+
 import { mapGetters } from "vuex";
 import router from "../../router";
 import apiSevice from "../../helpers/apiService";
 import mixinService from "../../helpers/mixinService";
-import errorBox from "../../helpers/errorBox";
-import PageHeader from "../../components/PageHeader";
 
 export default {
   name: "CustomerJobOfferCreate",
@@ -142,8 +142,8 @@ export default {
     // create job offer
     createJobOffer() {
       // date format
-      this.formData.start = mixinService.dateToIsoString(this.formData.start.date, this.formData.start.time);
-      this.formData.end = mixinService.dateToIsoString(this.formData.end.date, this.formData.end.time);
+      this.formData.start = mixinService.getDateIsoString(this.formData.start.date, this.formData.start.time);
+      this.formData.end = mixinService.getDateIsoString(this.formData.end.date, this.formData.end.time);
 
       apiSevice
         .post("/job-offers", this.formData)
@@ -151,7 +151,7 @@ export default {
           router.push({ name: "CustomerJobOffers" });
         })
         .catch((error) => {
-          errorBox.new(this, error.message);
+          console.error(error.message);
         });
     },
   },

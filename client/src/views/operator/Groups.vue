@@ -22,11 +22,11 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import PageHeader from "../../components/PageHeader";
+
+import { mapGetters } from "vuex";
 import router from "../../router";
 import apiSevice from "../../helpers/apiService";
-import errorBox from "../../helpers/errorBox";
 
 export default {
   name: "OperatorGroups",
@@ -48,7 +48,7 @@ export default {
           this.groups = response;
         })
         .catch((error) => {
-          errorBox.new(this, error.message);
+          console.error(error.message);
         });
     },
   },

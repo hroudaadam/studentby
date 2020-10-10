@@ -16,12 +16,12 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import PageHeader from "../../components/PageHeader";
 import JobListItem from "../../components/JobListItem";
+
+import { mapGetters } from "vuex";
 import router from "../../router";
 import apiSevice from "../../helpers/apiService";
-import errorBox from "../../helpers/errorBox";
 
 export default {
   name: "OperatorJobOffers",
@@ -45,7 +45,7 @@ export default {
           this.jobOffers = response;
         })
         .catch((error) => {
-          errorBox.new(this, error.message);
+          console.error(error.message);
         });
     },
   },

@@ -15,7 +15,9 @@ FROM INFORMATION_SCHEMA.TABLES a;
 SELECT * FROM [JobApplication];
 SELECT * FROM [User];
 SELECT * FROM [Student];
-SELECT * FROM [Customer];
+SELECT * FROM [StudentbyDB.Customer];
 SELECT * FROM [JobOffer];
 SELECT * FROM [Group];
 SELECT * FROM [Address];
+
+INSTERT INTO

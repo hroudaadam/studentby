@@ -25,8 +25,6 @@ import JobApplicationState from '../../components/JobApplicationState';
 import { mapGetters } from "vuex";
 import router from "../../router";
 import apiService from "../../helpers/apiService";
-import mixinService from "../../helpers/mixinService";
-import errorBox from "../../helpers/errorBox";
 
 export default {
   name: "StudentJobApplicationDetail",
@@ -51,7 +49,7 @@ export default {
           this.jobApplication = response;
         })
         .catch((error) => {
-          errorBox.new(error.message);
+          console.error(error.message);
         });
     },    
     // delete job application
@@ -62,18 +60,12 @@ export default {
           router.push({name: 'StudentJobApplications'});
         })
         .catch((error) => {
-          errorBox.new(error.message);
+          console.error(error.message);
         });
     },
   },
   computed: {
     ...mapGetters(["isStudentLogged"]),
-    start: function () {
-      return mixinService.dateToString(this.jobApplication.start);
-    },
-    end: function () {
-      return mixinService.dateToString(this.jobApplication.end);
-    },
   },
   mounted() {
     if (!this.isStudentLogged) {

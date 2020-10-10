@@ -20,11 +20,11 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import PageHeader from "@/components/PageHeader";
+
+import { mapGetters } from "vuex";
 import router from "@/router/index";
 import apiSevice from "../../helpers/apiService";
-import errorBox from "../../helpers/errorBox";
 
 export default {
   name: "OperatorStudents",
@@ -50,7 +50,7 @@ export default {
           this.students = response;
         })
         .catch((error) => {
-          errorBox.new(this, error.message);
+          console.error(error.message);
         });
     },
   },

@@ -19,6 +19,10 @@ async function put(specUrl, body) {
 // general HTTP request
 async function httpRequest(method, specUrl, body=null)
 {
+    var errorMsg = '';
+
+    store.commit('setLoading', true);
+
     var stringBody = null;
     if (body) {
         stringBody = JSON.stringify(body, replacer)
@@ -34,7 +38,12 @@ async function httpRequest(method, specUrl, body=null)
         body: stringBody,
     })
     .catch(() => {
-        throw new Error('Vyskytla se chyba');
+        errorMsg = 'Vyskytla se chyba';
+        store.commit('setErrorMsg', errorMsg);
+        throw new Error(errorMsg);
+    })
+    .finally(() => {
+        store.commit('setLoading', false);
     });
 
     if (response.status == 200 || response.status == 201 ) {
@@ -45,15 +54,17 @@ async function httpRequest(method, specUrl, body=null)
     }
     else if (response.status == 401) {
         store.dispatch('logoutStore');
-        throw new Error("Neautorizovaný požadavek");
+        errorMsg = 'Neautorizovaný požadavek'
     }
     else if (response.status == 403) {
-        throw new Error("Nedostatečná oprávnění");
+        errorMsg = 'Nedostatečná oprávnění'
     }
     else {
-        var errorMsg = await response.text();
-        throw new Error(errorMsg);
+        errorMsg = await response.text();        
     }
+
+    store.commit('setErrorMsg', errorMsg);
+    throw new Error(errorMsg);
 }
 
 function replacer(key, value) {

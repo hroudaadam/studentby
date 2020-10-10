@@ -7,6 +7,14 @@
 
     <b-row>
       <b-col cols="3" lg="2">
+        <label>Poskytovatel:</label>
+      </b-col>
+      <b-col cols="9" lg="10">
+        <p>{{job.group.name}}</p>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col cols="3" lg="2">
         <label>Adresa:</label>
       </b-col>
       <b-col cols="9" lg="10">
@@ -18,7 +26,7 @@
         <label>Termín:</label>
       </b-col>
       <b-col cols="9" lg="10">
-        <p>{{start}} - {{end}}</p>
+        <p>{{timerange}}</p>
       </b-col>
     </b-row>
     <b-row>
@@ -54,16 +62,15 @@ import mixinService from "../helpers/mixinService";
 export default {
   name: "JobInfo",
   components: {},
-  props: ["job"],
+  props: {
+    job: Object
+  },
   computed: {
-    start: function () {
-      return mixinService.dateToString(this.job.start);
-    },
-    end: function () {
-      return mixinService.dateToString(this.job.end);
+    timerange: function () {
+      return mixinService.getJobTimeRangeString(this.job.start, this.job.end);
     },
     address: function () {
-      return mixinService.addressToString(this.job.address);
+      return mixinService.getAddressString(this.job.address);
     },
   },
 };

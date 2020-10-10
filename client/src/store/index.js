@@ -26,7 +26,11 @@ export default new Vuex.Store({
       denied: "denied",
       attended: "attended",
       absent: "absent"
-    }
+    },
+    // ...
+    loading: false,
+    // ...
+    errorMsg: null
   },
   getters: {
     isUserLogged(state) {
@@ -34,6 +38,9 @@ export default new Vuex.Store({
     },
     isStudentLogged(state) {
       return (!!state.accessToken && state.userRole === state.userRoles.student);
+    },
+    isStudentInactLogged(state) {
+      return (!!state.accessToken && state.userRole === state.userRoles.studentInact);
     },
     isCustomerLogged(state) {
       return (!!state.accessToken && state.userRole === state.userRoles.customer);
@@ -48,6 +55,12 @@ export default new Vuex.Store({
     },
     setUserRole(state, role) {
       state.userRole = role;
+    },
+    setLoading(state, value) {
+      state.loading = value;
+    },
+    setErrorMsg(state, message) {
+      state.errorMsg = message;
     }
   },
   actions: {

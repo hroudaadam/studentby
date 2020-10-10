@@ -22,7 +22,6 @@ import JobInfo from "../../components/JobInfo";
 import { mapGetters } from "vuex";
 import router from "../../router";
 import apiService from "../../helpers/apiService";
-import errorBox from '../../helpers/errorBox';
 
 export default {
   name: "CustomerJobOfferDetail",
@@ -48,7 +47,7 @@ export default {
           this.jobOffer = response;
         })
         .catch((error) => {
-          errorBox.new(this, error.message);          
+          console.error(error.message);       
         });
     },
     // delete JobOffer
@@ -59,7 +58,7 @@ export default {
           router.push({name: 'CustomerJobOffers'});
         })
         .catch((error) => {
-          errorBox.new(this, error.message);
+          console.error(error.message);
         });
     }
   },

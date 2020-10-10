@@ -1,10 +1,9 @@
 # Studentby
 ## Úkoly
-- vlastní JWT middleware a refresh toke??
+- vlastní JWT middleware a refresh token??
 - striky a bany
 - filtery a sorty pro endpointy
 - auto mapping
-- UI načítání
 - SMTP
 - najít práce a zdroje
 - validace DTO
@@ -16,7 +15,7 @@
     - 🐌 přidat refresh token
 ### Student
 - **registrace**
-    - ❗ unikátní email (možná už dělá EF)
+    - 🐌 unikátní email (možná už dělá EF)
 - **prohlížení nabídek**
     - ✔ skýt minulé
     - ✔ skrýt již přihlášené
@@ -36,11 +35,10 @@
     - 🐌 vymyslet koncept
 ### Operátor
 - **vytvoření skupiny**
-    - ❗ unikátní název (možná dělá EF)
     - 🐌 přidat další informace o skupině (info, adresa, typ, kontakt)
 - **přidání účtu ke skupině**
     - 🐌 generace dočasného hesla - poslání mailem
-    - ❗ unikátní email (možná dělá EF)
+    - 🐌 unikátní email (možná dělá EF)
 - **aktivace studenta**
     - 🐌 pokud nemá ban
     - ✔ pokud je deaktivovaný

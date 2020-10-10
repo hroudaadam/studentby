@@ -17,9 +17,10 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import PageHeader from "../../components/PageHeader";
 import JobListItem from "../../components/JobListItem";
+
+import { mapGetters } from "vuex";
 import router from "../../router";
 import apiSevice from "../../helpers/apiService";
 
@@ -32,14 +33,12 @@ export default {
   data() {
     return {
       jobOffers: null,
-      errorMsg: null,
     };
   },
   methods: {
     // get job offers
     getJobOffers() {
       this.jobOffers = null;
-      this.errorMsg = null;
 
       apiSevice
         .get("/job-offers")
@@ -47,7 +46,7 @@ export default {
           this.jobOffers = response;
         })
         .catch((error) => {
-          this.errorMsg = error.message;
+          console.error(error.message);
         });
     },
   },

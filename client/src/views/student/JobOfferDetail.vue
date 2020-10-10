@@ -24,8 +24,6 @@ import JobInfo from '../../components/JobInfo';
 import { mapGetters } from "vuex";
 import router from "../../router";
 import apiService from "../../helpers/apiService";
-import mixinService from "../../helpers/mixinService";
-import errorBox from "../../helpers/errorBox";
 
 export default {
   name: "StudentJobOfferDetail",
@@ -49,7 +47,7 @@ export default {
           this.jobOffer = response;
         })
         .catch((error) => {
-          errorBox.new(this, error.message);
+          console.error(error.message);
         });
     },
     // create job application
@@ -62,18 +60,12 @@ export default {
           router.push({ name: "StudentJobApplications" });
         })
         .catch((error) => {
-          errorBox.new(this, error.message);
+          console.error(error.message);
         });
     },
   },
   computed: {
     ...mapGetters(["isStudentLogged"]),
-    start: function () {
-      return mixinService.dateToString(this.jobOffer.start);
-    },
-    end: function () {
-      return mixinService.dateToString(this.jobOffer.end);
-    },
   },
   mounted() {
     if (!this.isStudentLogged) {
