@@ -8,7 +8,8 @@
 - najít práce a zdroje
 - validace DTO
 - testing (unit, integration)
----------------------------------------------------------
+- dokumentace API
+
 ## Procesy
 ### Ostatní
 - **login**
@@ -68,12 +69,16 @@
     - 🐌 vymyslet koncept
 ---------------------------------------------------------
 ## Rešerše, teorie, atd
-- načtení jen části obsahu, ať je to rychlé (stránkování)
+- ASP .NET CORE 3
+- Web API
+- Entity Framework
+- autentifikace, JWT, refresh token
 - CORS
-- ukladani dat v DB v UTC formatu
-- JWT, refresh
-- project strucutre
+- DTO
 - async
+- stránkování, načítání je části obsahu
+- ukladani dat v DB v UTC formatu
+- project strucutre
 
 ## Zdroje
 - REST API design rulebook - kniha (obsazená)
@@ -113,3 +118,29 @@
 - ❓ související logika v /entities?
     - např. jobOffer free space nebo nechat v _jobOfferService
     - spíš v service -> entity by musela mít přístup k dbContext
+---------------------------------------------------------
+## Konzultace
+- **popis**
+    - nabízení a vyhledávání jednorázových studentských brigád
+    - inspirace ze zahraničí (ZenJob)
+    - pro studenty, kterým studium neumožňuje mít pravidelnou a stálou brigádu
+    - společnosti outsourcují starost se náborem, kontrolou a vyplácením brigádník
+- **realizace**
+    - BE (WebAPI) - , ASP .NET CORE 3, MS SQL
+        - entity - definice entity pro DB model (EF - code first)
+        - models (DTO) - úprava struktury dat, zmenšení objemu dat, jasná definice rozhraní
+        - services (téměř repository pattern) - práce s DB, bus. logic, rozdělené podle entit
+        - controllers - definují endpointy, rozhodují o volání service, rozdělné podle entit
+        - autentifikace pomocí JWT proti DB
+        - loggování - Serilog
+    - FE (SPA) - Vue.js, Bootstrap
+- **další vývoj**
+    - SMTP
+    - refresh token
+    - vlastní autorizační middleware
+    - auto mapping
+    - validace DTO
+    - testing (unit, integration)
+    - dodělávky logiky
+- **dotazy**
+    - schválení zadání v UIS
