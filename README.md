@@ -1,32 +1,37 @@
 # Studentby
 ## Úkoly
+- filtery, sorty, stránkování pro endpointy
 - vlastní JWT middleware a refresh token??
 - striky a bany
-- filtery a sorty pro endpointy
 - auto mapping
 - SMTP
-- najít práce a zdroje
 - validace DTO
 - testing (unit, integration)
 - dokumentace API
 
-## Procesy
+## Analýza
 ### Ostatní
-- **login**
-    - 🐌 přidat refresh token
+- **login** ( POST /login)
+    - 🐌 implementovat refresh token
 ### Student
-- **registrace**
-    - 🐌 unikátní email (možná už dělá EF)
-- **prohlížení nabídek**
-    - ✔ skýt minulé
-    - ✔ skrýt již přihlášené
-- **přihlášení k nabídce**
-    - ✔ pokud je na nabídce ještě volné místo
-    - ✔ pokud již nezačala
-    - ✔ pokud se nekryje s jinou přihláškou
-    - ✔ pokud se na ni student již nepřihlásil
-- **zrušení přihlášky**
-    - ✔ pokud je nezpracovaná (pending)
+- **registrace** (POST /students)
+    - ✅ vytvoří USER s rolí StudentInact
+    - 🐌 ověřit unikátnost emailu
+- **seznam nabídek** (GET /job-offers)
+    - ✅ skýt minulé
+    - ✅ skrýt již přihlášené
+- **detail nabídky** (GET /job-offers/1)
+    - ❗ pokud není v minulosti
+- **přihlášení k nabídce** (POST /job-applications)
+    - ✅ pokud je na nabídce ještě volné místo
+    - ✅ pokud nabídka již nezačala
+    - ✅ pokud se přihláška nekryje s jinou přihláškou
+    - ✅ pokud se na ni student již nepřihlásil
+- **seznam přihlášel** (GET /job-applications)
+- **detail přihlášky** (GET /job-applications/1)
+    - ✅ pokud přihláška patří studentovi
+- **zrušení přihlášky** (DELETE /job-applications/1)
+    - ✅ pokud je nezpracovaná (pending)
     - ❗ pokud je přijatá, tak pouze za strike
 - **prohlížení odměn**
     - 🐌 vymyslet koncept
@@ -35,32 +40,51 @@
 - **úprava účtu**
     - 🐌 vymyslet koncept
 ### Operátor
-- **vytvoření skupiny**
+- **seznam skupin** (GET /groups)
+- **detail skupiny** (GET /groups/1)
+    - ✅ i seznam uživatelů
+- **vytvoření skupiny** (POST /groups)
     - 🐌 přidat další informace o skupině (info, adresa, typ, kontakt)
-- **přidání účtu ke skupině**
+    - 🐌 ověřit unikátnost názvu
+- **přidání účtu ke skupině** (POST /customers)
     - 🐌 generace dočasného hesla - poslání mailem
     - 🐌 unikátní email (možná dělá EF)
-- **aktivace studenta**
+- **seznam studentů** (GET /students)
+- **detail studenta** (GET /students/1)
+- **aktivace studenta** (PUT /students/1)
     - 🐌 pokud nemá ban
-    - ✔ pokud je deaktivovaný
-- **přijetí/zamítnutí přihlášky**
-    - ✔ pokud je nezpracovaná (pending)
-    - ✔ pokud nabídka již nezačala
-- **zapsání práce studenta**
-    - ✔ pokud je validní přechod stavu přihlášky
-    - ✔ pokud práce již skončila
+    - ✅ pokud je deaktivovaný
 - **deaktivace studenta**
-    - ✔ zrušení přijatých a nezpracovaných přihlášek -> zamítnuto
-- **úprava skupiny**
+    - ❗ pokud je aktivovaný
+    - ✅ zrušení přijatých a nezpracovaných přihlášek -> zamítnuto
+- **seznam přihlášek** (GET /job-applications)
+    - ❓ pouze nezpracované 
+- **detail přihlášky** (GET /job-applications/1)
+    - ❓ pouze nezpracovaná
+- **přijetí přihlášky** (PUT /job-applications/1)
+    - ✅ pokud je nezpracovaná (pending)
+    - ✅ pokud nabídka již nezačala
+    - ❗ pokud je volné místo
+- **zamítnutí přihlášky** (PUT /job-applications/1)
+    - ✅ pokud je nezpracovaná (pending)
+    - ✅ pokud nabídka již nezačala
+- **seznam nabídek** (GET /job-offers)
+- **detail nabídky** (GET /job-offers/1)
+- **zapsání práce studenta** (PUT /job-applications/1)
+    - ✅ pokud je validní přechod stavu přihlášky
+    - ✅ pokud práce již skončila
+- **úprava skupiny** (PUT /groups/1)
     - 🐌 vymyslet koncept
-- **deaktivace zákazníka**
+- **deaktivace zákazníka** 
     - 🐌 vymyslet koncept
 ### Zákazník
+- **seznam nabídek** (GET /job-offers)
+    - ✅ pouze patřící dané skupině
+- **detail nabídky** (GET /job-offers/1)
+    - ✅ pokud patří dané skupině
 - **vytvoření nabídky**
     - 🐌 min. 3 dny do budoucna -> DTO
     - 🐌 max. 3 měsíce do budoucna -> DTO
-- **zrušení nabídky**
-    - ❗ strike - pokud jsou přijaté přihlášky
 - **prohlížení účtu**
     - 🐌 vymyslet koncept
 - **prohlížení skupiny**
@@ -68,24 +92,6 @@
 - **úprava účtu**
     - 🐌 vymyslet koncept
 ---------------------------------------------------------
-## Rešerše, teorie, atd
-- ASP .NET CORE 3
-- Web API
-- Entity Framework
-- autentifikace, JWT, refresh token
-- CORS
-- DTO
-- async
-- stránkování, načítání je části obsahu
-- ukladani dat v DB v UTC formatu
-- project strucutre
-
-## Zdroje
-- REST API design rulebook - kniha (obsazená)
-- Modern API design with ASP.NET Core 2 (mám)
-- C# 8.0 and .NET Core 3.0 - Modern Cross-Platform Development (ebook)
-- Mastering ASP.NET Web API (ebook)
-- Building RESTful Web Services with .NET Core (ebook)
 
 ## Možné dodělávky
 - promyslet finance pro zákazníka (balíčky - počet nabídek/míst na měsíc)
@@ -98,18 +104,14 @@
     - upozornění na nezpracované příhlášky (app i att)
     - platby -> jobApplication state = paid
 
-## Nápady
-- We stand by by STUDENTBY
-- Things you can buy thanks to STUDENTBY
-
 ## Brainstrom
-- ✔ rozdělení controllerů podle rolí, aby bylo umožněno pro různé role různé DTO na requestu
+- ✅ rozdělení controllerů podle rolí, aby bylo umožněno pro různé role různé DTO na requestu
     - NEE!! DTO na requestu nikdy není jiné
     - pro DTO na response využít Interface
-- ✔ samotnou logiku dělá pouze services
-- ✔ nelze upravovat nabídku - složitá BL
+- ✅ samotnou logiku dělá pouze services
+- ✅ nelze upravovat nabídku - složitá BL
     - mohou pouze zrušit
-- ✔ pro potvrzení práce využít jobApplication
+- ✅ pro potvrzení práce využít jobApplication
     - přibylo by: počet hodin a stavy (attended, unattended)
     - PROČ NE?
         - komplikovanost úpravy
@@ -118,29 +120,3 @@
 - ❓ související logika v /entities?
     - např. jobOffer free space nebo nechat v _jobOfferService
     - spíš v service -> entity by musela mít přístup k dbContext
----------------------------------------------------------
-## Konzultace
-- **popis**
-    - nabízení a vyhledávání jednorázových studentských brigád
-    - inspirace ze zahraničí (ZenJob)
-    - pro studenty, kterým studium neumožňuje mít pravidelnou a stálou brigádu
-    - společnosti outsourcují starost se náborem, kontrolou a vyplácením brigádník
-- **realizace**
-    - BE (WebAPI) - , ASP .NET CORE 3, MS SQL
-        - entity - definice entity pro DB model (EF - code first)
-        - models (DTO) - úprava struktury dat, zmenšení objemu dat, jasná definice rozhraní
-        - services (téměř repository pattern) - práce s DB, bus. logic, rozdělené podle entit
-        - controllers - definují endpointy, rozhodují o volání service, rozdělné podle entit
-        - autentifikace pomocí JWT proti DB
-        - loggování - Serilog
-    - FE (SPA) - Vue.js, Bootstrap
-- **další vývoj**
-    - SMTP
-    - refresh token
-    - vlastní autorizační middleware
-    - auto mapping
-    - validace DTO
-    - testing (unit, integration)
-    - dodělávky logiky
-- **dotazy**
-    - schválení zadání v UIS

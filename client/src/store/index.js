@@ -30,7 +30,9 @@ export default new Vuex.Store({
     // ...
     loading: false,
     // ...
-    errorMsg: null
+    errorMsg: null,
+    // ...
+    errorHelper: true
   },
   getters: {
     isUserLogged(state) {
@@ -60,6 +62,7 @@ export default new Vuex.Store({
       state.loading = value;
     },
     setErrorMsg(state, message) {
+      state.errorHelper = !state.errorHelper;
       state.errorMsg = message;
     }
   },

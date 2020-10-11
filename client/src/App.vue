@@ -19,10 +19,10 @@ export default {
   },
   data: () => ({}),
   computed: {
-    ...mapState(["loading", "errorMsg"]),
+    ...mapState(["loading", "errorMsg", "errorHelper"]),
   },
   watch: {
-    errorMsg: function () {
+    errorHelper: function () {
       this.createErrorAlert(this.errorMsg);
     },
   },

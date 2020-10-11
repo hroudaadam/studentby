@@ -24,6 +24,7 @@ namespace WebAPI
                 .WriteTo.Console(outputTemplate: "[{Level:u4} {Timestamp:HH:mm:ss} ] {Message:lj}{NewLine}")
                 .CreateLogger();
 
+            // create and start host
             var host = CreateHostBuilder(args).Build();
             Log.Information("Host created");
             host.Run();

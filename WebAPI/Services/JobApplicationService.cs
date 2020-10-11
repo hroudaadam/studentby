@@ -330,6 +330,7 @@ namespace WebAPI.Services
         {
             var jobApplications = await _context.JobApplications
                 .Where(ja => ja.StudentId == studentId)
+
                 // cancel only active job applications (pending or approved)
                 .Where(ja => (ja.State == JobApplicationStates.Pending) || (ja.State == JobApplicationStates.Approved))
                 .ToListAsync();
