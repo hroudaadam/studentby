@@ -80,7 +80,7 @@ namespace WebAPI.Controllers
             }
             else
             {
-                throw new Exception();
+                throw new Exception("Nevalidní role");
             }
 
             if (response == null)

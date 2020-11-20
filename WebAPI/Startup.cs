@@ -18,6 +18,7 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using WebAPI.Entities;
 using WebAPI.Helpers;
+using WebAPI.Middlewares;
 using WebAPI.Services;
 
 namespace WebAPI
@@ -30,7 +31,6 @@ namespace WebAPI
         }
 
         public IConfiguration Configuration { get; }
-
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -48,7 +48,6 @@ namespace WebAPI
                         .AllowAnyMethod();
                     });
             });
-
 
             // DB context configuration
             services.AddDbContext<StudentbyContext>(options =>

@@ -50,8 +50,6 @@ namespace WebAPI.Services
             // create customer
             Customer customer = new Customer
             {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
                 User = user,
                 Group = group
             };

@@ -16,12 +16,6 @@ namespace WebAPI.Models
         public string Email { get; set; }
 
         [Required]
-        public string FirstName { get; set; }
-
-        [Required]
-        public string LastName { get; set; }
-
-        [Required]
         public int GroupId { get; set; }
     }
 
@@ -31,14 +25,10 @@ namespace WebAPI.Models
     public class CustomerRes
     {
         public int CustomerId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
 
         public CustomerRes(Customer customer)
         {
             CustomerId = customer.CustomerId;
-            FirstName = customer.FirstName;
-            LastName = customer.LastName;
         }
     }
 
@@ -49,15 +39,11 @@ namespace WebAPI.Models
     {
         public int CustomerId { get; set; }
         public string Email { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
         public GroupRes Group { get; set; }
 
         public CustomerDetailRes(Customer customer)
         {
             CustomerId = customer.CustomerId;
-            FirstName = customer.FirstName;
-            LastName = customer.LastName;
             Email = customer.User.Email;
         }
     }

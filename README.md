@@ -8,7 +8,7 @@
 - validace DTO
 - testing (unit, integration)
 - dokumentace API
-
+---------------------------------------------------------
 ## Analýza
 ### Ostatní
 - **login** ( POST /login)
@@ -18,8 +18,8 @@
     - ✅ vytvoří USER s rolí StudentInact
     - 🐌 ověřit unikátnost emailu
 - **seznam nabídek** (GET /job-offers)
-    - ✅ skýt minulé
-    - ✅ skrýt již přihlášené
+    - ❗ skýt minulé (nesmí nebo nemá?)
+    - ❗ skrýt již přihlášené (nesmí nebo nemá?)
 - **detail nabídky** (GET /job-offers/1)
     - ❗ pokud není v minulosti
 - **přihlášení k nabídce** (POST /job-applications)
@@ -58,9 +58,8 @@
     - ❗ pokud je aktivovaný
     - ✅ zrušení přijatých a nezpracovaných přihlášek -> zamítnuto
 - **seznam přihlášek** (GET /job-applications)
-    - ❓ pouze nezpracované 
+    - ❓ možnost filtru na pouze nezracované 
 - **detail přihlášky** (GET /job-applications/1)
-    - ❓ pouze nezpracovaná
 - **přijetí přihlášky** (PUT /job-applications/1)
     - ✅ pokud je nezpracovaná (pending)
     - ✅ pokud nabídka již nezačala
@@ -103,7 +102,7 @@
 - scheduler
     - upozornění na nezpracované příhlášky (app i att)
     - platby -> jobApplication state = paid
-
+---------------------------------------------------------
 ## Brainstrom
 - ✅ rozdělení controllerů podle rolí, aby bylo umožněno pro různé role různé DTO na requestu
     - NEE!! DTO na requestu nikdy není jiné

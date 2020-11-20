@@ -6,8 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using WebAPI.Helpers;
 
-namespace WebAPI.Helpers
+namespace WebAPI.Middlewares
 {
     public static class ErrorHandlerMiddlewareExtensions
     {

@@ -145,8 +145,6 @@ namespace WebAPI.Services
                     CustomerReq newCustomer = new CustomerReq
                     {
                         Email = vals[0],
-                        FirstName = vals[1],
-                        LastName = vals[2],
                         GroupId = groupId
                     };
                     await _customerService.CreateAsync(newCustomer);
