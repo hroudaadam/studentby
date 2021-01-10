@@ -130,7 +130,7 @@ namespace WebAPI
             // use custom error handler in production enviroment
             else
             {
-                app.UseErrorHandler();
+                app.UseExceptionHandler("/error");
             }
             app.UseCors();
 

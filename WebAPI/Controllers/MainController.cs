@@ -55,12 +55,9 @@ namespace WebAPI.Controllers
         [HttpGet("test")]
         public ActionResult Test()
         {          
-            int i = new Random().Next(2);
-            if (i == 0)
-            {
-                throw new AppLogicException("Logic chyba");
-                
-            }
+            int i = new Random().Next(3);
+            if (i == 0) throw new AppLogicException("Logic chyba");
+            else if (i == 1) throw new Exception("Server");
             return StatusCode(200, new { name="Adam", surname="Hrouda" });
         }
 
