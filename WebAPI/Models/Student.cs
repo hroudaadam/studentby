@@ -64,9 +64,9 @@ namespace WebAPI.Models
     }
 
     /// <summary>
-    /// Response: Student with activated property
+    /// Response: Student with Address and activated
     /// </summary>
-    public class StudentWithActivRes
+    public class StudentWithAdActivRes
     {
         public int StudentId { get; set; }
         public string Email { get; set; }
@@ -76,7 +76,7 @@ namespace WebAPI.Models
         public AddressRes Address { get; set; }
         public bool Activated { get; set; }
 
-        public StudentWithActivRes(Student student)
+        public StudentWithAdActivRes(Student student)
         {
             StudentId = student.StudentId;
             Email = student.User.Email;
@@ -89,9 +89,9 @@ namespace WebAPI.Models
     }
 
     /// <summary>
-    /// Response: Student detail
+    /// Response: Student with Address
     /// </summary>
-    public class StudentDetailRes
+    public class StudentWithAdRes
     {
         public int StudentId { get; set; }
         public string Email { get; set; }
@@ -100,7 +100,7 @@ namespace WebAPI.Models
         public DateTime DateOfBirth { get; set; }
         public AddressRes Address { get; set; }
 
-        public StudentDetailRes(Student student)
+        public StudentWithAdRes(Student student)
         {
             StudentId = student.StudentId;
             Email = student.User.Email;

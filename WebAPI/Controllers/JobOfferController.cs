@@ -30,66 +30,64 @@ namespace WebAPI.Controllers
         }
 
         // GET: api/job-offers
-        [HttpGet]
-        [Authorize(Roles = UserRoles.Student + "," + UserRoles.Customer + "," + UserRoles.Operator)]
+        [HttpGet()]
+        [Authorize(Roles = UserRoles.Student + "," + UserRoles.Operator)]
         public async Task<ActionResult<IEnumerable<JobOfferSimpleRes>>> GetList()
         {
-            int userId = int.Parse(HttpContext.User.Identity.Name);
-            string userRole = await _userService.GetRole(userId);
-            IEnumerable<JobOfferSimpleRes> response;
+            var response = await _jobOfferService.GetListAsync();
+            return StatusCode(200, response);
+        }
 
-            if (userRole == UserRoles.Student)
+        // GET: api/job-offers/customer
+        [HttpGet("customer")]
+        [Authorize(Roles = UserRoles.Customer)]
+        public async Task<ActionResult<IEnumerable<JobOfferSimpleRes>>> GetListAsCustomer()
+        {
+            int userId = int.Parse(HttpContext.User.Identity.Name);
+            var response = await _jobOfferService.GetListCustomerAsync(userId);
+            return StatusCode(200, response);
+        }
+
+        // GET: api/job-offers/1/customer
+        [HttpGet("{jobOfferId}/customer")]
+        [Authorize(Roles = UserRoles.Customer)]
+        public async Task<ActionResult<JobOfferWithGrAdRes>> GetAsCustomer([FromRoute] int jobOfferId)
+        {
+            int userId = int.Parse(HttpContext.User.Identity.Name);
+            var response = await _jobOfferService.GetDetailCustomerAsync(jobOfferId, userId);
+            if (response == null)
             {
-                response = await _jobOfferService.GetListStudentAsync(userId);
+                return StatusCode(404);
             }
-            else if (userRole == UserRoles.Customer)
+            return StatusCode(200, response);
+        }
+
+        // GET: api/job-offers/1/operator
+        [HttpGet("{jobOfferId}/operator")]
+        [Authorize(Roles = UserRoles.Operator)]
+        public async Task<ActionResult<JobOfferWithJasRes>> GetAsOperator([FromRoute] int jobOfferId)
+        {
+            var response = await _jobOfferService.GetDetailOperatorAsync(jobOfferId);
+            if (response == null)
             {
-                response = await _jobOfferService.GetListCustomerAsync(userId);
-            }
-            else if (userRole == UserRoles.Operator)
-            {
-                response = await _jobOfferService.GetListOperatorAsync();
-            }
-            else
-            {
-                throw new Exception("Nevalidní role");
+                return StatusCode(404);
             }
             return StatusCode(200, response);
         }
 
         // GET: api/job-offers/1
         [HttpGet("{jobOfferId}")]
-        [Authorize(Roles = UserRoles.Student + "," + UserRoles.Customer + "," + UserRoles.Operator)]
-        public async Task<ActionResult<IJobOfferDetail>> Get([FromRoute] int jobOfferId)
+        [Authorize(Roles = UserRoles.Student)]
+        public async Task<ActionResult<JobOfferWithGrAdRes>> Get([FromRoute] int jobOfferId)
         {
-            int userId = int.Parse(HttpContext.User.Identity.Name);
-            string userRole = await _userService.GetRole(userId);
-            IJobOfferDetail response;
-
-            if (userRole == UserRoles.Student)
-            {
-                response = await _jobOfferService.GetDetailStudentAsync(jobOfferId);
-            }
-            else if (userRole == UserRoles.Customer)
-            {
-                response = await _jobOfferService.GetDetailCustomerAsync(jobOfferId, userId);
-            }
-            else if (userRole == UserRoles.Operator)
-            {
-                response = await _jobOfferService.GetDetailOperatorAsync(jobOfferId);
-            }
-            else
-            {
-                throw new Exception("Nevalidní role");
-            }
-
+            var response = await _jobOfferService.GetDetailAsync(jobOfferId);
             if (response == null)
             {
                 return StatusCode(404);
             }
-
             return StatusCode(200, response);
         }
+
 
         // POST: api/job-offers
         [HttpPost]

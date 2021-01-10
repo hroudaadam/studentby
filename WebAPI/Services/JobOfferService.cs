@@ -12,13 +12,12 @@ namespace WebAPI.Services
 {
     public interface IJobOfferService
     {
-        Task<IEnumerable<JobOfferSimpleRes>> GetListStudentAsync(int userId);
+        Task<IEnumerable<JobOfferSimpleRes>> GetListAsync();
         Task<IEnumerable<JobOfferSimpleRes>> GetListCustomerAsync(int userId);
-        Task<IEnumerable<JobOfferSimpleRes>> GetListOperatorAsync();
         Task<JobOfferRes> CreateAsync(JobOfferReq model, int userId);
         Task<bool> DeleteAsync(int jobOfferId, int userId);
-        Task<JobOfferDetailRes> GetDetailStudentAsync(int id);
-        Task<JobOfferDetailRes> GetDetailCustomerAsync(int id, int userId);
+        Task<JobOfferWithGrAdRes> GetDetailAsync(int id);
+        Task<JobOfferWithGrAdRes> GetDetailCustomerAsync(int id, int userId);
         Task<JobOfferWithJasRes> GetDetailOperatorAsync(int jobOfferId);
         Task<int> GetFreeSpacesAsync(int jobOfferId);
     }
@@ -38,21 +37,12 @@ namespace WebAPI.Services
         }
 
         /// <summary>
-        /// Get list of JobOffers (as Student)
+        /// Get list of JobOffers
         /// </summary>
-        /// <param name="userId">User ID</param>
         /// <returns>List of JobOffer DTOs</returns>
-        public async Task<IEnumerable<JobOfferSimpleRes>> GetListStudentAsync(int userId)
+        public async Task<IEnumerable<JobOfferSimpleRes>> GetListAsync()
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
-
             var jobOffers = await _context.JobOffers
-                // hide job offers that have already started
-                .Where(jo => jo.Start > DateTime.UtcNow)
-                .Include(jo => jo.JobApplications)
-                // hide job offers that already have application from current student
-                .Where(jo => jo.JobApplications
-                    .All(ja => ja.StudentId != user.StudentId))
                 .ToListAsync();
 
             List<JobOfferSimpleRes> result = new List<JobOfferSimpleRes>();
@@ -90,28 +80,11 @@ namespace WebAPI.Services
         }
 
         /// <summary>
-        /// Get list of JobOffers (as Operator)
-        /// </summary>
-        /// <returns>List of JobOffer DTOs</returns>
-        public async Task<IEnumerable<JobOfferSimpleRes>> GetListOperatorAsync()
-        {
-            var jobOffers = await _context.JobOffers
-                .ToListAsync();
-
-            List<JobOfferSimpleRes> result = new List<JobOfferSimpleRes>();
-            foreach (var jobOffer in jobOffers)
-            {
-                result.Add(new JobOfferSimpleRes(jobOffer));
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Get detail of JobOffer (as Student)
+        /// Get detail of JobOffer
         /// </summary>
         /// <param name="jobOfferId">JobOffer ID</param>
         /// <returns>JobOffer DTO</returns>
-        public async Task<JobOfferDetailRes> GetDetailStudentAsync(int jobOfferId)
+        public async Task<JobOfferWithGrAdRes> GetDetailAsync(int jobOfferId)
         {
             var jobOffer = await _context.JobOffers
                 .Include(jo => jo.Address)
@@ -125,7 +98,7 @@ namespace WebAPI.Services
             }
 
             int freeSpaces = await GetFreeSpacesAsync(jobOfferId);
-            return new JobOfferDetailRes(jobOffer, freeSpaces);
+            return new JobOfferWithGrAdRes(jobOffer, freeSpaces);
         }
 
         /// <summary>
@@ -134,7 +107,7 @@ namespace WebAPI.Services
         /// <param name="jobOfferId">JobOffer ID</param>
         /// <param name="userId">User ID</param>
         /// <returns>JobOffer DTO</returns>
-        public async Task<JobOfferDetailRes> GetDetailCustomerAsync(int jobOfferId, int userId)
+        public async Task<JobOfferWithGrAdRes> GetDetailCustomerAsync(int jobOfferId, int userId)
         {
             var user = await _context.Users
                 .Include(us => us.Customer)
@@ -154,11 +127,11 @@ namespace WebAPI.Services
             // check if job offer belongs to current group
             if (jobOffer.GroupId != user.Customer.GroupId)
             {
-                throw new StudentbyException("Nabídka nepatří k dané skupině");
+                throw new AppLogicException("Nabídka nepatří k dané skupině");
             }
 
             int freeSpaces = await GetFreeSpacesAsync(jobOffer.JobOfferId);
-            return new JobOfferDetailRes(jobOffer, freeSpaces);
+            return new JobOfferWithGrAdRes(jobOffer, freeSpaces);
         }
 
         /// <summary>
@@ -245,13 +218,13 @@ namespace WebAPI.Services
             // check if job offer belongs to current group
             if (jobOffer.GroupId != user.Customer.GroupId)
             {
-                throw new StudentbyException("Nabídka nepatří k dané skupině");
+                throw new AppLogicException("Nabídka nepatří k dané skupině");
             }
 
             // check if job offer has already started
             if (jobOffer.Start.Date < DateTime.UtcNow.Date)
             {
-                throw new StudentbyException("Nabídka již započala");
+                throw new AppLogicException("Nabídka již započala");
             }
 
             // delete job offer

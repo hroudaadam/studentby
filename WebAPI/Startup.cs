@@ -72,7 +72,7 @@ namespace WebAPI
                         //  .SelectMany(v => v.Errors)
                         //  .Select(v => v.ErrorMessage));
 
-                        throw new StudentbyException("Nastala chyba pøi validaci požadavku");
+                        throw new AppLogicException("Nastala chyba pøi validaci požadavku");
                     };
 
                 });

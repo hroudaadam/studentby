@@ -81,7 +81,7 @@
     - ✅ pouze patřící dané skupině
 - **detail nabídky** (GET /job-offers/1)
     - ✅ pokud patří dané skupině
-- **vytvoření nabídky**
+- **vytvoření nabídky** (POST /job-offers)
     - 🐌 min. 3 dny do budoucna -> DTO
     - 🐌 max. 3 měsíce do budoucna -> DTO
 - **prohlížení účtu**
@@ -91,7 +91,33 @@
 - **úprava účtu**
     - 🐌 vymyslet koncept
 ---------------------------------------------------------
+## Endpointy
+- POST /login
+- POST /students
 
+- ! GET /job-offers
+    - 
+- ! GET /job-offers/1
+- POST /job-offers
+
+- ! GET /job-applications
+- ! GET /job-applications/1
+- POST /job-applications
+- PUT /job-applications/1
+- DELETE /job-applications/1
+
+- GET /groups
+- GET /groups/1
+- POST /groups
+- PUT /groups/1
+
+- POST /customers
+
+- GET /students
+- GET /students/1
+- PUT /students/1
+
+---------------------------------------------------------
 ## Možné dodělávky
 - promyslet finance pro zákazníka (balíčky - počet nabídek/míst na měsíc)
 - promyslet hodnocení

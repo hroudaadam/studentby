@@ -51,7 +51,7 @@ namespace WebAPI.Services
             // user already exists (email not unique)
             if (userExists)
             {
-                throw new StudentbyException("Uživatel již existuje");
+                throw new AppLogicException("Uživatel již existuje");
             }
 
             // hash password
@@ -96,13 +96,13 @@ namespace WebAPI.Services
             // user not found
             if (user == null)
             {
-                throw new StudentbyException("Špatný email nebo heslo");
+                throw new AppLogicException("Špatný email nebo heslo");
             }
 
             // invalid password
             if (!VerifyPassword(model.Password, user.PasswordHash, user.PasswordSalt))
             {
-                throw new StudentbyException("Špatný email nebo heslo");
+                throw new AppLogicException("Špatný email nebo heslo");
             }
 
             // generate token
@@ -149,7 +149,7 @@ namespace WebAPI.Services
                     new Claim(ClaimTypes.Name, user.UserId.ToString()),
                     new Claim(ClaimTypes.Role, user.Role)
                 }),
-                Expires = DateTime.UtcNow.AddHours(2),
+                Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -167,7 +167,7 @@ namespace WebAPI.Services
             return user.Role;
         }
 
-        // change concept
+        // !!! change concept
         /// <summary>
         /// Create operator (ensure)
         /// </summary>

@@ -36,7 +36,7 @@ namespace WebAPI.Middlewares
             {
                 await _next(httpContext);
             }
-            catch (StudentbyException ex)
+            catch (AppLogicException ex)
             {
                 httpContext.Response.StatusCode = 400;
                 httpContext.Response.ContentType = "text/plain";

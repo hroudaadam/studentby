@@ -44,7 +44,7 @@ namespace WebAPI.Services
             // group not found
             if (group == null)
             {
-                throw new StudentbyException("Skupina neexistuje");
+                throw new AppLogicException("Skupina neexistuje");
             }
 
             // create customer

@@ -30,23 +30,11 @@ namespace WebAPI.Middlewares
 
         public async Task Invoke(HttpContext httpContext)
         {
-
-            try
-            {
-                await _next(httpContext);
-            }
-            finally
-            {
-                _logger.LogInformation(GetMessage(httpContext));
-            }
-        }
-
-        public string GetMessage(HttpContext httpContext)
-        {
+            await _next(httpContext);
             var request = httpContext.Request;
             var response = httpContext.Response;
             string message = $"HTTP {request.Method} {request.Path.Value} responded with {response.StatusCode}";
-            return message;
+            _logger.LogInformation(message);
         }
     }
 }

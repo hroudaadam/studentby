@@ -15,7 +15,7 @@ namespace WebAPI.Services
         Task<StudentRes> CreateAsync(StudentReq model);
         Task<bool> EditOperatorAsync(int studentId, StudentWithRoleReq model);
         Task<IEnumerable<StudentNameRes>> GetListAsync();
-        Task<StudentWithActivRes> GetDetailAsync(int studentId);
+        Task<StudentWithAdActivRes> GetDetailAsync(int studentId);
     }
 
     /// <summary>
@@ -56,7 +56,7 @@ namespace WebAPI.Services
         /// </summary>
         /// <param name="studentId">Student ID</param>
         /// <returns>Student DTO</returns>
-        public async Task<StudentWithActivRes> GetDetailAsync(int studentId)
+        public async Task<StudentWithAdActivRes> GetDetailAsync(int studentId)
         {
             var student = await _context.Students
                 .Include(st => st.User)
@@ -66,7 +66,7 @@ namespace WebAPI.Services
             {
                 return null;
             }
-            return new StudentWithActivRes(student);
+            return new StudentWithAdActivRes(student);
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace WebAPI.Services
             // !!! refactor -> method
             if (studentId != model.StudentId)
             {
-                throw new StudentbyException("Neplatný požadavek");
+                throw new AppLogicException("Neplatný požadavek");
             }
 
             var student = await _context.Students
@@ -136,7 +136,7 @@ namespace WebAPI.Services
             // invalid role transation
             else
             {
-                throw new StudentbyException("Neplatná změna role");
+                throw new AppLogicException("Neplatná změna role");
             }
 
             await _context.SaveChangesAsync();

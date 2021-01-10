@@ -9,21 +9,6 @@ using WebAPI.Models;
 namespace WebAPI.Models
 {
     /// <summary>
-    /// Interface for JobOfferDetail detail
-    /// </summary>
-    public interface IJobOfferDetail
-    {
-        int JobOfferId { get; set; }
-        string Title { get; set; }
-        string Description { get; set; }
-        double Wage { get; set; }
-        int Spaces { get; set; }
-        DateTime Start { get; set; }
-        DateTime End { get; set; }
-        public AddressRes Address { get; set; }
-    }
-
-    /// <summary>
     /// Request: JobOffer
     /// </summary>
     public class JobOfferReq
@@ -70,9 +55,9 @@ namespace WebAPI.Models
     }
 
     /// <summary>
-    /// Response: JobOffer detail
+    /// Response: JobOffer with Group and Address
     /// </summary>
-    public class JobOfferDetailRes: IJobOfferDetail
+    public class JobOfferWithGrAdRes
     {
         public int JobOfferId { get; set; }
         public string Title { get; set; }
@@ -85,7 +70,7 @@ namespace WebAPI.Models
         public GroupRes Group { get; set; }
         public AddressRes Address { get; set; }
 
-        public JobOfferDetailRes(JobOffer jobOffer, int freeSpaces)
+        public JobOfferWithGrAdRes(JobOffer jobOffer, int freeSpaces)
         {
             JobOfferId = jobOffer.JobOfferId;
             Title = jobOffer.Title;
@@ -103,7 +88,7 @@ namespace WebAPI.Models
     /// <summary>
     /// Response: JobOffer with JobApplications
     /// </summary>
-    public class JobOfferWithJasRes : IJobOfferDetail
+    public class JobOfferWithJasRes
     {
         public int JobOfferId { get; set; }
         public string Title { get; set; }
@@ -115,7 +100,7 @@ namespace WebAPI.Models
         public DateTime End { get; set; }
         public GroupRes Group { get; set; }
         public AddressRes Address { get; set; }
-        public ICollection<JobApplicationSimpleWithStudRes> JobApplications { get; set; }
+        public ICollection<JobApplicationWithStudRes> JobApplications { get; set; }
 
         public JobOfferWithJasRes(JobOffer jobOffer, ICollection<JobApplication> jobApplications, int freeSpaces)
         {
@@ -132,13 +117,13 @@ namespace WebAPI.Models
             Group = new GroupRes(jobOffer.Group);
         }
 
-        private List<JobApplicationSimpleWithStudRes> MapJobApplications(ICollection<JobApplication> jobApplications)
+        private List<JobApplicationWithStudRes> MapJobApplications(ICollection<JobApplication> jobApplications)
         {
-            var output = new List<JobApplicationSimpleWithStudRes>();
+            var output = new List<JobApplicationWithStudRes>();
 
             foreach (var jobApplication in jobApplications)
             {
-                output.Add(new JobApplicationSimpleWithStudRes(jobApplication));
+                output.Add(new JobApplicationWithStudRes(jobApplication));
             }
 
             return output;

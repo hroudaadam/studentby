@@ -24,13 +24,11 @@ namespace WebAPI.Controllers
     public class MainController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly ILogger<MainController> _logger;
         private readonly ITestService _testService;
 
-        public MainController(IUserService userService, ILogger<MainController> logger, ITestService testService)
+        public MainController(IUserService userService, ITestService testService)
         {
             _userService = userService;
-            _logger = logger;
             _testService = testService;
         }
 
@@ -60,7 +58,7 @@ namespace WebAPI.Controllers
             int i = new Random().Next(2);
             if (i == 0)
             {
-                throw new StudentbyException("Logic chyba");
+                throw new AppLogicException("Logic chyba");
                 
             }
             return StatusCode(200, new { name="Adam", surname="Hrouda" });

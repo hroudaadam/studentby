@@ -33,18 +33,19 @@ namespace WebAPI.Models
     }
 
     /// <summary>
-    /// Response: Customer detail
+    /// Response: Customer with Group
     /// </summary>
-    public class CustomerDetailRes
+    public class CustomerWithGrRes
     {
         public int CustomerId { get; set; }
         public string Email { get; set; }
         public GroupRes Group { get; set; }
 
-        public CustomerDetailRes(Customer customer)
+        public CustomerWithGrRes(Customer customer)
         {
             CustomerId = customer.CustomerId;
             Email = customer.User.Email;
+            Group = new GroupRes(customer.Group);
         }
     }
 }

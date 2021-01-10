@@ -95,7 +95,7 @@ namespace WebAPI.Services
             // route id and model id differs
             if (groupId != model.GroupId) 
             {
-                throw new StudentbyException("Neplatný požadavek");
+                throw new AppLogicException("Neplatný požadavek");
             }
 
             var group = await _context.Groups.FirstOrDefaultAsync(gr => gr.GroupId == groupId);

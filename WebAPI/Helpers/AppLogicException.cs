@@ -8,9 +8,9 @@ namespace WebAPI.Helpers
     /// <summary>
     /// Exception thrown by logic error
     /// </summary>
-    public class StudentbyException : Exception
+    public class AppLogicException : Exception
     {
-        public StudentbyException(string message) : base(message)
+        public AppLogicException(string message) : base(message)
         {
         }
     }
