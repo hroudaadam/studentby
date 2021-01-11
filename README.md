@@ -119,6 +119,9 @@
 
 ---------------------------------------------------------
 ## Možné dodělávky
+- chybový response jako JSON
+- mail client
+- validace vstupů na serveru
 - promyslet finance pro zákazníka (balíčky - počet nabídek/míst na měsíc)
 - promyslet hodnocení
     - zrušení nabídky

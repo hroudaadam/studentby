@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebAPI.Helpers;
+using WebAPI.Models;
 
 namespace WebAPI.Controllers
 {
@@ -21,25 +22,23 @@ namespace WebAPI.Controllers
         }
 
         [Route("error")]       
-        public string Error()
+        public ErrorRes Error()
         {
             var exception = HttpContext.Features.Get<IExceptionHandlerFeature>().Error;
-            int code;
-            string message;
 
             if (exception is AppLogicException)
             {
-                code = 400;
-                message = exception.Message;
+                Response.StatusCode = 400;
+                string message = exception.Message;
+                string detail = ((AppLogicException)exception).Detail;
+                return new ErrorRes(message, detail);
             }
             else
             {
-                code = 500;
-                message = "Objevila se chyba na serveru";
-            }
-
-            Response.StatusCode = code;
-            return message;
+                Response.StatusCode = 500;
+                string message = "Objevila se chyba na serveru";
+                return new ErrorRes(message);
+            }            
         }
     }
 }

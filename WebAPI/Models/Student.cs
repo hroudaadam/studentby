@@ -14,9 +14,11 @@ namespace WebAPI.Models
     public class StudentReq
     {
         [Required]
+        //[EmailAddress]
         public string Email { get; set; }
 
         [Required]
+        //[MinLength(8)]
         public string Password { get; set; }
 
         [Required]
@@ -26,6 +28,8 @@ namespace WebAPI.Models
         public string LastName { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
+        [MinAge(18)]
         public DateTime? DateOfBirth { get; set; }
 
         [Required]

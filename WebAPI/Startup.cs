@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using Serilog;
 using WebAPI.Entities;
 using WebAPI.Helpers;
@@ -61,18 +62,18 @@ namespace WebAPI
                 .AddNewtonsoftJson(options =>
                 {
                     // JSON serialization to UTC date format
-                    options.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
+                    options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
                 })
                 .ConfigureApiBehaviorOptions(options =>
                 {
                     // DTO validation errors - custom response
-                    options.InvalidModelStateResponseFactory = cont =>
+                    options.InvalidModelStateResponseFactory = context =>
                     {
-                        //var errors = string.Join(", ", cont.ModelState.Values.Where(v => v.Errors.Count > 0)
-                        //  .SelectMany(v => v.Errors)
-                        //  .Select(v => v.ErrorMessage));
+                        var errors = string.Join(" ", context.ModelState.Values.Where(v => v.Errors.Count > 0)
+                            .SelectMany(v => v.Errors)
+                            .Select(v => v.ErrorMessage));
 
-                        throw new AppLogicException("Nastala chyba pøi validaci požadavku");
+                        throw new AppLogicException("Nastala chyba pøi validaci požadavku", errors);
                     };
 
                 });
@@ -114,7 +115,7 @@ namespace WebAPI
             services.AddScoped<IAddressService, AddressService>();
             services.AddScoped<ITestService, TestService>();
 
-            // Swagger
+            // Swagger registration
             services.AddSwaggerGen();
         }
 

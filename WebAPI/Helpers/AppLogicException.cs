@@ -10,8 +10,10 @@ namespace WebAPI.Helpers
     /// </summary>
     public class AppLogicException : Exception
     {
-        public AppLogicException(string message) : base(message)
+        public string Detail { get; set; }
+        public AppLogicException(string message, string detail=null) : base(message)
         {
+            Detail = detail;
         }
     }
 }
