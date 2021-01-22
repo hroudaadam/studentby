@@ -119,12 +119,12 @@ const routes = [
     name: 'OperatorStudents',
     component: OperatorStudents,
   },
-  {
-    path: '/operator/students/:studentId',
-    name: 'OperatorStudentDetail',
-    component: OperatorStudentDetail,
-    props: true
-  },
+{
+  path: '/operator/students/:studentId',
+  name: 'OperatorStudentDetail',
+  component: OperatorStudentDetail,
+  props: true
+},
   {
     path: '/operator/job-offers',
     name: 'OperatorJobOffers',

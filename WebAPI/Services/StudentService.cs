@@ -12,9 +12,9 @@ namespace WebAPI.Services
 {
     public interface IStudentService
     {
-        Task<StudentRes> CreateAsync(StudentReq model);
+        Task<StudentMinRes> CreateAsync(StudentReq model);
         Task<bool> EditOperatorAsync(int studentId, StudentWithRoleReq model);
-        Task<IEnumerable<StudentNameRes>> GetListAsync();
+        Task<IEnumerable<StudentMinRes>> GetListAsync();
         Task<StudentWithAdActivRes> GetDetailAsync(int studentId);
     }
 
@@ -40,13 +40,13 @@ namespace WebAPI.Services
         /// Get list of Students
         /// </summary>
         /// <returns>List of Student DTOs</returns>
-        public async Task<IEnumerable<StudentNameRes>> GetListAsync()
+        public async Task<IEnumerable<StudentMinRes>> GetListAsync()
         {
             var students = await _context.Students.ToListAsync();
-            List<StudentNameRes> output = new List<StudentNameRes>();
+            List<StudentMinRes> output = new List<StudentMinRes>();
             foreach (var student in students)
             {
-                output.Add(new StudentNameRes(student));
+                output.Add(new StudentMinRes(student));
             }
             return output;
         }
@@ -74,7 +74,7 @@ namespace WebAPI.Services
         /// </summary>
         /// <param name="model">Student DTO</param>
         /// <returns>Student DTO</returns>
-        public async Task<StudentRes> CreateAsync(StudentReq model)
+        public async Task<StudentMinRes> CreateAsync(StudentReq model)
         {
             // create user
             User user = await _userService.CreateAsync(model.Email, model.Password, UserRoles.StudentInact);
@@ -92,7 +92,7 @@ namespace WebAPI.Services
             };
             _context.Students.Add(student);
             await _context.SaveChangesAsync();
-            return new StudentRes(student);
+            return new StudentMinRes(student);
         }
 
         /// <summary>

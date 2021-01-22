@@ -12,12 +12,12 @@ namespace WebAPI.Services
 {
     public interface IJobOfferService
     {
-        Task<IEnumerable<JobOfferSimpleRes>> GetListAsync();
-        Task<IEnumerable<JobOfferSimpleRes>> GetListCustomerAsync(int userId);
+        Task<IEnumerable<JobOfferMinRes>> GetListAsync();
+        Task<IEnumerable<JobOfferMinRes>> GetListCustomerAsync(int userId);
         Task<JobOfferRes> CreateAsync(JobOfferReq model, int userId);
         Task<bool> DeleteAsync(int jobOfferId, int userId);
-        Task<JobOfferWithGrAdRes> GetDetailAsync(int id);
-        Task<JobOfferWithGrAdRes> GetDetailCustomerAsync(int id, int userId);
+        Task<JobOfferRes> GetDetailStudentAsync(int id);
+        Task<JobOfferRes> GetDetailCustomerAsync(int id, int userId);
         Task<JobOfferWithJasRes> GetDetailOperatorAsync(int jobOfferId);
         Task<int> GetFreeSpacesAsync(int jobOfferId);
     }
@@ -40,15 +40,16 @@ namespace WebAPI.Services
         /// Get list of JobOffers
         /// </summary>
         /// <returns>List of JobOffer DTOs</returns>
-        public async Task<IEnumerable<JobOfferSimpleRes>> GetListAsync()
+        public async Task<IEnumerable<JobOfferMinRes>> GetListAsync()
         {
             var jobOffers = await _context.JobOffers
+                .Include(jo => jo.Group)
                 .ToListAsync();
 
-            List<JobOfferSimpleRes> result = new List<JobOfferSimpleRes>();
+            List<JobOfferMinRes> result = new List<JobOfferMinRes>();
             foreach (var jobOffer in jobOffers)
             {
-                result.Add(new JobOfferSimpleRes(jobOffer));
+                result.Add(new JobOfferMinRes(jobOffer));
             }
             return result;
         }
@@ -58,7 +59,7 @@ namespace WebAPI.Services
         /// </summary>
         /// <param name="userId">User ID</param>
         /// <returns>List of JobOffer DTOs</returns>
-        public async Task<IEnumerable<JobOfferSimpleRes>> GetListCustomerAsync(int userId)
+        public async Task<IEnumerable<JobOfferMinRes>> GetListCustomerAsync(int userId)
         {
             User user = await _context.Users
                 .Include(us => us.Customer)
@@ -68,13 +69,14 @@ namespace WebAPI.Services
 
             // get job offers only for current group
             var jobOffers = await _context.JobOffers
+                .Include(jo => jo.Group)
                 .Where(jo => jo.GroupId == groupId)
                 .ToListAsync();
 
-            List<JobOfferSimpleRes> result = new List<JobOfferSimpleRes>();
+            List<JobOfferMinRes> result = new List<JobOfferMinRes>();
             foreach (var jobOffer in jobOffers)
             {
-                result.Add(new JobOfferSimpleRes(jobOffer));
+                result.Add(new JobOfferMinRes(jobOffer));
             }
             return result;
         }
@@ -84,7 +86,7 @@ namespace WebAPI.Services
         /// </summary>
         /// <param name="jobOfferId">JobOffer ID</param>
         /// <returns>JobOffer DTO</returns>
-        public async Task<JobOfferWithGrAdRes> GetDetailAsync(int jobOfferId)
+        public async Task<JobOfferRes> GetDetailStudentAsync(int jobOfferId)
         {
             var jobOffer = await _context.JobOffers
                 .Include(jo => jo.Address)
@@ -98,7 +100,7 @@ namespace WebAPI.Services
             }
 
             int freeSpaces = await GetFreeSpacesAsync(jobOfferId);
-            return new JobOfferWithGrAdRes(jobOffer, freeSpaces);
+            return new JobOfferRes(jobOffer, freeSpaces);
         }
 
         /// <summary>
@@ -107,7 +109,7 @@ namespace WebAPI.Services
         /// <param name="jobOfferId">JobOffer ID</param>
         /// <param name="userId">User ID</param>
         /// <returns>JobOffer DTO</returns>
-        public async Task<JobOfferWithGrAdRes> GetDetailCustomerAsync(int jobOfferId, int userId)
+        public async Task<JobOfferRes> GetDetailCustomerAsync(int jobOfferId, int userId)
         {
             var user = await _context.Users
                 .Include(us => us.Customer)
@@ -131,7 +133,7 @@ namespace WebAPI.Services
             }
 
             int freeSpaces = await GetFreeSpacesAsync(jobOffer.JobOfferId);
-            return new JobOfferWithGrAdRes(jobOffer, freeSpaces);
+            return new JobOfferRes(jobOffer, freeSpaces);
         }
 
         /// <summary>

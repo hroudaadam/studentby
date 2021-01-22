@@ -21,37 +21,48 @@ namespace WebAPI.Controllers
     public class JobOfferController : ControllerBase
     {
         private readonly IJobOfferService _jobOfferService;
-        private readonly IUserService _userService;
 
-        public JobOfferController(IJobOfferService jobOfferService, IUserService userService)
+        public JobOfferController(IJobOfferService jobOfferService)
         {
             _jobOfferService = jobOfferService;
-            _userService = userService;
         }
 
         // GET: api/job-offers
-        [HttpGet()]
+        [HttpGet]
         [Authorize(Roles = UserRoles.Student + "," + UserRoles.Operator)]
-        public async Task<ActionResult<IEnumerable<JobOfferSimpleRes>>> GetList()
+        public async Task<ActionResult<IEnumerable<JobOfferMinRes>>> GetList()
         {
             var response = await _jobOfferService.GetListAsync();
             return StatusCode(200, response);
         }
 
-        // GET: api/job-offers/customer
-        [HttpGet("customer")]
+        // GET: api/job-offers/customer-view
+        [HttpGet("customer-view")]
         [Authorize(Roles = UserRoles.Customer)]
-        public async Task<ActionResult<IEnumerable<JobOfferSimpleRes>>> GetListAsCustomer()
+        public async Task<ActionResult<IEnumerable<JobOfferMinRes>>> GetListCustomer()
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
             var response = await _jobOfferService.GetListCustomerAsync(userId);
             return StatusCode(200, response);
         }
 
-        // GET: api/job-offers/1/customer
-        [HttpGet("{jobOfferId}/customer")]
+        // GET: api/job-offers/1/student-view
+        [HttpGet("{jobOfferId}/student-view")]
+        [Authorize(Roles = UserRoles.Student)]
+        public async Task<ActionResult<JobOfferRes>> GetStudent([FromRoute] int jobOfferId)
+        {
+            var response = await _jobOfferService.GetDetailStudentAsync(jobOfferId);
+            if (response == null)
+            {
+                return StatusCode(404);
+            }
+            return StatusCode(200, response);
+        }
+
+        // GET: api/job-offers/1/customer-view
+        [HttpGet("{jobOfferId}/customer-view")]
         [Authorize(Roles = UserRoles.Customer)]
-        public async Task<ActionResult<JobOfferWithGrAdRes>> GetAsCustomer([FromRoute] int jobOfferId)
+        public async Task<ActionResult<JobOfferRes>> GetCustomer([FromRoute] int jobOfferId)
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
             var response = await _jobOfferService.GetDetailCustomerAsync(jobOfferId, userId);
@@ -62,10 +73,10 @@ namespace WebAPI.Controllers
             return StatusCode(200, response);
         }
 
-        // GET: api/job-offers/1/operator
-        [HttpGet("{jobOfferId}/operator")]
+        // GET: api/job-offers/1/operator-view
+        [HttpGet("{jobOfferId}/operator-view")]
         [Authorize(Roles = UserRoles.Operator)]
-        public async Task<ActionResult<JobOfferWithJasRes>> GetAsOperator([FromRoute] int jobOfferId)
+        public async Task<ActionResult<JobOfferWithJasRes>> GetOperator([FromRoute] int jobOfferId)
         {
             var response = await _jobOfferService.GetDetailOperatorAsync(jobOfferId);
             if (response == null)
@@ -74,20 +85,6 @@ namespace WebAPI.Controllers
             }
             return StatusCode(200, response);
         }
-
-        // GET: api/job-offers/1
-        [HttpGet("{jobOfferId}")]
-        [Authorize(Roles = UserRoles.Student)]
-        public async Task<ActionResult<JobOfferWithGrAdRes>> Get([FromRoute] int jobOfferId)
-        {
-            var response = await _jobOfferService.GetDetailAsync(jobOfferId);
-            if (response == null)
-            {
-                return StatusCode(404);
-            }
-            return StatusCode(200, response);
-        }
-
 
         // POST: api/job-offers
         [HttpPost]

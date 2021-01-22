@@ -150,9 +150,7 @@ export default {
         .then(() => {
           router.push({ name: "CustomerJobOffers" });
         })
-        .catch((error) => {
-          console.error(error.message);
-        });
+        .catch(() => {});
     },
   },
   computed: {

@@ -67,7 +67,7 @@ export default {
     getJobApplication() {
       this.jobApplication = null;
       apiService
-        .get("/job-applications/" + this.jobApplicationId.toString())
+        .get("/job-applications/" + this.jobApplicationId.toString() + "/operator-view")
         .then((response) => {
           this.jobApplication = response;
         })

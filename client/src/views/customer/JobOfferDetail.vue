@@ -1,5 +1,5 @@
 <template>
-  <div class="CustomerJobOfferDetail">
+  <div>
     <PageHeader v-bind:title="'Nabídky'">
       <b-button variant="primary" :to="{name: 'CustomerJobOffers'}">Zpět</b-button>
     </PageHeader>
@@ -42,23 +42,17 @@ export default {
     getJobOffer() {
       this.jobOffer = null;
       apiService
-        .get("/job-offers/" + this.jobOfferId.toString())
+        .get("/job-offers/" + this.jobOfferId.toString() + "/customer-view")
         .then((response) => {
           this.jobOffer = response;
-        })
-        .catch((error) => {
-          console.error(error.message);       
         });
     },
-    // delete JobOffer
+    // delete job offer
     deleteJobOffer() {
       apiService
         .del("/job-offers/" + this.jobOfferId.toString())
         .then(() => {
           router.push({name: 'CustomerJobOffers'});
-        })
-        .catch((error) => {
-          console.error(error.message);
         });
     }
   },
@@ -68,7 +62,8 @@ export default {
   mounted() {
     if (!this.isCustomerLogged) {
       router.push({ name: "Login" });
-    } else {
+    } 
+    else {
       this.getJobOffer();
     }
   },

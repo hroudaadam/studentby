@@ -47,12 +47,9 @@ export default {
     getJobApplications() {
       this.jobApplications = null;
       apiSevice
-        .get("/job-applications")
+        .get("/job-applications/student-view")
         .then((response) => {
           this.jobApplications = response;
-        })
-        .catch((error) => {
-          console.error(error.message);
         });
     },
   },

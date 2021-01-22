@@ -12,11 +12,11 @@ namespace WebAPI.Services
 {
     public interface IJobApplicationService
     {
-        Task<JobApplicationRes> CreateAsync(JobApplicationWithJoReq model, int userId);
-        Task<IEnumerable<JobApplicationWithSimpleJoRes>> GetListStudentAsync(int userId);
+        Task<JobApplicationMinWithJoRes> CreateAsync(JobApplicationWithJoReq model, int userId);
+        Task<IEnumerable<JobApplicationMinWithJoRes>> GetListStudentAsync(int userId);
         Task<JobApplicationWithJoRes> GetDetailStudentAsync(int jobApplicationId, int userId);
         Task<bool> DeleteAsync(int jobApplicationId);
-        Task<IEnumerable<JobApplicationWithSimpleJoRes>> GetListAsync();
+        Task<IEnumerable<JobApplicationMinWithJoRes>> GetListOperatorAsync();
         Task<JobApplicationWithJoStudRes> GetDetailOperatorAsync(int jobApplicationId);
         Task<bool> EditAsync(int jobApplicationId, JobApplicationWithStateReq model);
         Task CancelAllActiveAsync(int studentId);
@@ -41,19 +41,20 @@ namespace WebAPI.Services
         /// </summary>
         /// <param name="userId">User ID</param>
         /// <returns>List of JobApplication DTOs</returns>
-        public async Task<IEnumerable<JobApplicationWithSimpleJoRes>> GetListStudentAsync(int userId)
+        public async Task<IEnumerable<JobApplicationMinWithJoRes>> GetListStudentAsync(int userId)
         {
             var jobApplications = await _context.JobApplications
                 .Include(ap => ap.Student)
                     .ThenInclude(st => st.User)
                 .Include(ap => ap.JobOffer)
+                    .ThenInclude(jo => jo.Group)
                 .Where(ap => ap.Student.User.UserId == userId)
                 .ToListAsync();
 
-            List<JobApplicationWithSimpleJoRes> result = new List<JobApplicationWithSimpleJoRes>();
+            List<JobApplicationMinWithJoRes> result = new List<JobApplicationMinWithJoRes>();
             foreach (var jobApplication in jobApplications)
             {
-                result.Add(new JobApplicationWithSimpleJoRes(jobApplication));
+                result.Add(new JobApplicationMinWithJoRes(jobApplication));
             }
             return result;
         }
@@ -62,16 +63,17 @@ namespace WebAPI.Services
         /// Get list of JobApplications
         /// </summary>
         /// <returns>List of JobApplication DTOs</returns>
-        public async Task<IEnumerable<JobApplicationWithSimpleJoRes>> GetListAsync()
+        public async Task<IEnumerable<JobApplicationMinWithJoRes>> GetListOperatorAsync()
         {
             var jobApplications = await _context.JobApplications 
                                       .Include(ja => ja.JobOffer)
+                                        .ThenInclude(jo => jo.Group)
                                       .ToListAsync();
 
-            List<JobApplicationWithSimpleJoRes> result = new List<JobApplicationWithSimpleJoRes>();
+            List<JobApplicationMinWithJoRes> result = new List<JobApplicationMinWithJoRes>();
             foreach (var jobApplication in jobApplications)
             {
-                result.Add(new JobApplicationWithSimpleJoRes(jobApplication));
+                result.Add(new JobApplicationMinWithJoRes(jobApplication));
             }
             return result;
         }
@@ -138,9 +140,11 @@ namespace WebAPI.Services
         /// <param name="model">JobApplication DTO</param>
         /// <param name="userId">User ID</param>
         /// <returns>JobApplication DTO</returns>
-        public async Task<JobApplicationRes> CreateAsync(JobApplicationWithJoReq model, int userId)
+        public async Task<JobApplicationMinWithJoRes> CreateAsync(JobApplicationWithJoReq model, int userId)
         {
-            JobOffer jobOffer = await _context.JobOffers.FirstOrDefaultAsync(x => x.JobOfferId == model.JobOfferId);
+            JobOffer jobOffer = await _context.JobOffers
+                .Include(jo => jo.Group)
+                .FirstOrDefaultAsync(jo => jo.JobOfferId == model.JobOfferId);
             // jobOffer not found
             if (jobOffer == null)
             {
@@ -195,7 +199,7 @@ namespace WebAPI.Services
             _context.JobApplications.Add(jobApplication);
             await _context.SaveChangesAsync();
 
-            return new JobApplicationRes(jobApplication);
+            return new JobApplicationMinWithJoRes(jobApplication);
         }
         
         /// <summary>

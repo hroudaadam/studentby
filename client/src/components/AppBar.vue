@@ -1,6 +1,6 @@
 <template>
   <div class="AppBar">
-    <b-navbar toggleable="md" type="dark" variant="primary" fixed="top">
+<b-navbar toggleable="md" type="dark" variant="primary" fixed="top">
       <b-navbar-brand :to="{ name: 'Home' }">
         Studentby
         <!-- <span v-if="isStudentLogged" class="role-desc">student</span>
@@ -46,8 +46,8 @@
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">
-          <b-nav-item v-if="!isUserLogged" :to="{ name: 'Login' }"
-            >Přihlásit</b-nav-item
+          <b-nav-item v-if="!isUserLogged" :to="{ name: 'Login' }">
+            Přihlásit</b-nav-item
           >
 
           <b-nav-item-dropdown v-if="isUserLogged" right>
@@ -77,7 +77,7 @@ export default {
       "isStudentLogged",
       "isCustomerLogged",
       "isOperatorLogged",
-      "isStudentInactLogged"
+      "isStudentInactLogged",
     ]),
   },
   methods: {

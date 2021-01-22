@@ -10,12 +10,6 @@
         <b-form-group id="input-group-1" label="Email:" label-for="input-1">
           <b-form-input id="input-1" v-model="formData.email" type="text" placeholder="Email"></b-form-input>
         </b-form-group>
-        <b-form-group id="input-group-1" label="Jméno:" label-for="input-1">
-          <b-form-input id="input-1" v-model="formData.firstName" type="text" placeholder="Jméno"></b-form-input>
-        </b-form-group>
-        <b-form-group id="input-group-1" label="Příjmení:" label-for="input-1">
-          <b-form-input id="input-1" v-model="formData.lastName" type="text" placeholder="Příjmení"></b-form-input>
-        </b-form-group>
         <b-form-group id="input-group-1" label="Skupina:" label-for="input-1">
           <b-form-input readonly id="input-1" v-model="groupName" type="text" placeholder="Skupina "></b-form-input>
         </b-form-group>

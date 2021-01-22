@@ -6,10 +6,7 @@
         <b-list-group-item
           v-bind:key="student.studentId"
           v-for="student in students"
-          :to="{
-            name: 'OperatorStudentDetail',
-            params: { studentId: student.studentId },
-          }"
+:to="{name: 'OperatorStudentDetail', params: { studentId: student.studentId }}"
           class="flex-column align-items-start"
         >
             {{ student.firstName }} {{ student.lastName }}

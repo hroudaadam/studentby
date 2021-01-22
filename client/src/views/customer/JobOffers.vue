@@ -41,7 +41,7 @@ export default {
       this.jobOffers = null;
 
       apiSevice
-        .get("/job-offers")
+        .get("/job-offers/customer-view")
         .then((response) => {
           this.jobOffers = response;
         })

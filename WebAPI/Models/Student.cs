@@ -49,21 +49,19 @@ namespace WebAPI.Models
     }
 
     /// <summary>
-    /// Response: Student
+    /// Response: Student minimal 
     /// </summary>
-    public class StudentRes
+    public class StudentMinRes
     {
-        public int StudentId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public DateTime DateOfBirth { get; set; }
+    public int StudentId { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
 
-        public StudentRes(Student student)
+        public StudentMinRes(Student student)
         {
             StudentId = student.StudentId;
             FirstName = student.FirstName;
             LastName = student.LastName;
-            DateOfBirth = student.DateOfBirth;
         }
     }
 
@@ -95,7 +93,7 @@ namespace WebAPI.Models
     /// <summary>
     /// Response: Student with Address
     /// </summary>
-    public class StudentWithAdRes
+    public class StudentRes
     {
         public int StudentId { get; set; }
         public string Email { get; set; }
@@ -104,7 +102,7 @@ namespace WebAPI.Models
         public DateTime DateOfBirth { get; set; }
         public AddressRes Address { get; set; }
 
-        public StudentWithAdRes(Student student)
+        public StudentRes(Student student)
         {
             StudentId = student.StudentId;
             Email = student.User.Email;
@@ -112,23 +110,6 @@ namespace WebAPI.Models
             LastName = student.LastName;
             DateOfBirth = student.DateOfBirth;
             Address = new AddressRes(student.Address);
-        }
-    }
-
-    /// <summary>
-    /// Response: Student name
-    /// </summary>
-    public class StudentNameRes
-    {
-        public int StudentId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-
-        public StudentNameRes(Student student)
-        {
-            StudentId = student.StudentId;
-            FirstName = student.FirstName;
-            LastName = student.LastName;
         }
     }
 }

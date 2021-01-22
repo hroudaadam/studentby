@@ -31,8 +31,6 @@ export default new Vuex.Store({
     loading: false,
     // ...
     errorMsg: null,
-    // ...
-    errorHelper: true
   },
   getters: {
     isUserLogged(state) {
@@ -62,7 +60,6 @@ export default new Vuex.Store({
       state.loading = value;
     },
     setErrorMsg(state, message) {
-      state.errorHelper = !state.errorHelper;
       state.errorMsg = message;
     }
   },
@@ -75,7 +72,8 @@ export default new Vuex.Store({
     loginStore({ commit }, userData) {
       commit('setAccessToken', userData.token);
       commit("setUserRole", userData.role);
-      router.push({ name: 'Home' });
+      // catching router, because of "Avoided redundant navigation" error
+      router.push({ name: 'Home' }).catch(()=>{});
     }
   },
   modules: {

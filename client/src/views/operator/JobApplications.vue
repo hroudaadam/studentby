@@ -45,7 +45,7 @@ export default {
     getJobApplications() {
       this.jobApplications = null;
       apiSevice
-        .get("/job-applications")
+        .get("/job-applications/operator-view")
         .then((response) => {
           this.jobApplications = response;
         })

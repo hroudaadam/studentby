@@ -17,7 +17,7 @@
                 v-for="customer in group.customers"
                 class="d-flex justify-content-between align-items-center"
               >
-                {{ customer.firstName }} {{ customer.lastName }}
+                {{ customer.email }}
               </b-list-group-item>
             </b-list-group>
           </div>

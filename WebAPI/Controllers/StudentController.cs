@@ -32,7 +32,7 @@ namespace WebAPI.Controllers
         // GET: api/students
         [Authorize(Roles = UserRoles.Operator)]
         [HttpGet]
-        public async Task<ActionResult<StudentNameRes>> GetAll()
+        public async Task<ActionResult<StudentMinRes>> GetList()
         {
             var response = await _studentService.GetListAsync();
             return StatusCode(200, response);
@@ -55,11 +55,10 @@ namespace WebAPI.Controllers
         // POST: api/students
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult<StudentRes>> Post([FromBody] StudentReq request)
+        public async Task<ActionResult<StudentMinRes>> Post([FromBody] StudentReq request)
         {
             var response = await _studentService.CreateAsync(request);
             return StatusCode(201, response);
-
         }
 
         // PUT: api/students/1

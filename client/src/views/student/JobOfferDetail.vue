@@ -42,18 +42,14 @@ export default {
     getJobOffer() {
       this.jobOffer = null;
       apiService
-        .get("/job-offers/" + this.jobOfferId.toString())
+        .get("/job-offers/" + this.jobOfferId.toString() + "/student-view")
         .then((response) => {
           this.jobOffer = response;
-        })
-        .catch((error) => {
-          console.error(error.message);
         });
     },
     // create job application
     createJobApplication() {
       var body = { jobOfferId: this.jobOfferId };
-
       apiService
         .post("/job-applications", body)
         .then(() => {

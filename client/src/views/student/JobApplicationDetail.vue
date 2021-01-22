@@ -40,16 +40,13 @@ export default {
     };
   },
   methods: {
-    // get job offer
+    // get job offe
     getJobOffer() {
       this.jobApplication = null;
       apiService
-        .get("/job-applications/" + this.jobApplicationId.toString())
+        .get("/job-applications/" + this.jobApplicationId.toString() + "/student-view")
         .then((response) => {
           this.jobApplication = response;
-        })
-        .catch((error) => {
-          console.error(error.message);
         });
     },    
     // delete job application
@@ -58,9 +55,6 @@ export default {
         .del("/job-applications/" + this.jobApplicationId.toString())
         .then(() => {
           router.push({name: 'StudentJobApplications'});
-        })
-        .catch((error) => {
-          console.error(error.message);
         });
     },
   },

@@ -27,29 +27,29 @@ namespace WebAPI.Controllers
             _jobApplicationService = jobApplicationService;
         }
 
-        // GET: api/job-applications
-        [HttpGet]
+        // GET: api/job-applications/operator-view
+        [HttpGet("operator-view")]
         [Authorize(Roles = UserRoles.Operator)]
-        public async Task<ActionResult<IEnumerable<JobApplicationWithSimpleJoRes>>> GetList()
+        public async Task<ActionResult<IEnumerable<JobApplicationMinWithJoRes>>> GetListOperator()
         {
-            var response = await _jobApplicationService.GetListAsync();
+            var response = await _jobApplicationService.GetListOperatorAsync();
             return StatusCode(200, response);
         }
 
-        // GET: api/job-applications
-        [HttpGet]
+        // GET: api/job-applications/student-view
+        [HttpGet("student-view")]
         [Authorize(Roles = UserRoles.Student)]
-        public async Task<ActionResult<IEnumerable<JobApplicationWithSimpleJoRes>>> GetListAsStudent()
+        public async Task<ActionResult<IEnumerable<JobApplicationMinWithJoRes>>> GetListStudent()
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
             var response = await _jobApplicationService.GetListStudentAsync(userId);
             return StatusCode(200, response);
         }
 
-        // GET: api/job-applications/1
-        [HttpGet("{jobApplicationId}")]
+        // GET: api/job-applications/1/operator-view
+        [HttpGet("{jobApplicationId}/operator-view")]
         [Authorize(Roles = UserRoles.Operator)]
-        public async Task<ActionResult<JobApplicationWithJoStudRes>> Get([FromRoute] int jobApplicationId)
+        public async Task<ActionResult<JobApplicationWithJoStudRes>> GetOperator([FromRoute] int jobApplicationId)
         {
             var response = await _jobApplicationService.GetDetailOperatorAsync(jobApplicationId);
             if (response == null)
@@ -59,10 +59,10 @@ namespace WebAPI.Controllers
             return StatusCode(200, response);
         }
 
-        // GET: api/job-applications/1/student
-        [HttpGet("{jobApplicationId}/student")]
+        // GET: api/job-applications/1/student-view
+        [HttpGet("{jobApplicationId}/student-view")]
         [Authorize(Roles = UserRoles.Student)]
-        public async Task<ActionResult<JobApplicationWithJoRes>> GetAsStudent([FromRoute] int jobApplicationId)
+        public async Task<ActionResult<JobApplicationWithJoRes>> GetStudent([FromRoute] int jobApplicationId)
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
             var response = await _jobApplicationService.GetDetailStudentAsync(jobApplicationId, userId);
@@ -76,7 +76,7 @@ namespace WebAPI.Controllers
         // POST: api/job-applications
         [HttpPost]
         [Authorize(Roles = UserRoles.Student)]
-        public async Task<ActionResult<JobApplicationRes>> Post([FromBody] JobApplicationWithJoReq request)
+        public async Task<ActionResult<JobApplicationMinWithJoRes>> Post([FromBody] JobApplicationWithJoReq request)
         {
             int userId = int.Parse(HttpContext.User.Identity.Name);
 

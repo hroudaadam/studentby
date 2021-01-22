@@ -74,12 +74,9 @@ export default {
     getJobOffer() {
       this.jobOffer = null;
       apiService
-        .get("/job-offers/" + this.jobOfferId.toString())
+        .get("/job-offers/" + this.jobOfferId.toString() + "/operator-view")
         .then((response) => {
           this.jobOffer = response;
-        })
-        .catch((error) => {
-          console.error(error.message);
         });
     },
   },

@@ -36,6 +36,7 @@ namespace WebAPI.Controllers
             else
             {
                 Response.StatusCode = 500;
+                _logger.LogError(exception.Message);
                 string message = "Objevila se chyba na serveru";
                 return new ErrorRes(message);
             }            

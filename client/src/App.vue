@@ -19,21 +19,16 @@ export default {
   },
   data: () => ({}),
   computed: {
-    ...mapState(["loading", "errorMsg", "errorHelper"]),
+    ...mapState(["loading", "errorMsg"]),
   },
-  watch: {
-    errorHelper: function () {
-      this.createErrorAlert(this.errorMsg);
-    },
+watch: {
+  errorMsg: function (errorMsg) {
+    this.$bvToast.toast(errorMsg.error, {
+      title: "Chyba",
+      variant: "danger",
+      solid: true,
+    });
   },
-  methods: {
-    createErrorAlert(errorMsg) {
-      this.$bvToast.toast(errorMsg, {
-        title: "Chyba",
-        variant: "danger",
-        solid: true,
-      });
-    },
-  },
+}
 };
 </script>
