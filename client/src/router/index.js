@@ -16,6 +16,7 @@ import CustomerJobOffers from "../views/customer/JobOffers";
 import CustomerJobOfferCreate from "../views/customer/JobOfferCreate"; 
 import CustomerJobOfferDetail from "../views/customer/JobOfferDetail"; 
 import CustomerProfile from "../views/customer/Profile";
+import SetPassword from "../views/SetPassword";
 
 import OperatorJobOffers from "../views/operator/JobOffers";
 import OperatorJobOfferDetail from "../views/operator/JobOfferDetail"; 
@@ -73,6 +74,12 @@ const routes = [
     path: "/student/register",
     name: "StudentRegister",
     component: StudentRegister,
+  },
+  {
+    path: "/set-password/:secret",
+    name: "SetPassword",
+    component: SetPassword,
+    props: true
   },
   {
     path: "/customer/profile",

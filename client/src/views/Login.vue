@@ -42,7 +42,7 @@
                 >Vytvořit nový účet</b-button
               >
 
-              <b-link :to="{ name: 'Home' }">Zapomněli jste heslo?</b-link>
+              <!-- <b-link :to="{ name: 'Home' }">Zapomněli jste heslo?</b-link> -->
             </b-form>
           </b-card-body>
         </b-card>

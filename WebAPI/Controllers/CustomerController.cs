@@ -29,13 +29,13 @@ namespace WebAPI.Controllers
         // POST: api/customers
         [HttpPost]
         [Authorize(Roles = UserRoles.Operator)]
-        public async Task<ActionResult<CustomerRes>> Post([FromBody] CustomerReq request)
+        public async Task<ActionResult<CustomerWithSecRes>> Post([FromBody] CustomerReq request)
         {
             var response = await _customerService.CreateAsync(request);
             return StatusCode(201, response);
         }
 
-        // POST: api/customers/profile
+        // GET: api/customers/profile
         [HttpGet("profile")]
         [Authorize(Roles = UserRoles.Customer)]
         public async Task<ActionResult<CustomerWithGrRes>> GetProfile()

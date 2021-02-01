@@ -21,6 +21,7 @@ namespace WebAPI.Services
         Task<bool> EnsureOperatorAsync();
         Task<UserRes> AuthenticateAsync(UserReq model);
         Task<User> CreateAsync(string email, string password, string role);
+        Task SetPassword(PasswordReq model);
     }
 
     /// <summary>
@@ -172,6 +173,41 @@ namespace WebAPI.Services
             return false;            
         }  
         
+        public async Task SetPassword(PasswordReq model)
+        {
+            var secretSplit = model.Secret.Split(':');
+            if (secretSplit.Length != 2)
+            {
+                throw new AppLogicException("Nevalidní požadavek");
+            }
+
+            string modelHash = secretSplit[0];
+            string email = secretSplit[1];
+
+            var user = await _context.Users
+                .Where(us => us.Email == email)
+                .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                throw new AppLogicException("Daný uživatel neexistuje");
+            }
+
+            string dbHash = BitConverter.ToString(user.PasswordHash).Replace("-", "");
+            bool validSecret = modelHash == dbHash;
+            if (!validSecret)
+            {
+                throw new AppLogicException("Nevalidní kód");
+            }
+
+            byte[] hash, salt;
+            HashPassword(model.Password, out hash, out salt);
+
+            user.PasswordHash = hash;
+            user.PasswordSalt = salt;
+
+            await _context.SaveChangesAsync();
+        }
         
     }
 }

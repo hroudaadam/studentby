@@ -35,6 +35,23 @@ namespace WebAPI.Models
     }
 
     /// <summary>
+    /// Response: Customer with secret
+    /// </summary>
+    public class CustomerWithSecRes
+    {
+        public int CustomerId { get; set; }
+        public string Email { get; set; }
+        public string Secret { get; set; }
+
+        public CustomerWithSecRes(Customer customer, string sec)
+        {
+            CustomerId = customer.CustomerId;
+            Email = customer.User.Email;
+            Secret = sec;
+        }
+    }
+
+    /// <summary>
     /// Response: Customer with Group
     /// </summary>
     public class CustomerWithGrRes

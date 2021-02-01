@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using WebAPI.Models;
 using WebAPI.Helpers;
 using WebAPI.Entities;
+using System.Text;
 
 namespace WebAPI.Services
 {
     public interface ICustomerService
     {
-        Task<CustomerRes> CreateAsync(CustomerReq model);
+        Task<CustomerWithSecRes> CreateAsync(CustomerReq model);
         Task<CustomerWithGrRes> GetDetailAsync(int userId);
     }
 
@@ -34,12 +35,8 @@ namespace WebAPI.Services
         /// </summary>
         /// <param name="model">Customer DTO</param>
         /// <returns>Customer DTO</returns>
-        public async Task<CustomerRes> CreateAsync(CustomerReq model)
+        public async Task<CustomerWithSecRes> CreateAsync(CustomerReq model)
         {
-            // !!! autogen password
-            string password = "test";
-            // create user
-            User user = await _userService.CreateAsync(model.Email, password, UserRoles.Customer);
             Group group = await _context.Groups.SingleOrDefaultAsync(x => x.GroupId == model.GroupId);
 
             // group not found
@@ -47,6 +44,15 @@ namespace WebAPI.Services
             {
                 throw new AppLogicException("Skupina neexistuje");
             }
+
+            // !!! autogen password
+            string password = GeneratePassword();
+            
+            // create user
+            User user = await _userService.CreateAsync(model.Email, password, UserRoles.Customer);
+            //string hash = Encoding.GetEncoding(1252).GetString(user.PasswordHash);
+            string secret = BitConverter.ToString(user.PasswordHash).Replace("-", "");
+            secret = secret + ":" + user.Email;
 
             // create customer
             Customer customer = new Customer
@@ -56,7 +62,7 @@ namespace WebAPI.Services
             };
             _context.Customers.Add(customer);
             await _context.SaveChangesAsync();
-            return new CustomerRes(customer);
+            return new CustomerWithSecRes(customer, secret);
         }
 
         /// <summary>
@@ -76,6 +82,20 @@ namespace WebAPI.Services
                 return null;
             }
             return new CustomerWithGrRes(user.Customer);
+        }
+
+        private string GeneratePassword()
+        {
+            string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789?!.";
+            string password = ";";
+            var random = new Random();
+
+            for (int i = 0; i < 8; i++)
+            {
+                password += chars[random.Next(chars.Length)];
+            }
+
+            return password;
         }
     }
 }

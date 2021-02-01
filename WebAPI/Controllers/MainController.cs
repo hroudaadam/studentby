@@ -48,6 +48,14 @@ namespace WebAPI.Controllers
             {
                 return StatusCode(201);
             }
+            return StatusCode(400);
+        }
+
+        // PUT: api/user/password
+        [HttpPut("user/password")]
+        public async Task<ActionResult> SetPassword([FromBody] PasswordReq request)
+        {
+            await _userService.SetPassword(request);
             return StatusCode(204);
         }
 

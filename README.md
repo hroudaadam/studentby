@@ -1,7 +1,6 @@
 # Studentby
 ## Úkoly
-- dokumentace API
-- SMTP
+
 - validace DTO
 - upravit zadávání dat a adres
 
@@ -44,14 +43,13 @@
 - **vytvoření skupiny** (POST /groups)
     - 🐌 přidat další informace o skupině (info, adresa, typ, kontakt)
     - 🐌 ověřit unikátnost názvu
-- **přidání účtu ke skupině** (POST /customers)
-    - 🐌 generace dočasného hesla - poslání mailem
+- ✅ **přidání účtu ke skupině** (POST /customers)
+    - ✅ generace dočasného hesla
 - **seznam studentů** (GET /students) 
     - ❗ stránkování
     - ❗ filtr: podle jména
 - ✅ **detail studenta** (GET /students/1)
-- **aktivace studenta** (PUT /students/1)
-    - 🐌 pokud nemá ban
+- ✅ **aktivace studenta** (PUT /students/1)
     - ✅ pokud je deaktivovaný
 - **deaktivace studenta** (PUT /students/1)
     - ✅ pokud je aktivovaný

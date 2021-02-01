@@ -36,4 +36,17 @@ namespace WebAPI.Models
             Role = user.Role;
         }
     }
+
+    /// <summary>
+    /// Request: Password
+    /// </summary>
+    public class PasswordReq
+    {
+        [Required]
+        public string Secret { get; set; }
+
+        [Required]
+        public string Password { get; set; }
+    }
+
 }

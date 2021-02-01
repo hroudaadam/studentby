@@ -9694,6 +9694,8 @@
       "Serilog.AspNetCore >= 3.4.0",
       "Serilog.Settings.Configuration >= 3.1.0",
       "Swashbuckle.AspNetCore >= 5.6.3",
+      "Swashbuckle.AspNetCore.Swagger >= 5.6.3",
+      "Swashbuckle.AspNetCore.SwaggerGen >= 5.6.3",
       "System.IdentityModel.Tokens.Jwt >= 6.7.1"
     ]
   },
@@ -9780,6 +9782,14 @@
             "version": "[3.1.0, )"
           },
           "Swashbuckle.AspNetCore": {
+            "target": "Package",
+            "version": "[5.6.3, )"
+          },
+          "Swashbuckle.AspNetCore.Swagger": {
+            "target": "Package",
+            "version": "[5.6.3, )"
+          },
+          "Swashbuckle.AspNetCore.SwaggerGen": {
             "target": "Package",
             "version": "[5.6.3, )"
           },
