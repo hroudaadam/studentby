@@ -39,6 +39,21 @@ namespace WebAPI.Controllers
 
         }
 
+        // GET: api/students/profile
+        [Authorize(Roles = UserRoles.Student + "," + UserRoles.StudentInact)]
+        [HttpGet("profile")]
+        public async Task<ActionResult<StudentWithAdActivRes>> GetProfile()
+        {
+            int userId = int.Parse(HttpContext.User.Identity.Name);
+            int studentId = await _studentService.GetStudentIdAsync(userId);
+            var response = await _studentService.GetDetailAsync(studentId);
+            if (response == null)
+            {
+                return StatusCode(404);
+            }
+            return StatusCode(200, response);
+        }
+
         // GET: api/students/1
         [Authorize(Roles = UserRoles.Operator)]
         [HttpGet("{studentId}")]
@@ -51,6 +66,7 @@ namespace WebAPI.Controllers
             }
             return StatusCode(200, response);
         }
+
 
         // POST: api/students
         [AllowAnonymous]

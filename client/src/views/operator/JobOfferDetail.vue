@@ -1,5 +1,5 @@
 <template>
-  <div class="OperatorJobOfferDetail">
+  <div>
     <PageHeader v-bind:title="'Nabídky'">
       <b-button variant="primary" :to="{ name: 'OperatorJobOffers' }"
         >Zpět</b-button
@@ -9,13 +9,13 @@
       <b-card no-body>
         <b-card-body>
           <JobInfo v-bind:job="jobOffer"></JobInfo>
-          <b-card-text
-            v-if="
-              !!jobOffer.jobApplications && jobOffer.jobApplications.length > 0
-            "
-          >
+          <b-card-text>
             <div class="mb-2"><h5>Studenti</h5></div>
-            <b-list-group>
+            <b-list-group
+              v-if="
+                jobOffer.jobApplications && jobOffer.jobApplications.length > 0
+              "
+            >
               <b-list-group-item
                 v-bind:key="jobApplication.jobApplicationId"
                 v-for="jobApplication in jobOffer.jobApplications"
@@ -38,6 +38,7 @@
                 ></JobApplicationState>
               </b-list-group-item>
             </b-list-group>
+            <EmptyList v-else></EmptyList>
           </b-card-text>
         </b-card-body>
       </b-card>
@@ -49,6 +50,7 @@
 import PageHeader from "../../components/PageHeader";
 import JobInfo from "../../components/JobInfo";
 import JobApplicationState from "../../components/JobApplicationState";
+import EmptyList from "../../components/EmptyList";
 
 import { mapGetters } from "vuex";
 import router from "../../router";
@@ -63,6 +65,7 @@ export default {
     PageHeader,
     JobInfo,
     JobApplicationState,
+    EmptyList
   },
   data() {
     return {
@@ -77,7 +80,8 @@ export default {
         .get("/job-offers/" + this.jobOfferId.toString() + "/operator-view")
         .then((response) => {
           this.jobOffer = response;
-        });
+        })
+        .catch(() => {});
     },
   },
   computed: {

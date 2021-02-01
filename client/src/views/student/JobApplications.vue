@@ -1,30 +1,31 @@
 <template>
-  <div class="StudentJobApplications">
+  <div>
     <PageHeader v-bind:title="'Přihlášky'"></PageHeader>
-    <div v-if="!!jobApplications && jobApplications.length > 0">
-      <b-list-group>
-        <JobListItem
-          v-bind:key="jobApplication.jobApplicationId"
-          v-for="jobApplication in jobApplications"
-          v-bind:job="jobApplication.jobOffer"
+    <b-list-group v-if="jobApplications && jobApplications.length > 0">
+      <JobListItem
+        v-bind:key="jobApplication.jobApplicationId"
+        v-for="jobApplication in jobApplications"
+        v-bind:job="jobApplication.jobOffer"
+        v-bind:jobApplicationState="jobApplication.state"
+        v-bind:onClickLink="{
+          name: 'StudentJobApplicationDetail',
+          params: { jobApplicationId: jobApplication.jobApplicationId },
+        }"
+      >
+        <JobApplicationState
           v-bind:jobApplicationState="jobApplication.state"
-          v-bind:onClickLink="{
-            name: 'StudentJobApplicationDetail',
-            params: { jobApplicationId: jobApplication.jobApplicationId },
-          }"
-        >
-          <JobApplicationState v-bind:jobApplicationState="jobApplication.state"></JobApplicationState>
-        </JobListItem>
-      </b-list-group>
-    </div>
-    <div v-else>Nemáte žádné přihlášky</div>
+        ></JobApplicationState>
+      </JobListItem>
+    </b-list-group>
+    <EmptyList v-else></EmptyList>
   </div>
 </template>
 
 <script>
-import JobApplicationState from '../../components/JobApplicationState';
+import JobApplicationState from "../../components/JobApplicationState";
 import PageHeader from "../../components/PageHeader";
 import JobListItem from "../../components/JobListItem";
+import EmptyList from "../../components/EmptyList";
 
 import { mapGetters } from "vuex";
 import router from "../../router";
@@ -35,7 +36,8 @@ export default {
   components: {
     JobListItem,
     PageHeader,
-    JobApplicationState
+    JobApplicationState,
+    EmptyList
   },
   data() {
     return {
@@ -50,7 +52,8 @@ export default {
         .get("/job-applications/student-view")
         .then((response) => {
           this.jobApplications = response;
-        });
+        })
+        .catch(() => {});
     },
   },
   computed: {

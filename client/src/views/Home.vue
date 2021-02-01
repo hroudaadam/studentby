@@ -1,5 +1,5 @@
 <template>
-  <div class="Home">
+  <div>
     <b-card-group deck>
       <b-card
         title="Student"

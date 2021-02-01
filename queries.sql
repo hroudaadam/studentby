@@ -19,5 +19,3 @@ SELECT * FROM [StudentbyDB.Customer];
 SELECT * FROM [JobOffer];
 SELECT * FROM [Group];
 SELECT * FROM [Address];
-
-INSTERT INTO

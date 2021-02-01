@@ -1,5 +1,5 @@
 <template>
-  <div class="OperatorJobApplicationDetail">
+  <div>
     <PageHeader v-bind:title="'Přihlášky'">
       <b-button variant="primary" :to="{ name: 'OperatorJobApplications' }"
         >Zpět</b-button
@@ -71,9 +71,7 @@ export default {
         .then((response) => {
           this.jobApplication = response;
         })
-        .catch((error) => {
-          console.error(error.message);
-        });        
+        .catch(() => {});       
     },
     // edit job application
     editJobApplication(approve) {
@@ -89,9 +87,7 @@ export default {
         .then(() => {
           router.push({ name: "OperatorJobApplications" });
         })
-        .catch((error) => {
-          console.error(error.message);
-        });
+        .catch(() => {});
     },
   },
   computed: {

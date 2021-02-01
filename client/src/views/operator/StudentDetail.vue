@@ -1,5 +1,5 @@
 <template>
-  <div class="OperatorStudentDetail">
+  <div>
     <PageHeader v-bind:title="'Studenti'">
       <b-button variant="primary" :to="{ name: 'OperatorStudents' }"
         >Zpět</b-button
@@ -8,13 +8,24 @@
     <div v-if="!!this.student">
       <b-card no-body>
         <b-card-body>
-            <div class="mb-2"><h5>Údaje</h5></div>
-            <StudentInfo v-bind:student="student"></StudentInfo>
+          <div class="mb-2"><h5>Údaje</h5></div>
+          <StudentInfo v-bind:student="student"></StudentInfo>
 
-          <hr/>
-          <b-button v-if="student.activated" variant="danger" v-on:click="editStudent(false)" size="sm">Deaktivovat</b-button>
-          <b-button v-else variant="success" v-on:click="editStudent(true)" size="sm">Aktivovat</b-button>
-
+          <hr />
+          <b-button
+            v-if="student.activated"
+            variant="danger"
+            v-on:click="editStudent(false)"
+            size="sm"
+            >Deaktivovat</b-button
+          >
+          <b-button
+            v-else
+            variant="success"
+            v-on:click="editStudent(true)"
+            size="sm"
+            >Aktivovat</b-button
+          >
         </b-card-body>
       </b-card>
     </div>
@@ -23,7 +34,7 @@
 
 <script>
 import PageHeader from "../../components/PageHeader";
-import StudentInfo from '../../components/StudentInfo';
+import StudentInfo from "../../components/StudentInfo";
 
 import apiService from "../../helpers/apiService";
 import router from "../../router";
@@ -33,7 +44,7 @@ export default {
   name: "OperatorStudentDetail",
   components: {
     PageHeader,
-    StudentInfo
+    StudentInfo,
   },
   props: {
     studentId: Number,
@@ -52,25 +63,23 @@ export default {
         .then((response) => {
           this.student = response;
         })
-        .catch((error) => {
-          console.error(error.message);
-        });
+        .catch(() => {});
     },
     // edit student
     editStudent(activate) {
-      var role = activate ? this.userRoles.student : this.userRoles.studentInact;
+      var role = activate
+        ? this.userRoles.student
+        : this.userRoles.studentInact;
       var body = {
         studentId: this.studentId,
-        role: role
+        role: role,
       };
       apiService
         .put("/students/" + this.studentId.toString(), body)
         .then(() => {
           this.getStudent();
         })
-        .catch((error) => {
-          console.error(error.message);
-        });
+        .catch(() => {});
     },
   },
   computed: {
@@ -79,7 +88,7 @@ export default {
   },
   mounted() {
     if (!this.isOperatorLogged) {
-      router.push({name: 'Login'});
+      router.push({ name: "Login" });
     } else {
       this.getStudent();
     }

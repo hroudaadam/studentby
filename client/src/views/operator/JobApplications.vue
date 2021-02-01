@@ -1,28 +1,32 @@
 <template>
-  <div class="OperatorJobApplications">
+  <div>
     <PageHeader v-bind:title="'Přihlášky'"></PageHeader>
-    <div v-if="!!jobApplications && jobApplications.length > 0">
-      <div class="mt-2">
-        <b-list-group >
-          <JobListItem
-            v-bind:key="jobApplication.jobApplicationId" 
-            v-for="jobApplication in jobApplications"
-            v-bind:job="jobApplication.jobOffer"
-            v-bind:onClickLink="{name: 'OperatorJobApplicationDetail', params: {jobApplicationId: jobApplication.jobApplicationId}}"
-          >
-            <JobApplicationState v-bind:jobApplicationState="jobApplication.state"></JobApplicationState>
-          </JobListItem>
-        </b-list-group>
-      </div>
+    <div class="mt-2">
+      <b-list-group v-if="!!jobApplications && jobApplications.length > 0">
+        <JobListItem
+          v-bind:key="jobApplication.jobApplicationId"
+          v-for="jobApplication in jobApplications"
+          v-bind:job="jobApplication.jobOffer"
+          v-bind:onClickLink="{
+            name: 'OperatorJobApplicationDetail',
+            params: { jobApplicationId: jobApplication.jobApplicationId },
+          }"
+        >
+          <JobApplicationState
+            v-bind:jobApplicationState="jobApplication.state"
+          ></JobApplicationState>
+        </JobListItem>
+      </b-list-group>
+      <EmptyList v-else></EmptyList>
     </div>
-    <div v-else>Nemáte žádné přihlášky</div>
   </div>
 </template>
 
 <script>
 import JobListItem from "../../components/JobListItem";
 import PageHeader from "../../components/PageHeader";
-import JobApplicationState from '../../components/JobApplicationState';
+import JobApplicationState from "../../components/JobApplicationState";
+import EmptyList from "../../components/EmptyList";
 
 import { mapGetters } from "vuex";
 import router from "../../router";
@@ -33,7 +37,8 @@ export default {
   components: {
     JobListItem,
     PageHeader,
-    JobApplicationState
+    JobApplicationState,
+    EmptyList
   },
   data() {
     return {
@@ -49,9 +54,7 @@ export default {
         .then((response) => {
           this.jobApplications = response;
         })
-        .catch((error) => {
-          console.error(error.message);
-        });
+        .catch(() => {});
     },
   },
   computed: {
@@ -59,7 +62,7 @@ export default {
   },
   mounted() {
     if (!this.isOperatorLogged) {
-      router.push({name: 'Login'});
+      router.push({ name: "Login" });
     } else {
       this.getJobApplications();
     }

@@ -21,7 +21,6 @@ namespace WebAPI.Services
         Task<bool> EnsureOperatorAsync();
         Task<UserRes> AuthenticateAsync(UserReq model);
         Task<User> CreateAsync(string email, string password, string role);
-        Task<string> GetRole(int userId);
     }
 
     /// <summary>
@@ -154,17 +153,6 @@ namespace WebAPI.Services
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
-        }
-
-        /// <summary>
-        /// Get User role
-        /// </summary>
-        /// <param name="userId">User ID</param>
-        /// <returns>User role</returns>
-        public async Task<string> GetRole(int userId)
-        {
-            var user = await _context.Users.FirstOrDefaultAsync(us => us.UserId == userId);
-            return user.Role;
         }
 
         // !!! change concept

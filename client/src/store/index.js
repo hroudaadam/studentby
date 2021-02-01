@@ -1,17 +1,17 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import router from '../router';
+import Vue from "vue";
+import Vuex from "vuex";
+import router from "../router";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     // base API URL
-    baseApiUrl: 'https://localhost:5001/api',
+    baseApiUrl: "https://localhost:5001/api",
     // access token
-    accessToken: null,
+    accessToken: localStorage.getItem("accessToken") || null,
     // current user role
-    userRole: null,
+    userRole: localStorage.getItem("userRole") || null,
     // definition of user roles
     userRoles: {
       student: "student",
@@ -65,15 +65,19 @@ export default new Vuex.Store({
   },
   actions: {
     logoutStore({ commit }) {
-      commit('setAccessToken', null);
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("userRole");
+      commit("setAccessToken", null);
       commit("setUserRole", null);
-      router.push({ name: 'Login' });
+      router.push({ name: "Login" });
     },
     loginStore({ commit }, userData) {
-      commit('setAccessToken', userData.token);
+      commit("setAccessToken", userData.token);
       commit("setUserRole", userData.role);
+      localStorage.setItem("accessToken", userData.token);
+      localStorage.setItem("userRole", userData.role);
       // catching router, because of "Avoided redundant navigation" error
-      router.push({ name: 'Home' }).catch(()=>{});
+      router.push({ name: "Home" }).catch(()=>{});
     }
   },
   modules: {

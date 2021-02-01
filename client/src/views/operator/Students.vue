@@ -1,23 +1,26 @@
 <template>
-  <div class="OperatorStudents">
+  <div>
     <PageHeader v-bind:title="'Studenti'"></PageHeader>
-    <div v-if="!!students && students.length > 0">
-      <b-list-group>
+      <b-list-group v-if="students && students.length > 0">
         <b-list-group-item
           v-bind:key="student.studentId"
           v-for="student in students"
-:to="{name: 'OperatorStudentDetail', params: { studentId: student.studentId }}"
+          :to="{
+            name: 'OperatorStudentDetail',
+            params: { studentId: student.studentId },
+          }"
           class="flex-column align-items-start"
         >
-            {{ student.firstName }} {{ student.lastName }}
+          {{ student.firstName }} {{ student.lastName }}
         </b-list-group-item>
       </b-list-group>
-    </div>
+      <EmptyList v-else></EmptyList>
   </div>
 </template>
 
 <script>
 import PageHeader from "@/components/PageHeader";
+import EmptyList from "../../components/EmptyList";
 
 import { mapGetters } from "vuex";
 import router from "@/router/index";
@@ -27,11 +30,12 @@ export default {
   name: "OperatorStudents",
   components: {
     PageHeader,
+    EmptyList
   },
   data() {
     return {
       students: null,
-      errorMsg: null
+      errorMsg: null,
     };
   },
   computed: {
@@ -46,9 +50,7 @@ export default {
         .then((response) => {
           this.students = response;
         })
-        .catch((error) => {
-          console.error(error.message);
-        });
+        .catch(() => {});
     },
   },
   mounted() {

@@ -282,6 +282,12 @@ namespace WebAPI.Services
                 {
                     throw new AppLogicException("Brigáda již započala");
                 }
+
+                int freeSpaces = await _jobOfferService.GetFreeSpacesAsync(jobApplication.JobOffer.JobOfferId);
+                if (freeSpaces < 1)
+                {
+                    throw new AppLogicException("Již nejsou volná místa");
+                }
             }
             // when setting absent/attended state
             else if (model.State == JobApplicationStates.Absent || model.State == JobApplicationStates.Attended)

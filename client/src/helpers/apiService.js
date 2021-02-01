@@ -48,10 +48,14 @@ async function httpRequest(method, specUrl, body=null)
         case 204:
             return null;
         case 401:
+            store.dispatch("logoutStore");
             raiseError({error: 'Neautorizovaný požadavek', detail: null});
             break;
         case 403:
             raiseError({error: 'Nedostatečná oprávnění', detail: null});
+            break
+        case 404:
+            raiseError({error: 'Položka nenalazena', detail: null});
             break
         default:
             var error = await response.json();

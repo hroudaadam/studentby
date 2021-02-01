@@ -1,5 +1,5 @@
 <template>
-  <div class="StudentJobApplicationDetail">
+  <div>
     <PageHeader v-bind:title="'Přihlášky'">
       <b-button variant="primary" :to="{name: 'StudentJobApplications'}">Zpět</b-button>
     </PageHeader>
@@ -47,7 +47,8 @@ export default {
         .get("/job-applications/" + this.jobApplicationId.toString() + "/student-view")
         .then((response) => {
           this.jobApplication = response;
-        });
+        })
+        .catch(() => {});
     },    
     // delete job application
     deleteJobApplication() {
@@ -55,7 +56,8 @@ export default {
         .del("/job-applications/" + this.jobApplicationId.toString())
         .then(() => {
           router.push({name: 'StudentJobApplications'});
-        });
+        })
+        .catch(() => {});
     },
   },
   computed: {

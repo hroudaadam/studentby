@@ -209,6 +209,7 @@ namespace WebAPI.Services
                 .FirstOrDefaultAsync(us => us.UserId == userId);
 
             var jobOffer = await _context.JobOffers
+                .Include(jo => jo.JobApplications)
                 .FirstOrDefaultAsync(jo => jo.JobOfferId == jobOfferId);
 
             // job offer not found
@@ -228,6 +229,13 @@ namespace WebAPI.Services
             {
                 throw new AppLogicException("Nabídka již započala");
             }
+
+            bool acceptedApplicationsExists = jobOffer.JobApplications.Any(ja => ja.State == JobApplicationStates.Approved);
+            if (acceptedApplicationsExists)
+            {
+                throw new AppLogicException("Pro nabídku již existují potvrzené přihlášky");
+            }
+
 
             // delete job offer
             _context.JobOffers.Remove(jobOffer);

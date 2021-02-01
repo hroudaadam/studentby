@@ -1,5 +1,5 @@
 <template>
-  <div class="PageHeader">
+  <div>
     <div class="mb-4">
       <div class="d-flex w-100 justify-content-between">
         <h2 class="mb-1">{{this.title}}</h2>

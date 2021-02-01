@@ -12,6 +12,7 @@ namespace WebAPI.Services
     public interface ICustomerService
     {
         Task<CustomerRes> CreateAsync(CustomerReq model);
+        Task<CustomerWithGrRes> GetDetailAsync(int userId);
     }
 
     /// <summary>
@@ -56,6 +57,25 @@ namespace WebAPI.Services
             _context.Customers.Add(customer);
             await _context.SaveChangesAsync();
             return new CustomerRes(customer);
+        }
+
+        /// <summary>
+        /// Get detail of Customer
+        /// </summary>
+        /// <param name="userId">User ID</param>
+        /// <returns>Customer DTO</returns>
+        public async Task<CustomerWithGrRes> GetDetailAsync(int userId)
+        {
+            var user = await _context.Users
+                .Where(us => us.UserId == userId)
+                .Include(us => us.Customer)
+                    .ThenInclude(cu => cu.Group)
+                .FirstOrDefaultAsync();
+            if (user == null || user.Customer == null)
+            {
+                return null;
+            }
+            return new CustomerWithGrRes(user.Customer);
         }
     }
 }

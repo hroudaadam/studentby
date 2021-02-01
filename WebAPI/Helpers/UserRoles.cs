@@ -30,6 +30,11 @@ namespace WebAPI.Helpers
         /// </summary>
         public const string Customer = "customer";
 
+        /// <summary>
+        /// Customer - not activated
+        /// </summary>
+        public const string CustomerInact = "studentInact";
+
 
     }
 }

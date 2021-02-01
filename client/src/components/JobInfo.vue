@@ -1,18 +1,10 @@
 <template>
-  <div class="JobInfo">
+  <div>
     <div class="d-flex w-100 justify-content-between">
-      <h5>{{job.title}}</h5>
+      <h5>{{job.title}} [{{job.group.name}}]</h5>
       <slot></slot>
     </div>
 
-    <b-row>
-      <b-col cols="3" lg="2">
-        <label>Poskytovatel:</label>
-      </b-col>
-      <b-col cols="9" lg="10">
-        <p>{{job.group.name}}</p>
-      </b-col>
-    </b-row>
     <b-row>
       <b-col cols="3" lg="2">
         <label>Adresa:</label>

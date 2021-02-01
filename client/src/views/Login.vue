@@ -1,5 +1,5 @@
 <template>
-  <div class="Login">
+  <div>
     <b-row>
       <b-col cols="0" lg="4"></b-col>
       <b-col cols="12" lg="4">

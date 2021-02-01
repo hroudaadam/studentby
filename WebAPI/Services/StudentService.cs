@@ -16,6 +16,7 @@ namespace WebAPI.Services
         Task<bool> EditOperatorAsync(int studentId, StudentWithRoleReq model);
         Task<IEnumerable<StudentMinRes>> GetListAsync();
         Task<StudentWithAdActivRes> GetDetailAsync(int studentId);
+        Task<int> GetStudentIdAsync(int userId);
     }
 
     /// <summary>
@@ -142,6 +143,21 @@ namespace WebAPI.Services
             await _context.SaveChangesAsync();
             return true;
 
+        }
+
+        /// <summary>
+        /// Get Student ID based on User ID
+        /// </summary>
+        /// <param name="userId">User ID</param>
+        /// <returns>-1 when not found, otherwise Student ID</returns>
+        public async Task<int> GetStudentIdAsync(int userId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(us => us.UserId == userId);
+            if (user == null || user.StudentId == null)
+            {
+                return -1;
+            }
+            return user.StudentId.Value;
         }
     }
 }

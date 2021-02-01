@@ -1,5 +1,5 @@
 <template>
-  <div class="JobApplicationState">
+  <div>
     <div>
       <div v-if="!!attendance">
         <b-badge

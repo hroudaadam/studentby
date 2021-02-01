@@ -1,6 +1,6 @@
 <template>
-  <div class="AppBar">
-<b-navbar toggleable="md" type="dark" variant="primary" fixed="top">
+  <div>
+    <b-navbar toggleable="md" type="dark" variant="primary" fixed="top">
       <b-navbar-brand :to="{ name: 'Home' }">
         Studentby
         <!-- <span v-if="isStudentLogged" class="role-desc">student</span>
@@ -54,7 +54,11 @@
             <template v-slot:button-content>
               <b-icon icon="person-fill"></b-icon>
             </template>
-            <b-dropdown-item href="#">Profil</b-dropdown-item>
+            <b-dropdown-item
+              v-on:click="openProfile()"
+              v-if="isUserLogged && !isOperatorLogged"
+              >Profil</b-dropdown-item
+            >
             <b-dropdown-item v-on:click="logoutStore()"
               >Odhlásit</b-dropdown-item
             >
@@ -82,6 +86,12 @@ export default {
   },
   methods: {
     ...mapActions(["logoutStore"]),
+    openProfile() {
+      if (this.isStudentLogged || this.isStudentInactLogged) {
+        this.$router.push({ name: "StudentProfile" });
+      } else if (this.isCustomerLogged)
+        this.$router.push({ name: "CustomerProfile" });
+    },
   },
 };
 </script>

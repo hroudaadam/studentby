@@ -1,112 +1,107 @@
 # Studentby
 ## Úkoly
-- filtery, sorty, stránkování pro endpointy
-- vlastní JWT middleware a refresh token??
-- striky a bany
-- auto mapping
+- dokumentace API
 - SMTP
 - validace DTO
-- testing (unit, integration)
-- dokumentace API
+- upravit zadávání dat a adres
+
+- filtery, sorty, stránkování pro endpointy
+- response cache
+- striky a bany
+- auto mapping
+- časové informace o vzniku a modifikaci entit
 ---------------------------------------------------------
 ## Analýza
 ### Ostatní
-- **login** ( POST /login) 
-    - 🐌 implementovat refresh token
+- ✅ **login** ( POST /login) 
 ### Student
-- **registrace** (POST /students)
-    - ✅ vytvoří USER s rolí StudentInact
-    - 🐌 ověřit unikátnost emailu
+- ✅ **registrace** (POST /students)
+    - ✅ vytvoří User s rolí StudentInact
+    - ✅ ověřit unikátnost emailu
 - **seznam nabídek** (GET /job-offers)
-    - ❗ skýt minulé (nesmí nebo nemá?)
-    - ❗ skrýt již přihlášené (nesmí nebo nemá?)
-- **detail nabídky** (GET /job-offers/1/student-view)
-    - ❗ pokud není v minulosti
-- **přihlášení k nabídce** (POST /job-applications)
+    - ❗ filtr: skrýt uplynulé
+    - ❗ stránkování
+- ✅ **detail nabídky** (GET /job-offers/1/student-view)
+- ✅ **přihlášení k nabídce** (POST /job-applications)
     - ✅ pokud je na nabídce ještě volné místo
     - ✅ pokud nabídka již nezačala
     - ✅ pokud se přihláška nekryje s jinou přihláškou
     - ✅ pokud se na ni student již nepřihlásil
 - **seznam přihlášek** (GET /job-applications/student-view) 
-- **detail přihlášky** (GET /job-applications/1/student-view)
+    - ❗ stránkování
+- ✅ **detail přihlášky** (GET /job-applications/1/student-view)
     - ✅ pokud přihláška patří studentovi
-- **zrušení přihlášky** (DELETE /job-applications/1)
+- ✅ **zrušení přihlášky** (DELETE /job-applications/1)
     - ✅ pokud je nezpracovaná (pending)
-    - ❗ pokud je přijatá, tak pouze za strike
+- ✅ **prohlížení účtu**
 - **prohlížení odměn**
-    - 🐌 vymyslet koncept
-- **prohlížení účtu**
-    - 🐌 vymyslet koncept
-- **úprava účtu**
     - 🐌 vymyslet koncept
 ### Operátor
 - **seznam skupin** (GET /groups)
-- **detail skupiny** (GET /groups/1)
+    - ❗ stránkování
+- ✅ **detail skupiny** (GET /groups/1)
     - ✅ seznam uživatelů
 - **vytvoření skupiny** (POST /groups)
     - 🐌 přidat další informace o skupině (info, adresa, typ, kontakt)
     - 🐌 ověřit unikátnost názvu
 - **přidání účtu ke skupině** (POST /customers)
     - 🐌 generace dočasného hesla - poslání mailem
-    - 🐌 unikátní email (možná dělá EF)
 - **seznam studentů** (GET /students) 
-- **detail studenta** (GET /students/1)
+    - ❗ stránkování
+    - ❗ filtr: podle jména
+- ✅ **detail studenta** (GET /students/1)
 - **aktivace studenta** (PUT /students/1)
     - 🐌 pokud nemá ban
     - ✅ pokud je deaktivovaný
 - **deaktivace studenta** (PUT /students/1)
-    - ❗ pokud je aktivovaný
-    - ✅ zrušení přijatých a nezpracovaných přihlášek -> zamítnuto
+    - ✅ pokud je aktivovaný
+    -  zrušení přijatých a nezpracovaných přihlášek -> zamítnuto
 - **seznam přihlášek** (GET /job-applications/operator-view) 
-    - ❓ možnost filtru na pouze nezracované 
-- **detail přihlášky** (GET /job-applications/1/operator-view)
-- **přijetí přihlášky** (PUT /job-applications/1)
+    - ❗ filtr: nezpracované
+- ✅ **detail přihlášky** (GET /job-applications/1/operator-view)
+- ✅ **přijetí přihlášky** (PUT /job-applications/1)
     - ✅ pokud je nezpracovaná (pending)
     - ✅ pokud nabídka již nezačala
-    - ❗ pokud je volné místo
-- **zamítnutí přihlášky** (PUT /job-applications/1)
+    - ✅ pokud je volné místo
+- ✅ **zamítnutí přihlášky** (PUT /job-applications/1)
     - ✅ pokud je nezpracovaná (pending)
     - ✅ pokud nabídka již nezačala
-- **seznam nabídek** (GET /job-offers)
-- **detail nabídky** (GET /job-offers/1/operator-view)
+- ✅ **seznam nabídek** (GET /job-offers)
+- ✅ **detail nabídky** (GET /job-offers/1/operator-view)
     - ✅ seznam přihlášek
-- **zapsání práce studenta** (PUT /job-applications/1)
+- ✅ **zapsání práce studenta** (PUT /job-applications/1)
     - ✅ pokud je validní přechod stavu přihlášky
     - ✅ pokud práce již skončila
 - **úprava skupiny** (PUT /groups/1)
     - 🐌 vymyslet koncept
-- **deaktivace zákazníka** 
+- **smazání zákazníka** 
     - 🐌 vymyslet koncept
 ### Zákazník
-- **seznam nabídek** (GET /job-offers/customer-view)
+- ✅ **seznam nabídek** (GET /job-offers/customer-view)
     - ✅ pouze patřící dané skupině
-- **detail nabídky** (GET /job-offers/1/customer-view)
+- ✅ **detail nabídky** (GET /job-offers/1/customer-view)
     - ✅ pokud patří dané skupině
 - **vytvoření nabídky** (POST /job-offers)
     - 🐌 min. 3 dny do budoucna -> DTO
     - 🐌 max. 3 měsíce do budoucna -> DTO
-- **prohlížení účtu**
-    - 🐌 vymyslet koncept
-- **prohlížení skupiny**
-    - 🐌 vymyslet koncept
-- **úprava účtu**
-    - 🐌 vymyslet koncept
+- ✅ **smazání nabídky** (DELETE /job-offers)
+    - ✅ nabídka musí patřit skupině
+    - ✅ nabídka ještě nezapočala
+    - ✅ nabídka nemá potvrzené přihlášky
+- ✅ **prohlížení účtu**
 ---------------------------------------------------------
 ## Možné dodělávky
-- chybový response jako JSON
-- časové informace o vnzniku a modifikaci entit
-- informace o autoru pracovní nabídky (customer)
-- response cache
-- mail client
-- validace vstupů na serveru
 - promyslet finance pro zákazníka (balíčky - počet nabídek/míst na měsíc)
+- informace o autorovi pracovní nabídky (customer)
+- refresh token
+- vlastní JWT middleware - pro customizace error response
 - promyslet hodnocení
     - zrušení nabídky
     - nenastoupení na práci
     - pozdní zrušení přihlášky
     - celkové bodování studenta i skupiny
 - scheduler
-    - upozornění na nezpracované příhlášky (app i att)
+    - upozornění na nezpracované příhlášky
     - platby -> jobApplication state = paid
 ---------------------------------------------------------
 ## Brainstrom
@@ -120,9 +115,9 @@
     - přibylo by: počet hodin a stavy (attended, unattended)
     - PROČ NE?
         - komplikovanost úpravy
-- ❓ vystavovat nový endpoint jen pro o trochu větší DTO ?
-    - JobApplicationService - GetResult vs. GetDetailOperator
-- ❓ související logika v /entities?
+- ✅ související logika v /entities?
     - např. jobOffer free space nebo nechat v _jobOfferService
-    - spíš v service -> entity by musela mít přístup k dbContext
-- ❓ vystavovat nový endpoint pro data, která lze získat pomocí dvou endpointů?   
+    - v service -> entity by musela mít přístup k dbContext
+- ✅ vystavovat nový endpoint pro data, která lze získat pomocí dvou endpointů? 
+    - ano, spíš vystavovat nový
+---------------------------------------------------------

@@ -1,5 +1,5 @@
 <template>
-  <div name="CustomerJobOfferCreate">
+  <div>
     <PageHeader v-bind:title="'Nabídky'"></PageHeader>
     <b-card>
       <b-form @submit.prevent>

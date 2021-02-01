@@ -1,9 +1,9 @@
 <template>
-  <div name="OperatorJobOffers">
+  <div>
     <PageHeader v-bind:title="'Nabídky'">
     </PageHeader>
     <div class="mt-2">
-      <b-list-group>
+      <b-list-group v-if="jobOffers && jobOffers.length > 0">
         <JobListItem
           v-bind:key="jobOffer.jobOfferId"
           v-for="jobOffer in jobOffers"
@@ -11,6 +11,7 @@
           v-bind:onClickLink="{ name: 'OperatorJobOfferDetail', params: {jobOfferId: jobOffer.jobOfferId}}"
         ></JobListItem>
       </b-list-group>
+      <EmptyList v-else></EmptyList>
     </div>
   </div>
 </template>
@@ -18,6 +19,7 @@
 <script>
 import PageHeader from "../../components/PageHeader";
 import JobListItem from "../../components/JobListItem";
+import EmptyList from "../../components/EmptyList";
 
 import { mapGetters } from "vuex";
 import router from "../../router";
@@ -28,6 +30,7 @@ export default {
   components: {
     JobListItem,
     PageHeader,
+    EmptyList
   },
   data() {
     return {
@@ -44,9 +47,7 @@ export default {
         .then((response) => {
           this.jobOffers = response;
         })
-        .catch((error) => {
-          console.error(error.message);
-        });
+        .catch(() => {});
     },
   },
   computed: {

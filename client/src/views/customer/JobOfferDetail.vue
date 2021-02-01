@@ -1,13 +1,15 @@
 <template>
   <div>
     <PageHeader v-bind:title="'Nabídky'">
-      <b-button variant="primary" :to="{name: 'CustomerJobOffers'}">Zpět</b-button>
+      <b-button variant="primary" :to="{ name: 'CustomerJobOffers' }"
+        >Zpět</b-button
+      >
     </PageHeader>
     <div v-if="!!jobOffer">
       <b-card no-body>
         <b-card-body>
           <JobInfo v-bind:job="jobOffer"></JobInfo>
-          <hr/>
+          <hr />
           <b-button v-on:click="deleteJobOffer" size="sm">Smazat</b-button>
         </b-card-body>
       </b-card>
@@ -26,7 +28,7 @@ import apiService from "../../helpers/apiService";
 export default {
   name: "CustomerJobOfferDetail",
   props: {
-    jobOfferId: Number
+    jobOfferId: Number,
   },
   components: {
     PageHeader,
@@ -41,20 +43,23 @@ export default {
     // get job offer
     getJobOffer() {
       this.jobOffer = null;
+
       apiService
         .get("/job-offers/" + this.jobOfferId.toString() + "/customer-view")
         .then((response) => {
           this.jobOffer = response;
-        });
+        })
+        .catch(() => {});
     },
     // delete job offer
     deleteJobOffer() {
       apiService
         .del("/job-offers/" + this.jobOfferId.toString())
         .then(() => {
-          router.push({name: 'CustomerJobOffers'});
-        });
-    }
+          router.push({ name: "CustomerJobOffers" });
+        })
+        .catch(() => {});
+    },
   },
   computed: {
     ...mapGetters(["isCustomerLogged"]),
@@ -62,8 +67,7 @@ export default {
   mounted() {
     if (!this.isCustomerLogged) {
       router.push({ name: "Login" });
-    } 
-    else {
+    } else {
       this.getJobOffer();
     }
   },

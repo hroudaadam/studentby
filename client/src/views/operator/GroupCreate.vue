@@ -4,9 +4,16 @@
     <b-card>
       <b-form @submit.prevent>
         <b-form-group id="input-group-1" label="Název:" label-for="input-1">
-          <b-form-input id="input-1" v-model="formData.name" type="text" placeholder="Název"></b-form-input>
+          <b-form-input
+            id="input-1"
+            v-model="formData.name"
+            type="text"
+            placeholder="Název"
+          ></b-form-input>
         </b-form-group>
-        <b-button type="submit" v-on:click="createGroup" variant="primary">Vytvořit</b-button>
+        <b-button type="submit" v-on:click="createGroup" variant="primary"
+          >Vytvořit</b-button
+        >
       </b-form>
     </b-card>
   </div>
@@ -21,13 +28,13 @@ import apiSevice from "../../helpers/apiService";
 export default {
   name: "OperatorGroupCreate",
   components: {
-    PageHeader
+    PageHeader,
   },
   data() {
-    return {    
+    return {
       formData: {
         name: null,
-      }
+      },
     };
   },
   methods: {
@@ -36,8 +43,9 @@ export default {
       apiSevice
         .post("/groups", this.formData)
         .then(() => {
-          router.push({name: 'OperatorGroups'})
-        });
+          router.push({ name: "OperatorGroups" });
+        })
+        .catch(() => {});
     },
   },
   computed: {
@@ -45,7 +53,7 @@ export default {
   },
   mounted() {
     if (!this.isOperatorLogged) {
-      router.push({name: 'Login'});
+      router.push({ name: "Login" });
     }
   },
 };

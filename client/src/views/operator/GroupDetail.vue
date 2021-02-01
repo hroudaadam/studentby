@@ -1,5 +1,5 @@
 <template>
-  <div class="OperatorGroupDetail">
+  <div>
     <PageHeader v-bind:title="'Skupiny'">
       <b-button variant="primary" :to="{ name: 'OperatorGroups' }"
         >Zpět</b-button
@@ -11,7 +11,7 @@
           <b-card-title>{{ group.name }}</b-card-title>
 
           <div class="my-2">
-            <b-list-group>
+            <b-list-group v-if="group.customers && group.customers.length > 0">
               <b-list-group-item
                 v-bind:key="customer.id"
                 v-for="customer in group.customers"
@@ -20,6 +20,7 @@
                 {{ customer.email }}
               </b-list-group-item>
             </b-list-group>
+            <EmptyList v-else></EmptyList>
           </div>
 
           <b-button
@@ -38,6 +39,7 @@
 
 <script>
 import PageHeader from "../../components/PageHeader";
+import EmptyList from "../../components/EmptyList";
 
 import { mapGetters } from "vuex";
 import router from "../../router";
@@ -50,6 +52,7 @@ export default {
   },
   components: {
     PageHeader,
+    EmptyList
   },
   data() {
     return {
@@ -59,14 +62,14 @@ export default {
   methods: {
     // get group
     getGroup() {
+      this.group = null;
+
       apiService
         .get("/groups/" + this.groupId.toString())
         .then((response) => {
           this.group = response;
         })
-        .catch((error) => {
-          console.error(error.message);
-        });
+        .catch(() => {});
     },
   },
   computed: {

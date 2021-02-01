@@ -1,5 +1,5 @@
 <template>
-  <div name="OperatorCustomerCreate">
+  <div>
     <PageHeader v-bind:title="'Uživatelé'">
       <b-button variant="primary" :to="{name: 'OperatorGroupDetail', params: {groupId: this.groupId}}"
         >Zpět</b-button
@@ -53,9 +53,7 @@ export default {
         .then(() => {
           router.push({name: 'OperatorGroupDetail', params: {groupId: this.groupId}})
         })
-        .catch((error) => {
-          console.error(error.message);
-        });
+        .catch(() => {});
     },
   },
   computed: {

@@ -33,4 +33,22 @@ namespace WebAPI.Models
             Email = customer.User.Email;
         }
     }
+
+    /// <summary>
+    /// Response: Customer with Group
+    /// </summary>
+    public class CustomerWithGrRes
+    {
+        public int CustomerId { get; set; }
+        public string Email { get; set; }
+
+        public GroupRes Group { get; set; }
+
+        public CustomerWithGrRes(Customer customer)
+        {
+            CustomerId = customer.CustomerId;
+            Email = customer.User.Email;
+            Group = new GroupRes(customer.Group);
+        }
+    }
 }

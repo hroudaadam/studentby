@@ -1,151 +1,175 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-import Home from '../views/Home'; 
-import Login from '../views/Login'; 
+import Vue from "vue";
+import VueRouter from "vue-router";
 
-import StudentRegister from '../views/student/Register';
-import StudentJobOffers from '../views/student/JobOffers'; 
-import StudentJobOfferDetail from '../views/student/JobOfferDetail'; 
-import StudentJobApplications from '../views/student/JobApplications';
-import StudentJobApplicationDetail from '../views/student/JobApplicationDetail';
+import Home from "../views/Home"; 
+import Login from "../views/Login";
+import NotFound from "../views/NotFound";
 
-import CustomerJobOffers from '../views/customer/JobOffers';
-import CustomerJobOfferCreate from '../views/customer/JobOfferCreate'; 
-import CustomerJobOfferDetail from '../views/customer/JobOfferDetail'; 
+import StudentRegister from "../views/student/Register";
+import StudentJobOffers from "../views/student/JobOffers"; 
+import StudentJobOfferDetail from "../views/student/JobOfferDetail"; 
+import StudentJobApplications from "../views/student/JobApplications";
+import StudentJobApplicationDetail from "../views/student/JobApplicationDetail";
+import StudentProfile from "../views/student/Profile";
 
-import OperatorJobOffers from '../views/operator/JobOffers';
-import OperatorJobOfferDetail from '../views/operator/JobOfferDetail'; 
-import OperatorJobApplications from '../views/operator/JobApplications';
-import OperatorJobApplicationDetail from '../views/operator/JobApplicationDetail';
-import OperatorGroups from '../views/operator/Groups';
-import OperatorGroupCreate from '../views/operator/GroupCreate';
-import OperatorGroupDetail from '../views/operator/GroupDetail';
-import OperatorCustomerCreate from '../views/operator/CustomerCreate';
-import OperatorStudents from '../views/operator/Students';
-import OperatorStudentDetail from '../views/operator/StudentDetail';
-import OperatorJobApplicationResult from '../views/operator/JobApplicationResult';
+import CustomerJobOffers from "../views/customer/JobOffers";
+import CustomerJobOfferCreate from "../views/customer/JobOfferCreate"; 
+import CustomerJobOfferDetail from "../views/customer/JobOfferDetail"; 
+import CustomerProfile from "../views/customer/Profile";
+
+import OperatorJobOffers from "../views/operator/JobOffers";
+import OperatorJobOfferDetail from "../views/operator/JobOfferDetail"; 
+import OperatorJobApplications from "../views/operator/JobApplications";
+import OperatorJobApplicationDetail from "../views/operator/JobApplicationDetail";
+import OperatorGroups from "../views/operator/Groups";
+import OperatorGroupCreate from "../views/operator/GroupCreate";
+import OperatorGroupDetail from "../views/operator/GroupDetail";
+import OperatorCustomerCreate from "../views/operator/CustomerCreate";
+import OperatorStudents from "../views/operator/Students";
+import OperatorStudentDetail from "../views/operator/StudentDetail";
+import OperatorJobApplicationResult from "../views/operator/JobApplicationResult";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
+    path: "/",
+    name: "Home",
     component: Home
   },
   {
-    path: '/login',
-    name: 'Login',
+    path: "/login",
+    name: "Login",
     component: Login
   },
   {
-    path: '/student/job-offers',
-    name: 'StudentJobOffers',
+    path: "/student/profile",
+    name: "StudentProfile",
+    component: StudentProfile
+  },
+  {
+    path: "/student/job-offers",
+    name: "StudentJobOffers",
     component: StudentJobOffers
   },
   {
-    path: '/student/job-offers/:jobOfferId',
-    name: 'StudentJobOfferDetail',
+    path: "/student/job-offers/:jobOfferId",
+    name: "StudentJobOfferDetail",
     component: StudentJobOfferDetail,
     props: true
   },
   {
-    path: '/student/job-applications',
-    name: 'StudentJobApplications',
+    path: "/student/job-applications",
+    name: "StudentJobApplications",
     component: StudentJobApplications,
   },
   {
-    path: '/student/job-applications/:jobApplicationId',
-    name: 'StudentJobApplicationDetail',
+    path: "/student/job-applications/:jobApplicationId",
+    name: "StudentJobApplicationDetail",
     component: StudentJobApplicationDetail,
     props: true
   },
   {
-    path: '/student/register',
-    name: 'StudentRegister',
+    path: "/student/register",
+    name: "StudentRegister",
     component: StudentRegister,
   },
   {
-    path: '/customer/job-offers',
-    name: 'CustomerJobOffers',
+    path: "/customer/profile",
+    name: "CustomerProfile",
+    component: CustomerProfile,
+  },
+  {
+    path: "/customer/job-offers",
+    name: "CustomerJobOffers",
     component: CustomerJobOffers,
   },
   {
-    path: '/customer/job-offers/:jobOfferId',
-    name: 'CustomerJobOfferDetail',
+    path: "/customer/job-offers/:jobOfferId",
+    name: "CustomerJobOfferDetail",
     component: CustomerJobOfferDetail,
     props: true
   },
   {
-    path: '/customer/job-offers/create',
-    name: 'CustomerJobOfferCreate',
+    path: "/customer/job-offers/create",
+    name: "CustomerJobOfferCreate",
     component: CustomerJobOfferCreate,
   },
   {
-    path: '/operator/job-applications',
-    name: 'OperatorJobApplications',
+    path: "/operator/job-applications",
+    name: "OperatorJobApplications",
     component: OperatorJobApplications,
   },
   {
-    path: '/operator/job-applications/:jobApplicationId',
-    name: 'OperatorJobApplicationDetail',
+    path: "/operator/job-applications/:jobApplicationId",
+    name: "OperatorJobApplicationDetail",
     component: OperatorJobApplicationDetail,
     props: true
   },
   {
-    path: '/operator/groups',
-    name: 'OperatorGroups',
+    path: "/operator/groups",
+    name: "OperatorGroups",
     component: OperatorGroups,
   },
   {
-    path: '/operator/groups/:groupId',
-    name: 'OperatorGroupDetail',
+    path: "/operator/groups/:groupId",
+    name: "OperatorGroupDetail",
     component: OperatorGroupDetail,
     props: true
   },
   {
-    path: '/operator/groups/create',
-    name: 'OperatorGroupCreate',
+    path: "/operator/groups/create",
+    name: "OperatorGroupCreate",
     component: OperatorGroupCreate,
   },
   {
-    path: '/operator/groups/:groupId/create-customer',
-    name: 'OperatorCustomerCreate',
+    path: "/operator/groups/:groupId/create-customer",
+    name: "OperatorCustomerCreate",
     component: OperatorCustomerCreate,
     props: true
   },
   {
-    path: '/operator/students',
-    name: 'OperatorStudents',
+    path: "/operator/students",
+    name: "OperatorStudents",
     component: OperatorStudents,
   },
 {
-  path: '/operator/students/:studentId',
-  name: 'OperatorStudentDetail',
+  path: "/operator/students/:studentId",
+  name: "OperatorStudentDetail",
   component: OperatorStudentDetail,
   props: true
 },
   {
-    path: '/operator/job-offers',
-    name: 'OperatorJobOffers',
+    path: "/operator/job-offers",
+    name: "OperatorJobOffers",
     component: OperatorJobOffers,
   },
   {
-    path: '/operator/job-offers/:jobOfferId',
-    name: 'OperatorJobOfferDetail',
+    path: "/operator/job-offers/:jobOfferId",
+    name: "OperatorJobOfferDetail",
     component: OperatorJobOfferDetail,
     props: true
   },
   {
-    path: '/operator/job-offers/:jobOfferId/job-applications/:jobApplicationId',
-    name: 'OperatorJobApplicationResult',
+    path: "/operator/job-offers/:jobOfferId/job-applications/:jobApplicationId",
+    name: "OperatorJobApplicationResult",
     component: OperatorJobApplicationResult,
     props: true
+  },
+  {
+    path: "/not-found",
+    name: "NotFound",
+    component: NotFound
+  },
+  {
+    path: "*",
+    redirect: { name: "NotFound" }
   }
+
 ];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   routes
 });
 

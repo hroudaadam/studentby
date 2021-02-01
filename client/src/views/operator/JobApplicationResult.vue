@@ -1,5 +1,5 @@
 <template>
-  <div class="OperatorJobApplicationResult">
+  <div>
     <PageHeader v-bind:title="'Výsledek'">
       <b-button
         variant="primary"
@@ -69,9 +69,7 @@ export default {
         .then((response) => {
           this.jobApplication = response;
         })
-        .catch((error) => {
-          console.error(error.message);
-        });
+        .catch(() => {});
     },
     // edit job application
     editJobApplication(attended) {
@@ -90,9 +88,7 @@ export default {
             params: { jobOfferId: this.jobOfferId },
           });
         })
-        .catch((error) => {
-          console.error(error.message);
-        });
+        .catch(() => {});
     },
   },
   computed: {

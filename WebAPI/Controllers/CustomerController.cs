@@ -34,5 +34,19 @@ namespace WebAPI.Controllers
             var response = await _customerService.CreateAsync(request);
             return StatusCode(201, response);
         }
+
+        // POST: api/customers/profile
+        [HttpGet("profile")]
+        [Authorize(Roles = UserRoles.Customer)]
+        public async Task<ActionResult<CustomerWithGrRes>> GetProfile()
+        {
+            int userId = int.Parse(HttpContext.User.Identity.Name);
+            var response = await _customerService.GetDetailAsync(userId);
+            if (response == null)
+            {
+                return StatusCode(404);
+            }
+            return StatusCode(200, response);
+        }
     }
 }

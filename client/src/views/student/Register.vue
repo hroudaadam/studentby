@@ -1,5 +1,5 @@
 <template>
-  <div class="StudentRegister">
+  <div>
     <b-card no-body class="mx-auto text-center" style="width: 380px">
       <b-card-body>
         <b-card-title>Registrace</b-card-title>
@@ -125,9 +125,7 @@ export default {
         .then(() => {
           router.push({ name: "Login" });
         })
-        .catch((error) => {
-          console.error(error.message);
-        });
+        .catch(() => {});
     },
   },
 };
