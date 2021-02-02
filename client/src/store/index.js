@@ -27,9 +27,9 @@ export default new Vuex.Store({
       attended: "attended",
       absent: "absent"
     },
-    // ...
+    // loading overlay
     loading: false,
-    // ...
+    // error box
     errorMsg: null,
   },
   getters: {

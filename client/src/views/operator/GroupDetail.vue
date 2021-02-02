@@ -1,7 +1,7 @@
 <template>
   <div>
     <PageHeader v-bind:title="'Skupiny'">
-      <b-button variant="primary" :to="{ name: 'OperatorGroups' }"
+      <b-button variant="secondary" size="sm" :to="{ name: 'OperatorGroups' }"
         >Zpět</b-button
       >
     </PageHeader>
@@ -9,7 +9,8 @@
       <b-card no-body>
         <b-card-body>
           <b-card-title>{{ group.name }}</b-card-title>
-
+          <hr>
+          <div class="mb-2" style="font-size: 1.2rem">Uživatelé</div>
           <div class="my-2">
             <b-list-group v-if="group.customers && group.customers.length > 0">
               <b-list-group-item
@@ -22,7 +23,7 @@
             </b-list-group>
             <EmptyList v-else></EmptyList>
           </div>
-
+          <hr>
           <b-button
             variant="primary"
             :to="{

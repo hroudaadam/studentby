@@ -113,6 +113,7 @@ namespace WebAPI.Models
         public int JobOfferId { get; set; }
         public string Title { get; set; }
         public GroupRes Group { get; set; }
+        public AddressRes Address { get; set; }
         public double Wage { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
@@ -123,6 +124,7 @@ namespace WebAPI.Models
             Title = jobOffer.Title;
             Wage = jobOffer.Wage;
             Group = new GroupRes(jobOffer.Group);
+            Address = new AddressRes(jobOffer.Address);
             Start = jobOffer.Start;
             End = jobOffer.End;
         }

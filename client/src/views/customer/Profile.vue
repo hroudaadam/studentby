@@ -1,9 +1,6 @@
 <template>
   <div>
     <PageHeader v-bind:title="'Profil'">
-      <b-button variant="primary" :to="{ name: 'Home' }"
-        >Zpět</b-button
-      >
     </PageHeader>
     <div v-if="!!customer">
       <b-card no-body>

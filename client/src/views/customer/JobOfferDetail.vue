@@ -1,7 +1,7 @@
 <template>
   <div>
     <PageHeader v-bind:title="'Nabídky'">
-      <b-button variant="primary" :to="{ name: 'CustomerJobOffers' }"
+      <b-button variant="secondary" :to="{ name: 'CustomerJobOffers' }" size="sm"
         >Zpět</b-button
       >
     </PageHeader>
@@ -10,7 +10,7 @@
         <b-card-body>
           <JobInfo v-bind:job="jobOffer"></JobInfo>
           <hr />
-          <b-button v-on:click="deleteJobOffer" size="sm">Smazat</b-button>
+          <b-button v-on:click="deleteJobOffer">Smazat</b-button>
         </b-card-body>
       </b-card>
     </div>

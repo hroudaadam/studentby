@@ -2,7 +2,7 @@
   <div class="app">
     <AppBar></AppBar>
     <b-overlay :show="loading" rounded="sm" no-wrap> </b-overlay>
-    <b-container style="padding-top: 80px">
+    <b-container style="padding-top: 80px" class="mb-3">
       <router-view></router-view>
     </b-container>
   </div>

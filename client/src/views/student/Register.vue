@@ -1,93 +1,100 @@
 <template>
   <div>
-    <b-card no-body class="mx-auto text-center" style="width: 380px">
-      <b-card-body>
-        <b-card-title>Registrace</b-card-title>
-        <b-form @submit.prevent>
-          <b-form-group id="input-group-1">
-            <b-form-input
-              id="input-1"
-              required
-              placeholder="Email"
-              v-model="formData.email"
-            ></b-form-input>
-          </b-form-group>
+    <PageHeader v-bind:title="'Registrace'"></PageHeader>
 
-          <b-form-group id="input-group-2">
-            <b-form-input
-              id="input-2"
-              type="password"
-              required
-              placeholder="Heslo"
-              v-model="formData.password"
-            ></b-form-input>
-          </b-form-group>
+    <b-card>
+      <b-form @submit.prevent>
+        <b-row>
+          <b-col>
+            <b-form-group label="Email">
+              <b-form-input required v-model="formData.email"></b-form-input>
+            </b-form-group>
+          </b-col>
+          <b-col>
+            <b-form-group label="Heslo">
+              <b-form-input
+                type="password"
+                required
+                v-model="formData.password"
+              ></b-form-input>
+            </b-form-group>
+          </b-col>
+        </b-row>
 
-          <b-form-group>
-            <b-form-input
-              required
-              placeholder="Jméno"
-              v-model="formData.firstName"
-            ></b-form-input>
-          </b-form-group>
+        <b-row>
+          <b-col>
+            <b-form-group label="Jméno">
+              <b-form-input
+                required
+                v-model="formData.firstName"
+              ></b-form-input>
+            </b-form-group>
+          </b-col>
+          <b-col>
+            <b-form-group label="Příjmení">
+              <b-form-input required v-model="formData.lastName"></b-form-input>
+            </b-form-group>
+          </b-col>
+        </b-row>
 
-          <b-form-group>
-            <b-form-input
-              required
-              placeholder="Příjmení"
-              v-model="formData.lastName"
-            ></b-form-input>
-          </b-form-group>
+        <b-row>
+          <b-col>
+            <b-form-group label="Země">
+              <b-form-input
+                required
+                v-model="formData.address.country"
+              ></b-form-input>
+            </b-form-group>
+          </b-col>
+          <b-col>
+            <b-form-group label="Město">
+              <b-form-input
+                required
+                v-model="formData.address.city"
+              ></b-form-input>
+            </b-form-group>
+          </b-col>
+        </b-row>
 
-          <b-form-group>
-            <b-form-input
-              required
-              placeholder="Země"
-              v-model="formData.address.country"
-            ></b-form-input>
-          </b-form-group>
+        <b-row>
+          <b-col>
+            <b-form-group label="Ulice">
+              <b-form-input
+                required
+                v-model="formData.address.street"
+              ></b-form-input>
+            </b-form-group>
+          </b-col>
+          <b-col>
+            <b-form-group label="Číslo">
+              <b-form-input
+                required
+                v-model="formData.address.number"
+              ></b-form-input>
+            </b-form-group>
+          </b-col>
+        </b-row>
 
-          <b-form-group>
-            <b-form-input
-              required
-              placeholder="Město"
-              v-model="formData.address.city"
-            ></b-form-input>
-          </b-form-group>
+        <b-form-group label="Datum narození:">
+          <b-row>
+            <b-col>
+              <b-form-input
+                v-model="formData.dateOfBirth"
+                :type="bodInputType"
+              ></b-form-input>
+            </b-col>
+          </b-row>
+        </b-form-group>
 
-          <b-form-group>
-            <b-form-input
-              required
-              placeholder="Ulice"
-              v-model="formData.address.street"
-            ></b-form-input>
-          </b-form-group>
-
-          <b-form-group>
-            <b-form-input
-              required
-              placeholder="Číslo"
-              v-model="formData.address.number"
-            ></b-form-input>
-          </b-form-group>
-
-          <b-form-group>
-            <b-form-datepicker
-              placeholder="Datum narození"
-              v-model="formData.dateOfBirth"
-            ></b-form-datepicker>
-          </b-form-group>
-
-          <b-button
-            block
-            type="submit"
-            variant="primary"
-            class="mb-2"
-            v-on:click="register"
-            >Registrovat</b-button
-          >
-        </b-form>
-      </b-card-body>
+        <b-button
+          block
+          type="submit"
+          variant="primary"
+          class="mt-3"
+          v-on:click="register"
+          >Registrovat</b-button
+        >
+      </b-form>
     </b-card>
   </div>
 </template>
@@ -95,10 +102,13 @@
 <script>
 import apiService from "@/helpers/apiService";
 import router from "@/router/index";
+import PageHeader from "@/components/PageHeader";
 
 export default {
   name: "StudentRegister",
-  components: {},
+  components: {
+    PageHeader,
+  },
   data() {
     return {
       formData: {
@@ -110,7 +120,7 @@ export default {
           country: null,
           city: null,
           street: null,
-          number: null
+          number: null,
         },
         dateOfBirth: null,
       }
@@ -131,6 +141,15 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+input[type="date"]:before {
+  color: lightgray;
+  content: attr(placeholder);
+}
+
+input[type="date"].full:before {
+  color: black;
+  content: "" !important;
+}
 </style>
 

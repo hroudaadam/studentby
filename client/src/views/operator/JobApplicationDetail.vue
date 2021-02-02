@@ -1,7 +1,7 @@
 <template>
   <div>
     <PageHeader v-bind:title="'Přihlášky'">
-      <b-button variant="primary" :to="{ name: 'OperatorJobApplications' }"
+      <b-button variant="secondary" size="sm" :to="{ name: 'OperatorJobApplications' }"
         >Zpět</b-button
       >
     </PageHeader>
@@ -22,12 +22,12 @@
 
           <b-button
             class="mr-2"
-            variant="success"
+            variant="primary"
             v-on:click="editJobApplication(true)"
             size="sm"
             >Přijmout</b-button
           >
-          <b-button variant="danger" v-on:click="editJobApplication(false)" size="sm"
+          <b-button variant="secondary" v-on:click="editJobApplication(false)" size="sm"
             >Odmítnout</b-button
           >
         </b-card-body>

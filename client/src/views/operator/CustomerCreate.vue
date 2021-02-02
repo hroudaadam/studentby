@@ -9,18 +9,16 @@
     </PageHeader>
     <b-card>
       <b-form @submit.prevent>
-        <b-form-group id="input-group-1" label="Email:" label-for="input-1">
+        <b-form-group label="Email:" >
           <b-form-input
-            id="input-1"
             v-model="formData.email"
             type="text"
             placeholder="Email"
           ></b-form-input>
         </b-form-group>
-        <b-form-group id="input-group-1" label="Skupina:" label-for="input-1">
+        <b-form-group label="Skupina:">
           <b-form-input
             readonly
-            id="input-1"
             v-model="groupName"
             type="text"
             placeholder="Skupina "

@@ -1,7 +1,7 @@
 <template>
   <div>
     <PageHeader v-bind:title="'Studenti'">
-      <b-button variant="primary" :to="{ name: 'OperatorStudents' }"
+      <b-button variant="secondary" size="sm" :to="{ name: 'OperatorStudents' }"
         >Zpět</b-button
       >
     </PageHeader>
@@ -14,16 +14,14 @@
           <hr />
           <b-button
             v-if="student.activated"
-            variant="danger"
+            variant="secondary"
             v-on:click="editStudent(false)"
-            size="sm"
             >Deaktivovat</b-button
           >
           <b-button
             v-else
-            variant="success"
+            variant="primary"
             v-on:click="editStudent(true)"
-            size="sm"
             >Aktivovat</b-button
           >
         </b-card-body>

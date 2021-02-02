@@ -44,6 +44,7 @@ namespace WebAPI.Services
         {
             var jobOffers = await _context.JobOffers
                 .Include(jo => jo.Group)
+                .Include(jo => jo.Address)
                 .ToListAsync();
 
             List<JobOfferMinRes> result = new List<JobOfferMinRes>();
@@ -70,6 +71,7 @@ namespace WebAPI.Services
             // get job offers only for current group
             var jobOffers = await _context.JobOffers
                 .Include(jo => jo.Group)
+                .Include(jo => jo.Address)
                 .Where(jo => jo.GroupId == groupId)
                 .ToListAsync();
 

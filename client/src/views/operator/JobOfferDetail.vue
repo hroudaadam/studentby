@@ -1,7 +1,7 @@
 <template>
   <div>
     <PageHeader v-bind:title="'Nabídky'">
-      <b-button variant="primary" :to="{ name: 'OperatorJobOffers' }"
+      <b-button variant="secondary" size="sm" :to="{ name: 'OperatorJobOffers' }"
         >Zpět</b-button
       >
     </PageHeader>

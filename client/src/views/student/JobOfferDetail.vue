@@ -1,16 +1,14 @@
 <template>
   <div>
     <PageHeader v-bind:title="'Nabídky'">
-      <b-button variant="primary" :to="{name: 'StudentJobOffers'}">Zpět</b-button>
+      <b-button variant="secondary" :to="{name: 'StudentJobOffers'}" size="sm">Zpět</b-button>
     </PageHeader>
     <div v-if="!!this.jobOffer">
       <b-card no-body>
         <b-card-body>
           <JobInfo v-bind:job="jobOffer"></JobInfo>
-        </b-card-body>
-
-        <b-card-body>
-          <b-button v-on:click="createJobApplication()" variant="primary">Přihlásit se</b-button>
+          <hr/>
+          <b-button v-on:click="createJobApplication()" variant="primary" >Přihlásit</b-button>
         </b-card-body>
       </b-card>
     </div>

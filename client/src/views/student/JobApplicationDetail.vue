@@ -1,7 +1,7 @@
 <template>
   <div>
     <PageHeader v-bind:title="'Přihlášky'">
-      <b-button variant="primary" :to="{name: 'StudentJobApplications'}">Zpět</b-button>
+      <b-button variant="" :to="{name: 'StudentJobApplications'}" size="sm">Zpět</b-button>
     </PageHeader>
     <div v-if="!!this.jobApplication">
       <b-card no-body>
@@ -10,7 +10,7 @@
             <JobApplicationState v-bind:jobApplicationState="jobApplication.state"></JobApplicationState>
           </JobInfo>
           <hr/>
-          <b-button v-on:click="deleteJobApplication()" size="sm">Zrušit</b-button>
+          <b-button v-on:click="deleteJobApplication()" variant="secondary">Zrušit</b-button>
         </b-card-body>
       </b-card>
     </div>

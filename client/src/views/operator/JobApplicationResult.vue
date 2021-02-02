@@ -2,7 +2,8 @@
   <div>
     <PageHeader v-bind:title="'Výsledek'">
       <b-button
-        variant="primary"
+        variant="secondary"
+        size="sm"
         :to="{
           name: 'OperatorJobOfferDetail',
           params: { jobOfferId: jobOfferId },
@@ -17,14 +18,14 @@
           <StudentInfo v-bind:student="jobApplication.student"></StudentInfo>
           <hr />
           <b-button
-            variant="success"
+            variant="primary"
             class="mr-2"
             size="sm"
             v-on:click="editJobApplication(true)"
             >Účast</b-button
           >
           <b-button
-            variant="danger"
+            variant="secondary"
             size="sm"
             v-on:click="editJobApplication(false)"
             >Absence</b-button

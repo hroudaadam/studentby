@@ -1,14 +1,6 @@
 # Studentby
 ## Úkoly
-
-- validace DTO
-- upravit zadávání dat a adres
-
-- filtery, sorty, stránkování pro endpointy
-- response cache
-- striky a bany
-- auto mapping
-- časové informace o vzniku a modifikaci entit
+- validace FE a validace DTO
 ---------------------------------------------------------
 ## Analýza
 ### Ostatní
@@ -17,45 +9,33 @@
 - ✅ **registrace** (POST /students)
     - ✅ vytvoří User s rolí StudentInact
     - ✅ ověřit unikátnost emailu
-- **seznam nabídek** (GET /job-offers)
-    - ❗ filtr: skrýt uplynulé
-    - ❗ stránkování
+- ✅ **seznam nabídek** (GET /job-offers)
 - ✅ **detail nabídky** (GET /job-offers/1/student-view)
 - ✅ **přihlášení k nabídce** (POST /job-applications)
     - ✅ pokud je na nabídce ještě volné místo
     - ✅ pokud nabídka již nezačala
     - ✅ pokud se přihláška nekryje s jinou přihláškou
     - ✅ pokud se na ni student již nepřihlásil
-- **seznam přihlášek** (GET /job-applications/student-view) 
-    - ❗ stránkování
+- ✅ **seznam přihlášek** (GET /job-applications/student-view) 
 - ✅ **detail přihlášky** (GET /job-applications/1/student-view)
     - ✅ pokud přihláška patří studentovi
 - ✅ **zrušení přihlášky** (DELETE /job-applications/1)
     - ✅ pokud je nezpracovaná (pending)
 - ✅ **prohlížení účtu**
-- **prohlížení odměn**
-    - 🐌 vymyslet koncept
 ### Operátor
-- **seznam skupin** (GET /groups)
-    - ❗ stránkování
+- ✅ **seznam skupin** (GET /groups)
 - ✅ **detail skupiny** (GET /groups/1)
     - ✅ seznam uživatelů
-- **vytvoření skupiny** (POST /groups)
-    - 🐌 přidat další informace o skupině (info, adresa, typ, kontakt)
-    - 🐌 ověřit unikátnost názvu
+- ✅ **vytvoření skupiny** (POST /groups)
 - ✅ **přidání účtu ke skupině** (POST /customers)
     - ✅ generace dočasného hesla
-- **seznam studentů** (GET /students) 
-    - ❗ stránkování
-    - ❗ filtr: podle jména
+- ✅ **seznam studentů** (GET /students) 
 - ✅ **detail studenta** (GET /students/1)
 - ✅ **aktivace studenta** (PUT /students/1)
     - ✅ pokud je deaktivovaný
-- **deaktivace studenta** (PUT /students/1)
+- ✅ **deaktivace studenta** (PUT /students/1)
     - ✅ pokud je aktivovaný
-    -  zrušení přijatých a nezpracovaných přihlášek -> zamítnuto
-- **seznam přihlášek** (GET /job-applications/operator-view) 
-    - ❗ filtr: nezpracované
+- ✅ **seznam přihlášek** (GET /job-applications/operator-view) 
 - ✅ **detail přihlášky** (GET /job-applications/1/operator-view)
 - ✅ **přijetí přihlášky** (PUT /job-applications/1)
     - ✅ pokud je nezpracovaná (pending)
@@ -70,18 +50,12 @@
 - ✅ **zapsání práce studenta** (PUT /job-applications/1)
     - ✅ pokud je validní přechod stavu přihlášky
     - ✅ pokud práce již skončila
-- **úprava skupiny** (PUT /groups/1)
-    - 🐌 vymyslet koncept
-- **smazání zákazníka** 
-    - 🐌 vymyslet koncept
 ### Zákazník
 - ✅ **seznam nabídek** (GET /job-offers/customer-view)
     - ✅ pouze patřící dané skupině
 - ✅ **detail nabídky** (GET /job-offers/1/customer-view)
     - ✅ pokud patří dané skupině
-- **vytvoření nabídky** (POST /job-offers)
-    - 🐌 min. 3 dny do budoucna -> DTO
-    - 🐌 max. 3 měsíce do budoucna -> DTO
+- ✅ **vytvoření nabídky** (POST /job-offers)
 - ✅ **smazání nabídky** (DELETE /job-offers)
     - ✅ nabídka musí patřit skupině
     - ✅ nabídka ještě nezapočala
@@ -90,7 +64,11 @@
 ---------------------------------------------------------
 ## Možné dodělávky
 - promyslet finance pro zákazníka (balíčky - počet nabídek/míst na měsíc)
+- response cache
+- auto mapping
+- časové informace o vzniku a modifikaci entit
 - informace o autorovi pracovní nabídky (customer)
+- striky a bany
 - refresh token
 - vlastní JWT middleware - pro customizace error response
 - promyslet hodnocení

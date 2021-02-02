@@ -25,7 +25,7 @@ namespace WebAPI.Services
     /// <summary>
     /// Service for JobApplication operations
     /// </summary>
-    public class JobApplicationService: IJobApplicationService
+    public class JobApplicationService : IJobApplicationService
     {
         private readonly StudentbyContext _context;
         private readonly IJobOfferService _jobOfferService;
@@ -44,11 +44,10 @@ namespace WebAPI.Services
         public async Task<IEnumerable<JobApplicationMinWithJoRes>> GetListStudentAsync(int userId)
         {
             var jobApplications = await _context.JobApplications
-                .Include(ap => ap.Student)
-                    .ThenInclude(st => st.User)
-                .Include(ap => ap.JobOffer)
-                    .ThenInclude(jo => jo.Group)
-                .Where(ap => ap.Student.User.UserId == userId)
+                .Include(ja => ja.Student).ThenInclude(st => st.User)
+                .Include(ja => ja.JobOffer).ThenInclude(jo => jo.Group)
+                .Include(ja => ja.JobOffer).ThenInclude(jo => jo.Address)
+                .Where(ja => ja.Student.User.UserId == userId)
                 .ToListAsync();
 
             List<JobApplicationMinWithJoRes> result = new List<JobApplicationMinWithJoRes>();
@@ -65,9 +64,9 @@ namespace WebAPI.Services
         /// <returns>List of JobApplication DTOs</returns>
         public async Task<IEnumerable<JobApplicationMinWithJoRes>> GetListOperatorAsync()
         {
-            var jobApplications = await _context.JobApplications 
-                                      .Include(ja => ja.JobOffer)
-                                        .ThenInclude(jo => jo.Group)
+            var jobApplications = await _context.JobApplications
+                                      .Include(ja => ja.JobOffer).ThenInclude(jo => jo.Group)
+                                      .Include(ja => ja.JobOffer).ThenInclude(jo => jo.Address)
                                       .ToListAsync();
 
             List<JobApplicationMinWithJoRes> result = new List<JobApplicationMinWithJoRes>();
@@ -90,7 +89,7 @@ namespace WebAPI.Services
                 .Include(ja => ja.JobOffer).ThenInclude(jo => jo.Group)
                 .Include(ja => ja.JobOffer).ThenInclude(jo => jo.Address)
                 .FirstOrDefaultAsync(ja => ja.JobApplicationId == jobApplicationId);
-            
+
             // jobApplication not found
             if (jobApplication == null)
             {
@@ -129,7 +128,7 @@ namespace WebAPI.Services
             {
                 return null;
             }
-                
+
             int freeSpaces = await _jobOfferService.GetFreeSpacesAsync(jobApplication.JobOfferId);
             return new JobApplicationWithJoStudRes(jobApplication, freeSpaces);
         }
@@ -172,7 +171,7 @@ namespace WebAPI.Services
             }
 
             // check if job application for this job offer already exists
-            bool applicationExists = await _context.JobApplications.AnyAsync((ja) =>  
+            bool applicationExists = await _context.JobApplications.AnyAsync((ja) =>
                 ja.JobOfferId == jobOffer.JobOfferId &&
                 ja.StudentId == student.StudentId);
             if (applicationExists)
@@ -201,7 +200,7 @@ namespace WebAPI.Services
 
             return new JobApplicationMinWithJoRes(jobApplication);
         }
-        
+
         /// <summary>
         /// Delete JobApplication
         /// </summary>
@@ -305,7 +304,7 @@ namespace WebAPI.Services
             }
 
             // edit job application
-            jobApplication.State = model.State; 
+            jobApplication.State = model.State;
             await _context.SaveChangesAsync();
             return true;
         }
