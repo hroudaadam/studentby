@@ -14,9 +14,11 @@ namespace WebAPI.Models
     public class UserReq
     {
         [Required]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Required]
+        [MinLength(8)]
         public string Password { get; set; }
     }
 
@@ -46,6 +48,7 @@ namespace WebAPI.Models
         public string Secret { get; set; }
 
         [Required]
+        [MinLength(8)]
         public string Password { get; set; }
     }
 

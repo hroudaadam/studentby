@@ -55,7 +55,6 @@
 <script>
 import { mapActions } from "vuex";
 import apiSevice from "../helpers/apiService";
-// import router from "../router";
 
 export default {
   name: "Login",

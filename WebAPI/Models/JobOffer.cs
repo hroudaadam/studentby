@@ -20,6 +20,7 @@ namespace WebAPI.Models
         [Required]
         public double Wage { get; set; }
         [Required]
+        [Range(1, 50)]
         public int Spaces { get; set; }
         [Required]
         public DateTime Start { get; set; }

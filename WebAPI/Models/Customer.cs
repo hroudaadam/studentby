@@ -13,6 +13,7 @@ namespace WebAPI.Models
     public class CustomerReq
     {
         [Required]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Required]

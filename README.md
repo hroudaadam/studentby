@@ -1,6 +1,4 @@
 # Studentby
-## Úkoly
-- validace FE a validace DTO
 ---------------------------------------------------------
 ## Analýza
 ### Ostatní
