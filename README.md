@@ -95,3 +95,35 @@
 - ✅ vystavovat nový endpoint pro data, která lze získat pomocí dvou endpointů? 
     - ano, spíš vystavovat nový
 ---------------------------------------------------------
+## Brand
+- We stand by by Studentby
+- Thing you can buy thanks to Studentby
+
+## Účty
+- student
+    - jan.novy@abc.cz (heslo123)
+    - eva.mala@abc.cz (heslo123)
+    - vit.sery@abc.cz (heslo123)
+    - ales.opl@abc.cz (heslo123)
+    - dan.tuhy@abc.cz (heslo123)
+- operator
+    - operator@abc.cz (heslo123)
+- customer 
+    - iva.leva@abc.cz (heslo123)
+    - vit.jakl@abc.cz (heslo123)    
+    - jan.rudy@abc.cz (heslo123)
+    - tran.vu@abc.cz (heslo123)
+
+## Deploy
+- SQL
+    - studentby-sql-server
+    - studentby-admin
+    - GS2.yae1q
+- server
+    - DESKTOP-TH6CF4J\SQLEXPRESS
+    - studentby.database.windows.net
+- connStr
+    Data Source=studentby.database.windows.net;User ID=studentby-admin;Password=GS2.yae1q;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False
+
+- connStr
+    Data Source=DESKTOP-TH6CF4J\\SQLEXPRESS;Initial Catalog=StudentbyDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False

@@ -1,7 +1,7 @@
 <template>
   <div>
     <PageHeader v-bind:title="'Nabídky'">
-      <b-button variant="primary" :to="{name: 'CustomerJobOfferCreate'}">Nový</b-button>
+      <b-button variant="primary" :to="{name: 'CustomerJobOfferCreate'}">Přidat</b-button>
     </PageHeader>
     <div class="mt-2">
       <b-list-group v-if="jobOffers && jobOffers.length > 0">

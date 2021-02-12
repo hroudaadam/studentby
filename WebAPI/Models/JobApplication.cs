@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using WebAPI.Entities;
+using WebAPI.Helpers;
 
 namespace WebAPI.Models
 {
@@ -12,7 +14,8 @@ namespace WebAPI.Models
     /// </summary>
     public class JobApplicationWithJoReq
     {
-        [Required]
+        [DisplayName("ID pracovní nabídky")]
+        [CustomRequired]
         public int JobOfferId { get; set; }
     }
 
@@ -21,9 +24,11 @@ namespace WebAPI.Models
     /// </summary>
     public class JobApplicationWithStateReq
     {
-        [Required]
+        [DisplayName("ID přihlášky")]
+        [CustomRequired]
         public int JobApplicationId { get; set; }
-        [Required]
+        [DisplayName("Stav přihlášky")]
+        [CustomRequired]
         public string State { get; set; }
     }
 

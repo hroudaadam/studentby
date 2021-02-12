@@ -21,14 +21,25 @@ export default {
   computed: {
     ...mapState(["loading", "errorMsg"]),
   },
-watch: {
-  errorMsg: function (errorMsg) {
-    this.$bvToast.toast(errorMsg.error, {
-      title: "Chyba",
-      variant: "danger",
-      solid: true,
-    });
+  watch: {
+    errorMsg: function (errorMsg) {
+      let title;
+      let detail;
+
+      if (!errorMsg.detail) {
+        title = "Chyba";
+        detail = errorMsg.error;
+      } else {
+        title = errorMsg.error;
+        detail = errorMsg.detail;
+      }
+
+      this.$bvToast.toast(detail, {
+        title: title,
+        variant: "danger",
+        solid: true,
+      });
+    },
   },
-}
 };
 </script>

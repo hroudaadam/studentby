@@ -15,5 +15,6 @@
     <WebStackScaffolding_LayoutPageFile />
     <WebStackScaffolding_DbContextTypeFullName>WebAPI.Entities.StudentbyContext</WebStackScaffolding_DbContextTypeFullName>
     <WebStackScaffolding_IsAsyncSelected>False</WebStackScaffolding_IsAsyncSelected>
+    <NameOfLastUsedPublishProfile>Studentby - Web Deploy</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>

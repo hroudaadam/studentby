@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using WebAPI.Entities;
+using WebAPI.Helpers;
 
 namespace WebAPI.Models
 {
@@ -12,11 +14,13 @@ namespace WebAPI.Models
     /// </summary>
     public class CustomerReq
     {
-        [Required]
-        [EmailAddress]
+        [DisplayName("Email")]
+        [CustomRequired]
+        [EmailAddress(ErrorMessage ="Emailová adresa není validní")]
         public string Email { get; set; }
 
-        [Required]
+        [DisplayName("ID skupiny")]
+        [CustomRequired]
         public int GroupId { get; set; }
     }
 

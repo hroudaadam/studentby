@@ -3,9 +3,8 @@
     <PageHeader v-bind:title="'Skupiny'"></PageHeader>
     <b-card>
       <b-form @submit.prevent>
-        <b-form-group id="input-group-1" label="Název:" label-for="input-1">
+        <b-form-group label="Název:">
           <b-form-input
-            id="input-1"
             v-model="formData.name"
             type="text"
             placeholder="Název"

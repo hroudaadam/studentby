@@ -23,7 +23,7 @@
     </b-row>
     <b-row>
       <b-col cols="3" lg="2">
-        <label>Odměna:</label>
+        <label>Hodinová sazba:</label>
       </b-col>
       <b-col cols="9" lg="10">
         <p>{{job.wage}} Kč</p>

@@ -15,6 +15,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.SpaServices;
+using Microsoft.AspNetCore.SpaServices.Extensions;
 using Newtonsoft.Json;
 using Serilog;
 using WebAPI.Entities;
@@ -69,7 +71,7 @@ namespace WebAPI
                     // DTO validation errors - custom response
                     options.InvalidModelStateResponseFactory = context =>
                     {
-                        var errors = string.Join(" ", context.ModelState.Values.Where(v => v.Errors.Count > 0)
+                        var errors = string.Join(", ", context.ModelState.Values.Where(v => v.Errors.Count > 0)
                             .SelectMany(v => v.Errors)
                             .Select(v => v.ErrorMessage));
 
@@ -127,7 +129,7 @@ namespace WebAPI
 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    Description = "JWT Authorization header using the Bearer scheme (Example: 'Bearer 12345abcdef')",
+                    Description = "JWT Autorizace",
                     Name = "Authorization",
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey,
@@ -150,11 +152,15 @@ namespace WebAPI
                 });
 
             });
+
+            services.AddSpaStaticFiles(configuration: options => { options.RootPath = "wwwroot"; });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseHttpsRedirection();
+
+
             app.UseLogging();
 
             if (env.IsDevelopment())
@@ -173,18 +179,27 @@ namespace WebAPI
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Studentby API");
-                c.RoutePrefix = string.Empty;
+                c.RoutePrefix = "swagger";
             });
+
 
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
 
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+            app.UseSpaStaticFiles();
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "wwwroot";
+            });
+
         }
     }
 }

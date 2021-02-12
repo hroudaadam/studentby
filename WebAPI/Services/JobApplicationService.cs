@@ -143,6 +143,7 @@ namespace WebAPI.Services
         {
             JobOffer jobOffer = await _context.JobOffers
                 .Include(jo => jo.Group)
+                .Include(jo => jo.Address)
                 .FirstOrDefaultAsync(jo => jo.JobOfferId == model.JobOfferId);
             // jobOffer not found
             if (jobOffer == null)

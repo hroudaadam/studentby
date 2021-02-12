@@ -7,7 +7,10 @@
           v-bind:key="jobOffer.id"
           v-for="jobOffer in jobOffers"
           v-bind:job="jobOffer"
-          v-bind:onClickLink="{ name: 'StudentJobOfferDetail', params: {jobOfferId: jobOffer.jobOfferId}}"
+          v-bind:onClickLink="{
+            name: 'StudentJobOfferDetail',
+            params: { jobOfferId: jobOffer.jobOfferId },
+          }"
         ></JobListItem>
       </b-list-group>
       <EmptyList v-else></EmptyList>
@@ -29,17 +32,17 @@ export default {
   components: {
     JobListItem,
     PageHeader,
-    EmptyList
+    EmptyList,
   },
   data() {
     return {
-      jobOffers: null
+      jobOffers: [],
     };
   },
   methods: {
     // get job offers
     getJobOffers() {
-      this.jobOffers = null;
+      this.jobOffers = [];
       apiService
         .get("/job-offers")
         .then((response) => {
@@ -53,7 +56,7 @@ export default {
   },
   mounted() {
     if (!this.isStudentLogged) {
-      router.push({name: 'Login'});
+      router.push({ name: "Login" });
     } else {
       this.getJobOffers();
     }

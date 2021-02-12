@@ -3,7 +3,6 @@ import VueRouter from "vue-router";
 
 import Home from "../views/Home"; 
 import Login from "../views/Login";
-import NotFound from "../views/NotFound";
 
 import StudentRegister from "../views/student/Register";
 import StudentJobOffers from "../views/student/JobOffers"; 
@@ -164,13 +163,8 @@ const routes = [
     props: true
   },
   {
-    path: "/not-found",
-    name: "NotFound",
-    component: NotFound
-  },
-  {
     path: "*",
-    redirect: { name: "NotFound" }
+    redirect: { name: "Home" }
   }
 
 ];

@@ -9,7 +9,7 @@
 
         <b-row>
           <b-col>
-            <b-form-group label="Odměna:">
+            <b-form-group label="Hodinová sazba:">
               <b-form-input
                 v-model="formData.wage"
                 type="number"

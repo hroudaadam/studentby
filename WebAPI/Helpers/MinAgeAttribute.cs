@@ -24,7 +24,7 @@ namespace WebAPI.Helpers
                     return ValidationResult.Success;
                 }
             }
-            return new ValidationResult($"Minimum age is {_minimumAge}");
+            return new ValidationResult($"Minimální věk musí být {_minimumAge}");
         }
     }
 }

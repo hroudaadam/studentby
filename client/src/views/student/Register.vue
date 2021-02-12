@@ -7,14 +7,13 @@
         <b-row>
           <b-col>
             <b-form-group label="Email">
-              <b-form-input required v-model="formData.email"></b-form-input>
+              <b-form-input v-model="formData.email"></b-form-input>
             </b-form-group>
           </b-col>
           <b-col>
             <b-form-group label="Heslo">
               <b-form-input
                 type="password"
-                required
                 v-model="formData.password"
               ></b-form-input>
             </b-form-group>
@@ -25,7 +24,6 @@
           <b-col>
             <b-form-group label="Jméno">
               <b-form-input
-                required
                 v-model="formData.firstName"
               ></b-form-input>
             </b-form-group>
@@ -41,7 +39,6 @@
           <b-col>
             <b-form-group label="Země">
               <b-form-input
-                required
                 v-model="formData.address.country"
               ></b-form-input>
             </b-form-group>
@@ -49,7 +46,6 @@
           <b-col>
             <b-form-group label="Město">
               <b-form-input
-                required
                 v-model="formData.address.city"
               ></b-form-input>
             </b-form-group>
@@ -60,7 +56,6 @@
           <b-col>
             <b-form-group label="Ulice">
               <b-form-input
-                required
                 v-model="formData.address.street"
               ></b-form-input>
             </b-form-group>
@@ -68,7 +63,6 @@
           <b-col>
             <b-form-group label="Číslo">
               <b-form-input
-                required
                 v-model="formData.address.number"
               ></b-form-input>
             </b-form-group>
@@ -80,7 +74,7 @@
             <b-col>
               <b-form-input
                 v-model="formData.dateOfBirth"
-                :type="bodInputType"
+                type="date"
               ></b-form-input>
             </b-col>
           </b-row>
@@ -100,9 +94,8 @@
 </template>
 
 <script>
-import apiService from "@/helpers/apiService";
-import router from "@/router/index";
-import PageHeader from "@/components/PageHeader";
+import apiService from "../../helpers/apiService";
+import PageHeader from "../../components/PageHeader";
 
 export default {
   name: "StudentRegister",
@@ -130,13 +123,13 @@ export default {
   methods: {
     // register
     register() {
-      apiService
-        .post("/students", this.formData)
-        .then(() => {
-          router.push({ name: "Login" });
-        })
-        .catch(() => {});
-    },
+        apiService
+          .post("/students", this.formData)
+          .then(() => {
+            this.$router.push({ name: "Login" });
+          })
+          .catch(() => {});
+    }
   },
 };
 </script>

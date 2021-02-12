@@ -165,7 +165,7 @@ namespace WebAPI.Services
         {
             if (!await _context.Users.AnyAsync(us => us.Role == UserRoles.Operator))
             {
-                User user = await CreateAsync("operator", "test", UserRoles.Operator);
+                User user = await CreateAsync("operator@abc.cz", "heslo123", UserRoles.Operator);
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
                 return true;

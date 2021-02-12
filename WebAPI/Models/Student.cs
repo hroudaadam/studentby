@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,26 +14,31 @@ namespace WebAPI.Models
     /// </summary>
     public class StudentReq
     {
-        [Required]
-        [EmailAddress]
+        [DisplayName("Email")]
+        [CustomRequired]
+        [EmailAddress(ErrorMessage = "Emailová adresa není validní")]
         public string Email { get; set; }
 
-        [Required]
-        [MinLength(8)]
+        [DisplayName("Heslo")]
+        [CustomRequired]
+        [CustomMinLength(8)]
         public string Password { get; set; }
 
-        [Required]
+        [DisplayName("Jména")]
+        [CustomRequired]
         public string FirstName { get; set; }
 
-        [Required]
+        [DisplayName("Příjmení")]
+        [CustomRequired]
         public string LastName { get; set; }
 
-        [Required]
-        [DataType(DataType.Date)]
+        [DisplayName("Datum narození")]
+        [CustomRequired]
         [MinAge(18)]
         public DateTime? DateOfBirth { get; set; }
 
-        [Required]
+        [DisplayName("Adresa")]
+        [CustomRequired]
         public AddressReq Address { get; set; }
     }
 
@@ -41,9 +47,11 @@ namespace WebAPI.Models
     /// </summary>
     public class StudentWithRoleReq
     {
-        [Required]
+        [DisplayName("ID studenta")]
+        [CustomRequired]
         public int StudentId { get; set; }
 
+        [DisplayName("Role")]
         [Required]
         public string Role { get; set; }
     }

@@ -6,8 +6,9 @@
       <b-card no-body>
         <b-card-body>
           <StudentInfo v-bind:student="student"></StudentInfo>
-          <div v-if="!student.activated" class="d-flex justify-content-center badge-size">
-            <b-badge variant="danger">Účet není aktivován</b-badge>
+          <div  class="d-flex justify-content-center badge-size">
+            <b-badge v-if="!student.activated" variant="secondary">Účet není aktivován</b-badge>
+            <b-badge v-else variant="primary">Účet je aktivován</b-badge>
           </div>
         </b-card-body>
       </b-card>

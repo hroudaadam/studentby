@@ -10,7 +10,6 @@
               <b-form-group id="input-group-1">
                 <b-form-input
                   id="input-1"
-                  required
                   placeholder="Email"
                   v-model="formData.email"
                 ></b-form-input>
@@ -20,7 +19,6 @@
                 <b-form-input
                   id="input-2"
                   type="password"
-                  required
                   placeholder="Heslo"
                   v-model="formData.password"
                 ></b-form-input>
@@ -39,7 +37,7 @@
                 variant
                 class="mb-2"
                 :to="{ name: 'StudentRegister' }"
-                >Vytvořit nový účet</b-button
+                >Vytvořit studentský účet</b-button
               >
 
               <!-- <b-link :to="{ name: 'Home' }">Zapomněli jste heslo?</b-link> -->

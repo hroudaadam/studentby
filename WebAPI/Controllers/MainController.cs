@@ -68,21 +68,5 @@ namespace WebAPI.Controllers
             else if (i == 1) throw new Exception("Server");
             return StatusCode(200, new { name="Adam", surname="Hrouda" });
         }
-
-        // GET: api/seed-db
-        [HttpGet("seed-db")]
-        public async Task<ActionResult> SeedDBAsync()
-        {
-            await _testService.SeedDbAsync();
-            return Ok("Test");
-        }
-
-        // GET: api/clear-db
-        [HttpGet("clear-db")]
-        public async Task<ActionResult> ClearDBAsync()
-        {
-            await _testService.ClearDbAsync();
-            return Ok("Test");
-        }
     }
 }

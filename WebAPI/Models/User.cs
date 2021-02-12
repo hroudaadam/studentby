@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.SignalR.Protocol;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using WebAPI.Entities;
+using WebAPI.Helpers;
 
 namespace WebAPI.Models
 {
@@ -13,12 +15,14 @@ namespace WebAPI.Models
     /// </summary>
     public class UserReq
     {
-        [Required]
-        [EmailAddress]
+        [DisplayName("Email")]
+        [CustomRequired]
+        [EmailAddress(ErrorMessage = "Emailová adresa není validní")]
         public string Email { get; set; }
 
-        [Required]
-        [MinLength(8)]
+        [DisplayName("Heslo")]
+        [CustomRequired]
+        [CustomMinLength(8)]
         public string Password { get; set; }
     }
 
@@ -44,11 +48,12 @@ namespace WebAPI.Models
     /// </summary>
     public class PasswordReq
     {
-        [Required]
+        [CustomRequired]
         public string Secret { get; set; }
 
-        [Required]
-        [MinLength(8)]
+        [DisplayName("Heslo")]
+        [CustomRequired]
+        [CustomMinLength(8)]
         public string Password { get; set; }
     }
 
