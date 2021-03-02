@@ -156,7 +156,6 @@ namespace WebAPI.Services
             return tokenHandler.WriteToken(token);
         }
 
-        // !!! change concept
         /// <summary>
         /// Create operator (ensure)
         /// </summary>
@@ -173,6 +172,11 @@ namespace WebAPI.Services
             return false;            
         }  
         
+        /// <summary>
+        /// Set passord
+        /// </summary>
+        /// <param name="model">DTO password</param>
+        /// <returns></returns>
         public async Task SetPassword(PasswordReq model)
         {
             var secretSplit = model.Secret.Split(':');

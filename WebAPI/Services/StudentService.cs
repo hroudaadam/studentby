@@ -105,7 +105,6 @@ namespace WebAPI.Services
         public async Task<bool> EditOperatorAsync(int studentId, StudentWithRoleReq model)
         {
             // route id and model id differs
-            // !!! refactor -> method
             if (studentId != model.StudentId)
             {
                 throw new AppLogicException("Neplatný požadavek");
@@ -124,7 +123,6 @@ namespace WebAPI.Services
             if (student.User.Role == UserRoles.StudentInact &&
                 model.Role == UserRoles.Student)
             {
-                // !!! if banned
                 student.User.Role = UserRoles.Student;
             }
             // student deactivation

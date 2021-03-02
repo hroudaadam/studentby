@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PageHeader v-bind:title="'Nabídky'">
+    <PageHeader v-bind:title="'Detail nabídky'">
       <b-button variant="secondary" :to="{name: 'StudentJobOffers'}" size="sm">Zpět</b-button>
     </PageHeader>
     <div v-if="!!this.jobOffer">

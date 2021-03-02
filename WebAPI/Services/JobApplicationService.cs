@@ -255,7 +255,6 @@ namespace WebAPI.Services
                 return false;
             }
 
-            // !!! refactor -> method
             // check if the transition between states is valid
             bool toPenErr = model.State == JobApplicationStates.Pending;
             bool toAppErr = (model.State == JobApplicationStates.Approved) &&
@@ -296,11 +295,6 @@ namespace WebAPI.Services
                 if (jobApplication.JobOffer.End > DateTime.UtcNow)
                 {
                     throw new AppLogicException("Brigáda ještě neskončila");
-                }
-                // when setting absent
-                if (model.State == JobApplicationStates.Absent)
-                {
-                    // !!! incerement strike counter and check for ban
                 }
             }
 

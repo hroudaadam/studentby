@@ -24,12 +24,10 @@ namespace WebAPI.Controllers
     public class MainController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly ITestService _testService;
 
-        public MainController(IUserService userService, ITestService testService)
+        public MainController(IUserService userService)
         {
             _userService = userService;
-            _testService = testService;
         }
 
         // POST: api/login
@@ -57,16 +55,6 @@ namespace WebAPI.Controllers
         {
             await _userService.SetPassword(request);
             return StatusCode(204);
-        }
-
-        // GET: api/test
-        [HttpGet("test")]
-        public ActionResult Test()
-        {          
-            int i = new Random().Next(3);
-            if (i == 0) throw new AppLogicException("Logic chyba");
-            else if (i == 1) throw new Exception("Server");
-            return StatusCode(200, new { name="Adam", surname="Hrouda" });
         }
     }
 }

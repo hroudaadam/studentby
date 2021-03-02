@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PageHeader v-bind:title="'Přihlášky'">
+    <PageHeader v-bind:title="'Detail přihlášky'">
       <b-button variant="secondary" size="sm" :to="{ name: 'OperatorJobApplications' }"
         >Zpět</b-button
       >

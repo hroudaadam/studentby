@@ -45,7 +45,7 @@ namespace WebAPI.Services
                 throw new AppLogicException("Skupina neexistuje");
             }
 
-            // !!! autogen password
+            // autogen password
             string password = GeneratePassword();
             
             // create user
@@ -84,6 +84,10 @@ namespace WebAPI.Services
             return new CustomerWithGrRes(user.Customer);
         }
 
+        /// <summary>
+        /// Generate random password
+        /// </summary>
+        /// <returns></returns>
         private string GeneratePassword()
         {
             string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789?!.";

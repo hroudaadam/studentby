@@ -11,6 +11,9 @@ using WebAPI.Models;
 
 namespace WebAPI.Controllers
 {
+    /// <summary>
+    /// Controller for exceptions
+    /// </summary>
     [ApiExplorerSettings(IgnoreApi = true)]
     public class ErrorController : ControllerBase
     {
@@ -26,6 +29,7 @@ namespace WebAPI.Controllers
         {
             var exception = HttpContext.Features.Get<IExceptionHandlerFeature>().Error;
 
+            // BL exception
             if (exception is AppLogicException)
             {
                 Response.StatusCode = 400;
@@ -33,6 +37,7 @@ namespace WebAPI.Controllers
                 string detail = ((AppLogicException)exception).Detail;
                 return new ErrorRes(message, detail);
             }
+            // server exception
             else
             {
                 Response.StatusCode = 500;

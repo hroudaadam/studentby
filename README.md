@@ -122,8 +122,8 @@
 - server
     - DESKTOP-TH6CF4J\SQLEXPRESS
     - studentby.database.windows.net
-- connStr
+- connStr (azure)
     Data Source=studentby.database.windows.net;User ID=studentby-admin;Password=GS2.yae1q;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False
 
-- connStr
+- connStr (local)
     Data Source=DESKTOP-TH6CF4J\\SQLEXPRESS;Initial Catalog=StudentbyDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False
