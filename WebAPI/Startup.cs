@@ -37,7 +37,7 @@ namespace WebAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // CORS - configuration
+            // CORS configuration
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(
@@ -79,8 +79,8 @@ namespace WebAPI
                     };
 
                 });
-
-            // AppSettings
+             
+            // AppSettings configuration
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
 
@@ -155,22 +155,14 @@ namespace WebAPI
             services.AddSpaStaticFiles(configuration: options => { options.RootPath = "wwwroot"; });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
             app.UseHttpsRedirection();
 
-
             app.UseLogging();
-
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            // use custom error handler in production enviroment
-            else
-            {
-                app.UseExceptionHandler("/error");
-            }
+            
+            app.UseExceptionHandler("/error");
+ 
             app.UseCors();
 
             // Swagger config

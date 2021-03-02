@@ -7,8 +7,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     // base API URL
-    baseApiUrl: "https://localhost:5001/api",
-    // baseApiUrl: "/api",
+    baseApiUrl: "/api",
     // access token
     accessToken: localStorage.getItem("accessToken") || null,
     // current user role
