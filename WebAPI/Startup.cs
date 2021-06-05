@@ -75,7 +75,7 @@ namespace WebAPI
                             .SelectMany(v => v.Errors)
                             .Select(v => v.ErrorMessage));
 
-                        throw new AppLogicException("Nastala chyba pøi validaci požadavku", errors);
+                        throw new AppLogicException("Nastala chyba pï¿½i validaci poï¿½adavku", errors);
                     };
 
                 });
@@ -83,9 +83,9 @@ namespace WebAPI
             // AppSettings configuration
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
+            var appSettings = appSettingsSection.Get<AppSettings>();
 
             // JWT authentication configuration
-            var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
 
             services.AddAuthentication(x =>
