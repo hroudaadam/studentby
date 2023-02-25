@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="Auth\UseCases\UserBasicLogin\**" />
+		<EmbeddedResource Remove="Auth\UseCases\UserBasicLogin\**" />
+		<None Remove="Auth\UseCases\UserBasicLogin\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.2.2" />
+		<PackageReference Include="Mapster.DependencyInjection" Version="1.0.0" />
+		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Studentby.App.Data\Studentby.App.Data.csproj" />
+		<ProjectReference Include="..\Studentby.Shared\Studentby.Shared.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+			<_Parameter1>Studentby.App.Logic.UnitTest</_Parameter1>
+		</AssemblyAttribute>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Employers\Exceptions\" />
+	  <Folder Include="Users\Models\" />
+	</ItemGroup>
+
+</Project>

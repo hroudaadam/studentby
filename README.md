@@ -1,0 +1,22 @@
+﻿## UCs to migrace
+- employer
+	- create		✔✔
+	- get			✔✔
+- group
+	- create		✔✔
+	- get			✔✔
+	- list			✔✔
+- student
+	- list			✔✔
+	- get			✔✔
+	- create		✔✔
+	- edit			✔✔
+- job offer
+	- list (vars)	✔✔
+	- get (vars)	✔✔
+	- create		✔✔
+- job application
+	- create		✔✔
+	- edit			✔✔
+	- list (vars)	✔✔
+	- get (vars)	✔✔
